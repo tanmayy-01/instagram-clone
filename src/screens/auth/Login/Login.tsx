@@ -12,15 +12,13 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import * as Navigation from '@/utils'
 import { styles } from './Login.styles';
 import { ICON_NAMES, IMAGE_URLS, LIGHT_COLORS, SCREEN_NAMES } from '@/constants';
 
 import Icon from '@/components/Icon';
 
 const Login: React.FC = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
@@ -51,7 +49,9 @@ const Login: React.FC = () => {
   };
 
   const handleCreateNewAccount = () => {
-    navigation.navigate(SCREEN_NAMES.SIGNUP);
+    console.log('signup')
+    Navigation.navigate(SCREEN_NAMES.SIGNUP)
+     console.log('signup')
   };
 
   const handleLanguageSelect = () => {

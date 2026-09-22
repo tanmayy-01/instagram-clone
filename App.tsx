@@ -3,6 +3,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AppNavigation from './src/navigation/AppNavigation';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { navigationRef } from '@/utils';
 
 const App = () => {
   return (
@@ -13,7 +14,7 @@ const App = () => {
         }}
       >
         <StatusBar barStyle="auto" />
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
           <AppNavigation />
         </NavigationContainer>
       </SafeAreaView>
