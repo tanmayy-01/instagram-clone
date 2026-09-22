@@ -3,3 +3,4 @@ export * from './fontSizes';
 export * from './fontWeights';
 export * from './fontStyles';
 export * from './screenNames';
+export * from './images';

@@ -5,15 +5,15 @@ import Splash from '../screens/splash';
 const AppNavigation = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-    const checkAuthentication = () => {
-       setTimeout(() => {
-        setIsLoggedIn(true)
-       },1000)
-    }
+    // const checkAuthentication = () => {
+    //    setTimeout(() => {
+    //     setIsLoggedIn(true)
+    //    },1000)
+    // }
 
-    useEffect(() => {
-        checkAuthentication()
-    },[])
+    // useEffect(() => {
+    //     checkAuthentication()
+    // },[])
 
     if(!isLoggedIn) {
         return <Splash />
