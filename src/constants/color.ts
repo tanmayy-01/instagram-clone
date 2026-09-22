@@ -1,6 +1,7 @@
 export const LIGHT_COLORS = {
-  primary: '#4F46E5',
+  primary: '#0064E0',
   secondary: '#6366F1',
+  brandBlue: '#0064E0',
 
   white: '#FFFFFF',
   black: '#000000',
@@ -13,6 +14,10 @@ export const LIGHT_COLORS = {
   textTertiary: '#9CA3AF',
 
   border: '#E5E7EB',
+  inputBorder: '#DADDE1',
+  inputBackground: '#FAFAFA',
+  inputBorderFocused: '#1C274C',
+  placeholder: '#898F9C',
 
   success: '#22C55E',
   warning: '#F59E0B',
@@ -22,19 +27,25 @@ export const LIGHT_COLORS = {
 } as const;
 
 export const DARK_COLORS = {
-
+  primary: '#0064E0',
+  secondary: '#6366F1',
+  brandBlue: '#0064E0',
 
   white: '#FFFFFF',
   black: '#000000',
 
   background: '#000000',
-  surface: '#F8FAFC',
+  surface: '#121212',
 
-  textPrimary: '#111827',
-  textSecondary: '#6B7280',
-  textTertiary: '#9CA3AF',
+  textPrimary: '#F9FAFB',
+  textSecondary: '#9CA3AF',
+  textTertiary: '#6B7280',
 
-  border: '#E5E7EB',
+  border: '#262626',
+  inputBorder: '#363636',
+  inputBackground: '#121212',
+  inputBorderFocused: '#FFFFFF',
+  placeholder: '#737373',
 
   success: '#22C55E',
   warning: '#F59E0B',
