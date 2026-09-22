@@ -15,8 +15,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { styles } from './Login.styles';
-import { IMAGE_URLS, LIGHT_COLORS, SCREEN_NAMES } from '@/constants';
-import { ICON_NAMES } from '@/constants/constants';
+import { ICON_NAMES, IMAGE_URLS, LIGHT_COLORS, SCREEN_NAMES } from '@/constants';
+
 import Icon from '@/components/Icon';
 
 const Login: React.FC = () => {
