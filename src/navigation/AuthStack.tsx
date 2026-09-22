@@ -13,7 +13,6 @@ const AuthStack = () => {
         headerShown: false,
       }}
     >
-      {/* <Stack.Screen name={SCREEN_NAMES.SPLASH} component={Splash} /> */}
       <Stack.Screen name={SCREEN_NAMES.LOGIN} component={Login} />
       <Stack.Screen name={SCREEN_NAMES.SIGNUP} component={Signup} />
     </Stack.Navigator>

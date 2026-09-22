@@ -11,13 +11,13 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
-  StatusBar,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { styles } from './Login.styles';
-import { IMAGE_URLS, SCREEN_NAMES, LIGHT_COLORS } from '../../../constants';
-import Ionicons from '@react-native-vector-icons/ionicons';
+import { IMAGE_URLS, LIGHT_COLORS, SCREEN_NAMES } from '@/constants';
+import { ICON_NAMES } from '@/constants/constants';
+import Icon from '@/components/Icon';
 
 const Login: React.FC = () => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -28,11 +28,15 @@ const Login: React.FC = () => {
   const [isIdentifierFocused, setIsIdentifierFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
-  const isLoginEnabled = identifier.trim().length > 0 && password.trim().length > 0;
+  const isLoginEnabled =
+    identifier.trim().length > 0 && password.trim().length > 0;
 
   const handleLogin = () => {
     if (!identifier.trim() || !password.trim()) {
-      Alert.alert('Required Fields', 'Please enter your username/email and password.');
+      Alert.alert(
+        'Required Fields',
+        'Please enter your username/email and password.',
+      );
       return;
     }
     Keyboard.dismiss();
@@ -40,7 +44,10 @@ const Login: React.FC = () => {
   };
 
   const handleForgotPassword = () => {
-    Alert.alert('Forgot Password', 'Password reset instructions have been triggered.');
+    Alert.alert(
+      'Forgot Password',
+      'Password reset instructions have been triggered.',
+    );
   };
 
   const handleCreateNewAccount = () => {
@@ -64,7 +71,6 @@ const Login: React.FC = () => {
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
-          
             <View style={styles.topSection}>
               <TouchableOpacity
                 style={styles.languageSelector}
@@ -72,7 +78,6 @@ const Login: React.FC = () => {
                 activeOpacity={0.7}
               >
                 <Text style={styles.languageText}>English (US)</Text>
-
               </TouchableOpacity>
             </View>
 
@@ -136,11 +141,12 @@ const Login: React.FC = () => {
                         onPress={() => setShowPassword(!showPassword)}
                         activeOpacity={0.7}
                       >
-                       
-                          {showPassword ?
-                          <Ionicons name='eye-off' size={25} color={ LIGHT_COLORS.textSecondary} />
-                          :  <Ionicons name='eye' size={25} color={ LIGHT_COLORS.textSecondary} />}
-                      
+                        <Icon
+                          name={
+                            showPassword ? ICON_NAMES.SHOW : ICON_NAMES.HIDE
+                          }
+                          color={LIGHT_COLORS.textSecondary}
+                        />
                       </TouchableOpacity>
                     )}
                   </View>

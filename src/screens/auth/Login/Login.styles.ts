@@ -32,7 +32,6 @@ export const styles = StyleSheet.create({
     color: LIGHT_COLORS.textSecondary,
     fontFamily: FONT_STYLES.regular,
   },
-
   mainSection: {
     width: '100%',
     alignItems: 'center',
