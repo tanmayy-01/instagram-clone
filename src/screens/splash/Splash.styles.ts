@@ -1,25 +1,29 @@
 import { StyleSheet } from 'react-native';
-import { COLORS, FONT_SIZES, FONT_STYLES } from '../../constants';
+import { LIGHT_COLORS, FONT_SIZES, FONT_STYLES } from '../../constants';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: LIGHT_COLORS.background,
   },
   main_logo: {
-    backgroundColor: '#000',
     width: '25%',
     height: '25%',
   },
   bottom_text: {
     fontFamily: FONT_STYLES.regular,
     fontSize: FONT_SIZES.xl,
-    color: COLORS.textSecondary,
+    color: LIGHT_COLORS.textPrimary,
+    textAlign:'center'
   },
   bottom_container: {
     position: 'absolute',
-    bottom: '15%',
+    bottom: '10%',
+  },
+  meta_logo: {
+    width: 100,
+    height: 30,
   },
 });

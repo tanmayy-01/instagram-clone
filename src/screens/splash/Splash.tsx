@@ -13,6 +13,11 @@ const Splash = () => {
       />
       <View style={styles.bottom_container}>
         <Text style={styles.bottom_text}>from</Text>
+        <Image
+          source={IMAGE_URLS.meta_logo}
+          style={styles.meta_logo}
+          resizeMode="contain"
+        />
       </View>
     </View>
   );
