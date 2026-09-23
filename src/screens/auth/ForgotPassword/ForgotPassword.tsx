@@ -6,20 +6,23 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import React, { useState } from 'react';
 import { styles } from './ForgotPassword.styles';
 import { isIOS } from '@/utils';
 import Icon from '@/components/Icon';
-import { ICON_NAMES, LIGHT_COLORS } from '@/constants';
+import { ICON_NAMES, LIGHT_COLORS, SCREEN_NAMES } from '@/constants';
 import * as Navigation from '@/utils';
 import { showToast } from '@/components/toast';
+import { sendPasswordReset } from '@/services/userService';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const isEmailValid = EMAIL_REGEX.test(email.trim());
 
@@ -27,20 +30,33 @@ const ForgotPassword = () => {
     Navigation.goBack();
   };
 
-  const handleSendEmail = () => {
+  const handleSendEmail = async () => {
     const trimmed = email.trim();
     if (!trimmed) {
-      showToast('Please enter your email');
+      showToast('Please enter your email or username');
       return;
     }
 
-    if (!EMAIL_REGEX.test(trimmed)) {
+    if (trimmed.includes('@') && !EMAIL_REGEX.test(trimmed)) {
       showToast('Please enter a valid email address');
       return;
     }
 
     Keyboard.dismiss();
-    showToast('Login code sent to your email');
+    setLoading(true);
+    try {
+      const res = await sendPasswordReset(trimmed);
+      if (res.success) {
+        setEmail('');
+        setTimeout(() => {
+          Navigation.navigate(SCREEN_NAMES.LOGIN);
+        }, 1500);
+      }
+    } catch (err) {
+      console.error('Password reset error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -107,6 +123,7 @@ const ForgotPassword = () => {
                     returnKeyType="done"
                     onSubmitEditing={handleSendEmail}
                     autoFocus={true}
+                    editable={!loading}
                   />
                 </View>
 
@@ -127,12 +144,17 @@ const ForgotPassword = () => {
             <TouchableOpacity
               style={[
                 styles.send_button,
-                !email.trim().length && styles.send_button_disabled,
+                (!email.trim().length || loading) && styles.send_button_disabled,
               ]}
               onPress={handleSendEmail}
+              disabled={!email.trim().length || loading}
               activeOpacity={0.8}
             >
-              <Text style={styles.send_text}>Send</Text>
+              {loading ? (
+                <ActivityIndicator color={LIGHT_COLORS.white} size="small" />
+              ) : (
+                <Text style={styles.send_text}>Send login link</Text>
+              )}
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>

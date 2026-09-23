@@ -11,42 +11,57 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
-import * as Navigation from '@/utils'
+import * as Navigation from '@/utils';
 import { styles } from './Login.styles';
 import { ICON_NAMES, IMAGE_URLS, LIGHT_COLORS, SCREEN_NAMES } from '@/constants';
+import { showToast } from '@/components/toast';
+import { loginUser } from '@/services/userService';
 
 import Icon from '@/components/Icon';
 
 const Login: React.FC = () => {
-
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isIdentifierFocused, setIsIdentifierFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const isLoginEnabled =
     identifier.trim().length > 0 && password.trim().length > 0;
 
-  const handleLogin = () => {
-    if (!identifier.trim() || !password.trim()) {
-      Alert.alert(
-        'Required Fields',
-        'Please enter your username/email and password.',
-      );
+  const handleLogin = async () => {
+    const cleanId = identifier.trim();
+    if (!cleanId || !password.trim()) {
+      showToast('Please enter your username/email and password.');
       return;
     }
     Keyboard.dismiss();
-    Alert.alert('Login', `Attempting login for: ${identifier.trim()}`);
+    setLoading(true);
+    try {
+      const result = await loginUser(cleanId, password);
+      if (result.success) {
+        Navigation.resetAndNavigate(SCREEN_NAMES.HOME);
+        setIdentifier('');
+        setPassword('');
+      } else {
+        showToast('Wrong Credentials');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleForgotPassword = () => {
-    Navigation.navigate(SCREEN_NAMES.FORGOT_PASSWORD)
+    Navigation.navigate(SCREEN_NAMES.FORGOT_PASSWORD);
   };
 
   const handleCreateNewAccount = () => {
-    Navigation.navigate(SCREEN_NAMES.SIGNUP)
+    Navigation.navigate(SCREEN_NAMES.SIGNUP);
   };
 
   const handleLanguageSelect = () => {
@@ -95,7 +110,7 @@ const Login: React.FC = () => {
                   <View style={styles.inputInnerWrapper}>
                     {(isIdentifierFocused || identifier.length > 0) && (
                       <Text style={styles.inputLabel}>
-                        Username, email or mobile number
+                        Username or Email
                       </Text>
                     )}
                     <TextInput
@@ -103,7 +118,7 @@ const Login: React.FC = () => {
                       placeholder={
                         isIdentifierFocused || identifier.length > 0
                           ? ''
-                          : 'Username, email or mobile number'
+                          : 'Username or Email '
                       }
                       placeholderTextColor={LIGHT_COLORS.placeholder}
                       value={identifier}
@@ -113,6 +128,7 @@ const Login: React.FC = () => {
                       onFocus={() => setIsIdentifierFocused(true)}
                       onBlur={() => setIsIdentifierFocused(false)}
                       returnKeyType="next"
+                      editable={!loading}
                     />
                   </View>
                 </View>
@@ -147,6 +163,7 @@ const Login: React.FC = () => {
                       onBlur={() => setIsPasswordFocused(false)}
                       returnKeyType="done"
                       onSubmitEditing={handleLogin}
+                      editable={!loading}
                     />
                   </View>
                   {password.length > 0 && (
@@ -172,12 +189,17 @@ const Login: React.FC = () => {
               <TouchableOpacity
                 style={[
                   styles.loginButton,
-                  !isLoginEnabled && styles.loginButtonDisabled,
+                  (!isLoginEnabled || loading) && styles.loginButtonDisabled,
                 ]}
                 onPress={handleLogin}
+                disabled={!isLoginEnabled || loading}
                 activeOpacity={0.8}
               >
-                <Text style={styles.loginButtonText}>Log in</Text>
+                {loading ? (
+                  <ActivityIndicator color={LIGHT_COLORS.white} size="small" />
+                ) : (
+                  <Text style={styles.loginButtonText}>Log in</Text>
+                )}
               </TouchableOpacity>
 
               {/* Forgot Password */}
