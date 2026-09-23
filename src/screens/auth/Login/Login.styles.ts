@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import { LIGHT_COLORS, FONT_SIZES, FONT_STYLES } from '../../../constants';
+import { LIGHT_COLORS, FONT_SIZES, FONT_STYLES, FONT_WEIGHTS } from '../../../constants';
 
 export const styles = StyleSheet.create({
   safeArea: {
@@ -132,7 +132,7 @@ export const styles = StyleSheet.create({
     color: LIGHT_COLORS.brandBlue,
     fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: '600',
+    fontWeight: FONT_WEIGHTS.semibold,
   },
   metaLogo: {
     width: 82,

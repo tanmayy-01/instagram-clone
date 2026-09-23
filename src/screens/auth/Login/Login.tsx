@@ -42,16 +42,11 @@ const Login: React.FC = () => {
   };
 
   const handleForgotPassword = () => {
-    Alert.alert(
-      'Forgot Password',
-      'Password reset instructions have been triggered.',
-    );
+    Navigation.navigate(SCREEN_NAMES.FORGOT_PASSWORD)
   };
 
   const handleCreateNewAccount = () => {
-    console.log('signup')
     Navigation.navigate(SCREEN_NAMES.SIGNUP)
-     console.log('signup')
   };
 
   const handleLanguageSelect = () => {

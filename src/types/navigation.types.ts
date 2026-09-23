@@ -4,6 +4,7 @@ export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
   Home: undefined;
+  ForgotPassword: undefined;
 //   Profile: { userId: string; username: string };
 //   FeedDetails: { postId: string };
 };
