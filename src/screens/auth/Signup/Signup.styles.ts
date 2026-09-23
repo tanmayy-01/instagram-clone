@@ -1,5 +1,11 @@
-import { FONT_SIZES, FONT_STYLES, FONT_WEIGHTS, LIGHT_COLORS } from '@/constants';
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
+import {
+  FONT_SIZES,
+  FONT_STYLES,
+  FONT_WEIGHTS,
+  LIGHT_COLORS,
+} from '@/constants';
+import { isIOS } from '@/utils';
 
 export const styles = StyleSheet.create({
   container: {
@@ -10,6 +16,11 @@ export const styles = StyleSheet.create({
   keyboardAvoid: {
     flex: 1,
   },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
+    paddingBottom: 24,
+  },
   header: {
     paddingVertical: 14,
     justifyContent: 'center',
@@ -19,30 +30,24 @@ export const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingRight: 12,
   },
-  heading_text: {
+  contentContainer: {
+    flex: 1,
+    paddingTop: 10,
+  },
+  title: {
     fontSize: FONT_SIZES.xxl,
     fontFamily: FONT_STYLES.bold,
     fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.textPrimary,
+    marginBottom: 10,
     letterSpacing: -0.3,
   },
-  body: {
-    flex: 1,
-    paddingTop: 10,
-  },
-  body_text_container: {
-    marginTop: 8,
-    marginBottom: 24,
-  },
-  body_text: {
+  subtitle: {
     fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.regular,
     color: LIGHT_COLORS.textSecondary,
     lineHeight: 20,
-  },
-  inputContainer: {
-    width: '100%',
-    marginBottom: 16,
+    marginBottom: 24,
   },
   inputCard: {
     width: '100%',
@@ -74,7 +79,7 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.regular,
     color: LIGHT_COLORS.textPrimary,
-    paddingVertical: Platform.OS === 'ios' ? 2 : 0,
+    paddingVertical: isIOS ? 2 : 0,
     paddingHorizontal: 0,
   },
   rightIconContainer: {
@@ -82,23 +87,66 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  send_button: {
+  rememberContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  checkboxTouchable: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkboxIcon: {
+    marginRight: 10,
+  },
+  rememberText: {
+    fontSize: FONT_SIZES.sm,
+    fontFamily: FONT_STYLES.regular,
+    color: LIGHT_COLORS.textPrimary,
+  },
+  learnMoreText: {
+    fontSize: FONT_SIZES.sm,
+    fontFamily: FONT_STYLES.medium,
+    fontWeight: FONT_WEIGHTS.semibold,
+    color: LIGHT_COLORS.brandBlue,
+  },
+  nextButton: {
     width: '100%',
     height: 48,
     backgroundColor: LIGHT_COLORS.brandBlue,
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 16,
-    marginBottom: 18,
+    marginTop: 20,
   },
-  send_button_disabled: {
+  nextButtonDisabled: {
     opacity: 0.65,
   },
-  send_text: {
+  nextButtonText: {
     color: LIGHT_COLORS.white,
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.medium,
     fontWeight: FONT_WEIGHTS.semibold,
+  },
+  bottomSection: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+  },
+  alreadyAccountButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  alreadyAccountText: {
+    fontSize: FONT_SIZES.sm,
+    fontFamily: FONT_STYLES.regular,
+    color: LIGHT_COLORS.textSecondary,
+  },
+  loginLinkText: {
+    fontSize: FONT_SIZES.sm,
+    fontFamily: FONT_STYLES.medium,
+    fontWeight: FONT_WEIGHTS.semibold,
+    color: LIGHT_COLORS.brandBlue,
   },
 });

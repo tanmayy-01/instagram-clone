@@ -46,41 +46,43 @@ export const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 12,
   },
-  inputWrapper: {
+  inputCard: {
     width: '100%',
-    height: 52,
-    backgroundColor: LIGHT_COLORS.inputBackground,
+    minHeight: 56,
+    backgroundColor: LIGHT_COLORS.white,
     borderRadius: 14,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: LIGHT_COLORS.inputBorder,
     paddingHorizontal: 16,
-    justifyContent: 'center',
-  },
-  inputWrapperFocused: {
-    borderColor: LIGHT_COLORS.inputBorderFocused,
-    backgroundColor: LIGHT_COLORS.white,
-  },
-  input: {
-    fontSize: FONT_SIZES.sm,
-    color: LIGHT_COLORS.textPrimary,
-    fontFamily: FONT_STYLES.regular,
-    paddingVertical: 0,
-  },
-  passwordInputRow: {
+    paddingVertical: 8,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  passwordTextInput: {
+  inputCardFocused: {
+    borderColor: LIGHT_COLORS.inputBorderFocused,
+  },
+  inputInnerWrapper: {
     flex: 1,
+    justifyContent: 'center',
   },
-  passwordToggle: {
-    paddingLeft: 10,
-    paddingVertical: 4,
-  },
-  passwordToggleText: {
+  inputLabel: {
     fontSize: FONT_SIZES.xs,
+    fontFamily: FONT_STYLES.regular,
     color: LIGHT_COLORS.textSecondary,
-    fontFamily: FONT_STYLES.medium,
+    marginBottom: 2,
+  },
+  input: {
+    fontSize: FONT_SIZES.md,
+    fontFamily: FONT_STYLES.regular,
+    color: LIGHT_COLORS.textPrimary,
+    paddingVertical: Platform.OS === 'ios' ? 2 : 0,
+    paddingHorizontal: 0,
+  },
+  rightIconContainer: {
+    marginLeft: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   loginButton: {
     width: '100%',

@@ -84,26 +84,37 @@ const Login: React.FC = () => {
                 resizeMode="contain"
               />
 
-              {/* Email  Input */}
+              {/* Identifier Input */}
               <View style={styles.inputContainer}>
                 <View
                   style={[
-                    styles.inputWrapper,
-                    isIdentifierFocused && styles.inputWrapperFocused,
+                    styles.inputCard,
+                    isIdentifierFocused && styles.inputCardFocused,
                   ]}
                 >
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Username, email or mobile number"
-                    placeholderTextColor={LIGHT_COLORS.placeholder}
-                    value={identifier}
-                    onChangeText={setIdentifier}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    onFocus={() => setIsIdentifierFocused(true)}
-                    onBlur={() => setIsIdentifierFocused(false)}
-                    returnKeyType="next"
-                  />
+                  <View style={styles.inputInnerWrapper}>
+                    {(isIdentifierFocused || identifier.length > 0) && (
+                      <Text style={styles.inputLabel}>
+                        Username, email or mobile number
+                      </Text>
+                    )}
+                    <TextInput
+                      style={styles.input}
+                      placeholder={
+                        isIdentifierFocused || identifier.length > 0
+                          ? ''
+                          : 'Username, email or mobile number'
+                      }
+                      placeholderTextColor={LIGHT_COLORS.placeholder}
+                      value={identifier}
+                      onChangeText={setIdentifier}
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      onFocus={() => setIsIdentifierFocused(true)}
+                      onBlur={() => setIsIdentifierFocused(false)}
+                      returnKeyType="next"
+                    />
+                  </View>
                 </View>
               </View>
 
@@ -111,14 +122,21 @@ const Login: React.FC = () => {
               <View style={styles.inputContainer}>
                 <View
                   style={[
-                    styles.inputWrapper,
-                    isPasswordFocused && styles.inputWrapperFocused,
+                    styles.inputCard,
+                    isPasswordFocused && styles.inputCardFocused,
                   ]}
                 >
-                  <View style={styles.passwordInputRow}>
+                  <View style={styles.inputInnerWrapper}>
+                    {(isPasswordFocused || password.length > 0) && (
+                      <Text style={styles.inputLabel}>Password</Text>
+                    )}
                     <TextInput
-                      style={[styles.input, styles.passwordTextInput]}
-                      placeholder="Password"
+                      style={styles.input}
+                      placeholder={
+                        isPasswordFocused || password.length > 0
+                          ? ''
+                          : 'Password'
+                      }
                       placeholderTextColor={LIGHT_COLORS.placeholder}
                       value={password}
                       onChangeText={setPassword}
@@ -130,21 +148,23 @@ const Login: React.FC = () => {
                       returnKeyType="done"
                       onSubmitEditing={handleLogin}
                     />
-                    {password.length > 0 && (
-                      <TouchableOpacity
-                        style={styles.passwordToggle}
-                        onPress={() => setShowPassword(!showPassword)}
-                        activeOpacity={0.7}
-                      >
-                        <Icon
-                          name={
-                            showPassword ? ICON_NAMES.SHOW : ICON_NAMES.HIDE
-                          }
-                          color={LIGHT_COLORS.textSecondary}
-                        />
-                      </TouchableOpacity>
-                    )}
                   </View>
+                  {password.length > 0 && (
+                    <TouchableOpacity
+                      style={styles.rightIconContainer}
+                      onPress={() => setShowPassword(!showPassword)}
+                      activeOpacity={0.7}
+                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    >
+                      <Icon
+                        name={
+                          showPassword ? ICON_NAMES.SHOW : ICON_NAMES.HIDE
+                        }
+                        size={22}
+                        color={LIGHT_COLORS.textSecondary}
+                      />
+                    </TouchableOpacity>
+                  )}
                 </View>
               </View>
 
