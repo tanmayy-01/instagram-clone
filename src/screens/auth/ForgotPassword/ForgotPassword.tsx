@@ -13,6 +13,7 @@ import { isIOS } from '@/utils';
 import Icon from '@/components/Icon';
 import { ICON_NAMES, LIGHT_COLORS } from '@/constants';
 import * as Navigation from '@/utils';
+import { showToast } from '@/components/toast';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -23,10 +24,13 @@ const ForgotPassword = () => {
   const handleSendEmail = () => {
     // perform send email logic
 
-    if(!email.trim().length) return
+    if(!email.trim().length){
+      showToast('Enter Email ');
+      return 
+    }
   };
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <KeyboardAvoidingView
           keyboardVerticalOffset={isIOS ? 10 : 0}

@@ -24,6 +24,7 @@ export const LIGHT_COLORS = {
   error: '#EF4444',
 
   transparent: 'transparent',
+  toastbg: '#262626'
 } as const;
 
 export const DARK_COLORS = {

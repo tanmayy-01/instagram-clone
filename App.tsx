@@ -4,6 +4,7 @@ import AppNavigation from './src/navigation/AppNavigation';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from '@/utils';
+import { GlobalToastContainer } from '@/components/toast';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <AppNavigation />
         </NavigationContainer>
       </SafeAreaView>
+      <GlobalToastContainer />
     </SafeAreaProvider>
   );
 };
