@@ -7,7 +7,9 @@ export const ICON_NAMES = {
   CHECKBOX: 'checkbox',
   CHECKBOX_OUTLINE: 'square-outline',
   HOME: 'home',
-  HOME_OUTLINE:'home-outline',
-  PERSON:'person-circle',
-  PERSON_OUTLINE:'person-circle-outline'
+  HOME_OUTLINE: 'home-outline',
+  PERSON: 'person-circle',
+  PERSON_OUTLINE: 'person-circle-outline',
+  SEARCH: 'search',
+  SEARCH_OUTLINE: 'search-outline',
 } as const;

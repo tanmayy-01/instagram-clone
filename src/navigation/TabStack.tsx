@@ -4,6 +4,7 @@ import Home from '../screens/main/Home';
 import { ICON_NAMES, SCREEN_NAMES } from '../constants';
 import Icon from '@/components/Icon';
 import Profile from '@/screens/main/Profile';
+import Search from '@/screens/main/Search';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,6 +24,19 @@ const TabStack = () => {
             <Icon
               name={focused ? ICON_NAMES.HOME : ICON_NAMES.HOME_OUTLINE}
               size={24}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={SCREEN_NAMES.SEARCH}
+        component={Search}
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <Icon
+              name={focused ? ICON_NAMES.SEARCH : ICON_NAMES.SEARCH_OUTLINE}
+              size={29}
               color={color}
             />
           ),
