@@ -98,8 +98,46 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  activeAddStoryBadge: {
+    bottom: 1,
+    right: 1,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    borderWidth: 2,
+  },
+  profileStoryRing: {
+    width: 92,
+    height: 92,
+    borderRadius: 46,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2.8,
+    borderColor: 'transparent',
+    borderStyle: 'solid',
+  },
+  profileStoryRingActive: {
+    borderColor: '#DD2A7B',
+  },
+  profileAvatarInnerGap: {
+    width: 84,
+    height: 84,
+    borderRadius: 42,
+    backgroundColor: LIGHT_COLORS.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  profileAvatarWithRing: {
+    width: 78,
+    height: 78,
+    borderRadius: 39,
+  },
 
   // Stats
+  profileDetailsCol: {
+    flex: 1,
+  },
   statsRow: {
     flex: 1,
     flexDirection: 'row',
@@ -113,7 +151,7 @@ export const styles = StyleSheet.create({
   statNumber: {
     fontSize: FONT_SIZES.lg,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
+    // fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
   },
   statLabel: {
@@ -132,7 +170,7 @@ export const styles = StyleSheet.create({
   fullName: {
     fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
+    // fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
     marginBottom: 2,
   },
@@ -230,6 +268,22 @@ export const styles = StyleSheet.create({
     right: 0,
     height: 1.5,
     backgroundColor: LIGHT_COLORS.black,
+  },
+
+  // 3-Column Posts Grid
+  postsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  gridItem: {
+    width: '33.333%',
+    aspectRatio: 1,
+    padding: 1,
+  },
+  gridImage: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#F3F4F6',
   },
 
   // Empty Posts Section (Zero posts)

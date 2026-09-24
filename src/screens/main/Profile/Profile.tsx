@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './Profile.styles';
@@ -28,13 +29,23 @@ import {
   withTimeout,
   UserData,
 } from '@/services/userService';
+import { getFollowingList, getFollowersList } from '@/services/followService';
+import { Post, getUserPosts } from '@/services/postService';
+import { Story, getActiveStories } from '@/services/storyService';
+import { CreateMediaModal } from '@/screens/main/Home/components/CreateMediaModal';
+import { StoryViewerModal } from '@/screens/main/Home/components/StoryViewerModal';
+import { FollowListModal } from '@/components/FollowListModal';
 
 type ActiveTab = 'grid' | 'reels' | 'tagged';
 
 const Profile: React.FC = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [activeTab, setActiveTab] = useState<ActiveTab>('grid');
+
+  // Media Creation Modal State
+  const [isCreateMediaOpen, setIsCreateMediaOpen] = useState(false);
 
   // Menu Modal State
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -74,13 +85,80 @@ const Profile: React.FC = () => {
     }
   }, []);
 
+  const [followingCountState, setFollowingCountState] = useState<number | null>(
+    null,
+  );
+  const [followersCountState, setFollowersCountState] = useState<number | null>(
+    null,
+  );
+
+  // FollowListModal state
+  const [isFollowModalOpen, setIsFollowModalOpen] = useState(false);
+  const [followModalTab, setFollowModalTab] = useState<'followers' | 'following'>('followers');
+
+  // User 24h Stories State
+  const [userStories, setUserStories] = useState<Story[]>([]);
+  const [storyViewerVisible, setStoryViewerVisible] = useState(false);
+
+  const fetchFollowing = useCallback(async () => {
+    const uid = auth.currentUser?.uid || userData?.uid;
+    if (uid) {
+      const list = await getFollowingList(uid);
+      setFollowingCountState(list.length);
+    }
+  }, [userData?.uid]);
+
+  const fetchFollowers = useCallback(async () => {
+    const uid = auth.currentUser?.uid || userData?.uid;
+    if (uid) {
+      const list = await getFollowersList(uid);
+      setFollowersCountState(list.length);
+    }
+  }, [userData?.uid]);
+
+  const fetchUserPosts = useCallback(async () => {
+    const uid = auth.currentUser?.uid || userData?.uid;
+    if (uid) {
+      const posts = await getUserPosts(uid);
+      setUserPosts(posts);
+    }
+  }, [userData?.uid]);
+
+  const fetchUserStories = useCallback(async () => {
+    const uid = auth.currentUser?.uid || userData?.uid;
+    if (uid) {
+      const { userStories: active } = await getActiveStories(uid);
+      setUserStories(active);
+    }
+  }, [userData?.uid]);
+
   useEffect(() => {
     fetchUserProfile();
-  }, [fetchUserProfile]);
+    fetchFollowing();
+    fetchFollowers();
+    fetchUserPosts();
+    fetchUserStories();
+  }, [fetchUserProfile, fetchFollowing, fetchFollowers, fetchUserPosts, fetchUserStories]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserProfile();
+      fetchFollowing();
+      fetchFollowers();
+      fetchUserPosts();
+      fetchUserStories();
+    }, [fetchUserProfile, fetchFollowing, fetchFollowers, fetchUserPosts, fetchUserStories]),
+  );
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await fetchUserProfile();
+    await Promise.all([
+      fetchUserProfile(),
+      fetchFollowing(),
+      fetchFollowers(),
+      fetchUserPosts(),
+      fetchUserStories(),
+    ]);
     setRefreshing(false);
   };
 
@@ -250,9 +328,9 @@ const Profile: React.FC = () => {
   const fullNameDisplay =
     userData?.fullName || userData?.username || 'Ethan Smith';
   const bioDisplay = userData?.bio || 'Web Designer';
-  const postsCount = userData?.postsCount ?? 0;
-  const followersCount = userData?.followersCount ?? 7;
-  const followingCount = userData?.followingCount ?? 5;
+  const postsCount = userPosts.length;
+  const followersCount = followersCountState ?? userData?.followersCount ?? 0;
+  const followingCount = followingCountState ?? userData?.followingCount ?? 0;
 
   return (
     <View style={styles.container}>
@@ -274,6 +352,19 @@ const Profile: React.FC = () => {
         </TouchableOpacity>
 
         <View style={styles.headerRight}>
+          {/* Create (+) Icon */}
+          <TouchableOpacity
+            style={styles.headerIconButton}
+            activeOpacity={0.7}
+            onPress={() => setIsCreateMediaOpen(true)}
+          >
+            <Icon
+              name={ICON_NAMES.PLUS}
+              size={26}
+              color={LIGHT_COLORS.black}
+            />
+          </TouchableOpacity>
+
           {/* Threads Icon */}
           <TouchableOpacity
             style={styles.headerIconButton}
@@ -308,24 +399,52 @@ const Profile: React.FC = () => {
       >
         {/* Profile Info Row: Avatar + Stats */}
         <View style={styles.profileInfoRow}>
-          {/* Profile Avatar with Blue + Story Badge */}
+          {/* Profile Avatar with Story Ring */}
           <TouchableOpacity
             style={styles.avatarContainer}
             activeOpacity={0.8}
-            onPress={() => setIsPhotoModalOpen(true)}
+            onPress={() => {
+              if (userStories.length > 0) {
+                setStoryViewerVisible(true);
+              } else {
+                setIsPhotoModalOpen(true);
+              }
+            }}
+            onLongPress={() => setIsPhotoModalOpen(true)}
           >
-            {userData?.profilePicUrl ? (
-              <Image
-                source={{ uri: userData.profilePicUrl }}
-                style={styles.avatar}
-              />
-            ) : (
-              <View style={styles.avatarPlaceholder}>
-                <Text style={styles.avatarInitial}>
-                  {usernameDisplay.charAt(0) || 'U'}
-                </Text>
+            {/* Outer Story Ring */}
+            <View
+              key={`profile_ring_${userStories.length > 0 ? 'active' : 'inactive'}`}
+              style={[
+                styles.profileStoryRing,
+                userStories.length > 0 && styles.profileStoryRingActive,
+              ]}
+            >
+              <View style={styles.profileAvatarInnerGap}>
+                {userData?.profilePicUrl ? (
+                  <Image
+                    source={{ uri: userData.profilePicUrl }}
+                    style={
+                      userStories.length > 0
+                        ? styles.profileAvatarWithRing
+                        : styles.avatar
+                    }
+                  />
+                ) : (
+                  <View
+                    style={
+                      userStories.length > 0
+                        ? [styles.avatarPlaceholder, styles.profileAvatarWithRing]
+                        : styles.avatarPlaceholder
+                    }
+                  >
+                    <Text style={styles.avatarInitial}>
+                      {usernameDisplay.charAt(0) || 'U'}
+                    </Text>
+                  </View>
+                )}
               </View>
-            )}
+            </View>
 
             {/* Uploading loading overlay */}
             {isUploadingPhoto && (
@@ -334,18 +453,25 @@ const Profile: React.FC = () => {
               </View>
             )}
 
-            {/* Blue '+' Badge on Avatar */}
-            <View style={styles.addStoryBadge}>
+            {/* Blue '+' Badge on Avatar: tapping '+' always creates story / post */}
+            <TouchableOpacity
+              style={[
+                styles.addStoryBadge,
+                userStories.length > 0 && styles.activeAddStoryBadge,
+              ]}
+              activeOpacity={0.8}
+              onPress={() => setIsCreateMediaOpen(true)}
+            >
               <Icon
                 name={ICON_NAMES.PLUS}
-                size={15}
+                size={userStories.length > 0 ? 12 : 15}
                 color={LIGHT_COLORS.white}
               />
-            </View>
+            </TouchableOpacity>
           </TouchableOpacity>
 
           {/* Stats Row */}
-          <View style={{ flex: 1 }}>
+          <View style={styles.profileDetailsCol}>
             <View>
               <Text style={styles.fullName}>{fullNameDisplay}</Text>
             </View>
@@ -363,7 +489,10 @@ const Profile: React.FC = () => {
               <TouchableOpacity
                 style={styles.statColumn}
                 activeOpacity={0.7}
-                onPress={() => showToast(`${followersCount} followers`)}
+                onPress={() => {
+                  setFollowModalTab('followers');
+                  setIsFollowModalOpen(true);
+                }}
               >
                 <Text style={styles.statNumber}>{followersCount}</Text>
                 <Text style={styles.statLabel}>followers</Text>
@@ -372,7 +501,10 @@ const Profile: React.FC = () => {
               <TouchableOpacity
                 style={styles.statColumn}
                 activeOpacity={0.7}
-                onPress={() => showToast(`${followingCount} following`)}
+                onPress={() => {
+                  setFollowModalTab('following');
+                  setIsFollowModalOpen(true);
+                }}
               >
                 <Text style={styles.statNumber}>{followingCount}</Text>
                 <Text style={styles.statLabel}>following</Text>
@@ -499,28 +631,48 @@ const Profile: React.FC = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Zero Posts Bottom Section */}
+        {/* Posts Grid or Zero Posts Bottom Section */}
         {activeTab === 'grid' && (
-          <View style={styles.emptyPostsContainer}>
-            <View style={styles.emptyIconCircle}>
-              <Icon
-                name={ICON_NAMES.CAMERA_OUTLINE}
-                size={42}
-                color={LIGHT_COLORS.black}
-              />
+          userPosts.length > 0 ? (
+            <View style={styles.postsGrid}>
+              {userPosts.map((post) => (
+                <TouchableOpacity
+                  key={post.id}
+                  style={styles.gridItem}
+                  activeOpacity={0.8}
+                  onPress={() =>
+                    showToast(post.caption || `Post from @${usernameDisplay}`)
+                  }
+                >
+                  <Image
+                    source={{ uri: post.mediaUri }}
+                    style={styles.gridImage}
+                  />
+                </TouchableOpacity>
+              ))}
             </View>
-            <Text style={styles.emptyTitle}>No posts yet</Text>
-            <Text style={styles.emptySubtitle}>
-              When you share photos and videos, they will appear on your
-              profile.
-            </Text>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => showToast('Create your first post')}
-            >
-              <Text style={styles.emptyActionText}>Share your first photo</Text>
-            </TouchableOpacity>
-          </View>
+          ) : (
+            <View style={styles.emptyPostsContainer}>
+              <View style={styles.emptyIconCircle}>
+                <Icon
+                  name={ICON_NAMES.CAMERA_OUTLINE}
+                  size={42}
+                  color={LIGHT_COLORS.black}
+                />
+              </View>
+              <Text style={styles.emptyTitle}>No posts yet</Text>
+              <Text style={styles.emptySubtitle}>
+                When you share photos and videos, they will appear on your
+                profile.
+              </Text>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => setIsCreateMediaOpen(true)}
+              >
+                <Text style={styles.emptyActionText}>Share your first photo</Text>
+              </TouchableOpacity>
+            </View>
+          )
         )}
 
         {activeTab === 'reels' && (
@@ -843,6 +995,54 @@ const Profile: React.FC = () => {
           </ScrollView>
         </SafeAreaView>
       </Modal>
+
+      {/* Create Media (Post/Story) Modal */}
+      <CreateMediaModal
+        visible={isCreateMediaOpen}
+        user={userData}
+        onClose={() => setIsCreateMediaOpen(false)}
+        onPostCreated={() => {
+          fetchUserPosts();
+          fetchUserProfile();
+        }}
+        onStoryCreated={() => {
+          fetchUserStories();
+          showToast('Added to your story (visible for 24h)');
+        }}
+      />
+
+      {/* Full-Screen 24h Story Viewer Modal */}
+      <StoryViewerModal
+        visible={storyViewerVisible}
+        stories={userStories}
+        initialIndex={0}
+        currentUserId={userData?.uid}
+        onClose={() => setStoryViewerVisible(false)}
+        onUnfollow={() => {
+          fetchUserStories();
+        }}
+        onAddNewStory={() => {
+          setStoryViewerVisible(false);
+          setIsCreateMediaOpen(true);
+        }}
+      />
+
+      {/* Followers and Following List Modal */}
+      <FollowListModal
+        visible={isFollowModalOpen}
+        initialTab={followModalTab}
+        currentUserId={userData?.uid || auth.currentUser?.uid || ''}
+        currentUsername={usernameDisplay}
+        onClose={() => {
+          setIsFollowModalOpen(false);
+          fetchFollowing();
+          fetchFollowers();
+        }}
+        onCountsChanged={(followers, following) => {
+          setFollowersCountState(followers);
+          setFollowingCountState(following);
+        }}
+      />
     </View>
   );
 };

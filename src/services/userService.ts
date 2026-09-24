@@ -28,6 +28,7 @@ export interface UserData {
   postsCount?: number;
   followersCount?: number;
   followingCount?: number;
+  following?: string[];
   createdAt?: any;
 }
 
@@ -555,7 +556,7 @@ export const loginUser = async (
     showToast('Logged in successfully!');
     return { success: true, user: userData };
   } catch (error: any) {
-    console.error('Login Failure:', error);
+    // console.error('Login Failure:', error);
 
     const errorCode = String(error?.code || '').toLowerCase();
     const errorMessage = String(error?.message || '').toLowerCase();
