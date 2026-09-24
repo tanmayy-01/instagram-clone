@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/main/Home';
-import { ICON_NAMES, SCREEN_NAMES } from '../constants';
+import { ICON_NAMES, LIGHT_COLORS, SCREEN_NAMES } from '../constants';
 import Icon from '@/components/Icon';
 import Profile from '@/screens/main/Profile';
 import Search from '@/screens/main/Search';
@@ -14,6 +14,11 @@ const TabStack = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
+        tabBarActiveTintColor: LIGHT_COLORS.black,
+        tabBarStyle: { 
+          height: 60,
+          paddingTop: 5
+        }
       }}
     >
       <Tab.Screen
@@ -23,7 +28,7 @@ const TabStack = () => {
           tabBarIcon: ({ color, focused }) => (
             <Icon
               name={focused ? ICON_NAMES.HOME : ICON_NAMES.HOME_OUTLINE}
-              size={24}
+              size={26}
               color={color}
             />
           ),

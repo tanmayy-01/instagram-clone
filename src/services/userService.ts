@@ -22,8 +22,10 @@ export interface UserData {
   uid: string;
   username: string;
   email: string;
+  fullName?: string;
   bio?: string;
   profilePicUrl?: string;
+  postsCount?: number;
   followersCount?: number;
   followingCount?: number;
   createdAt?: any;
@@ -696,5 +698,40 @@ export const logoutUser = async (): Promise<void> => {
     showToast('Logged out');
   } catch (error) {
     console.error('Logout error:', error);
+  }
+};
+
+/**
+ * Updates user profile fields in Firestore and local storage
+ */
+export const updateUserProfile = async (
+  uid: string,
+  updates: Partial<UserData>,
+): Promise<UserData | null> => {
+  try {
+    const userDocRef = doc(db, 'users', uid);
+    await withTimeout(setDoc(userDocRef, updates, { merge: true }), 3500);
+
+    const currentCached = await getStoredUser();
+    const updated: UserData = {
+      ...(currentCached || { uid, username: '', email: '' }),
+      ...updates,
+    };
+
+    await AsyncStorage.setItem(USER_SESSION_KEY, JSON.stringify(updated));
+    if (updated.username && updated.email) {
+      await saveKnownUser({
+        username: updated.username,
+        email: updated.email,
+        uid: updated.uid,
+      });
+    }
+
+    showToast('Profile updated');
+    return updated;
+  } catch (error) {
+    console.error('updateUserProfile error:', error);
+    showToast('Failed to update profile');
+    return null;
   }
 };
