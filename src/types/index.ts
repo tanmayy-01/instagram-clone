@@ -1,3 +1,5 @@
 export * from './icon.types'
 export * from './navigation.types'
 export * from './profile.types'
+export * from './auth.types'
+export * from './main.types'

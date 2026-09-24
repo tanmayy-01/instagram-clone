@@ -1,5 +1,12 @@
 import { StyleSheet, Platform } from 'react-native';
-import { LIGHT_COLORS, FONT_SIZES, FONT_STYLES, FONT_WEIGHTS } from '../../../constants';
+
+import { isAndroid, isIOS } from '@/utils';
+import {
+  FONT_SIZES,
+  FONT_STYLES,
+  FONT_WEIGHTS,
+  LIGHT_COLORS,
+} from '@/constants';
 
 export const styles = StyleSheet.create({
   safeArea: {
@@ -13,7 +20,7 @@ export const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'android' ? 12 : 8,
+    paddingTop: isAndroid ? 12 : 8,
     paddingBottom: 16,
   },
   topSection: {
@@ -76,7 +83,7 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.regular,
     color: LIGHT_COLORS.textPrimary,
-    paddingVertical: Platform.OS === 'ios' ? 2 : 0,
+    paddingVertical: isIOS ? 2 : 0,
     paddingHorizontal: 0,
   },
   rightIconContainer: {

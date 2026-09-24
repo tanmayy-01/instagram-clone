@@ -12,12 +12,11 @@ import React, { useState } from 'react';
 import { styles } from './ForgotPassword.styles';
 import { isIOS } from '@/utils';
 import Icon from '@/components/Icon';
-import { ICON_NAMES, LIGHT_COLORS, SCREEN_NAMES } from '@/constants';
+import { EMAIL_REGEX, ICON_NAMES, LIGHT_COLORS, SCREEN_NAMES } from '@/constants';
 import * as Navigation from '@/utils';
 import { showToast } from '@/components/toast';
 import { sendPasswordReset } from '@/services/userService';
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');

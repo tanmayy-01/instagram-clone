@@ -14,15 +14,13 @@ import {
 import * as Navigation from '@/utils';
 import { isIOS } from '@/utils';
 import Icon from '@/components/Icon';
-import { ICON_NAMES, LIGHT_COLORS, SCREEN_NAMES } from '@/constants';
+import { EMAIL_REGEX, ICON_NAMES, LIGHT_COLORS, SCREEN_NAMES, USERNAME_REGEX } from '@/constants';
 import { showToast } from '@/components/toast';
 import { styles } from './Signup.styles';
 import { registerNewUser } from '@/services/userService';
+import { SignupStep } from '@/types/auth.types';
 
-type SignupStep = 'username' | 'email' | 'password';
 
-const USERNAME_REGEX = /^[a-zA-Z0-9._]{3,30}$/;
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const Signup: React.FC = () => {
   const [step, setStep] = useState<SignupStep>('username');

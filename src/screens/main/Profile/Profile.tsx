@@ -36,8 +36,8 @@ import { CreateMediaModal } from '@/screens/main/Home/components/CreateMediaModa
 import { StoryViewerModal } from '@/screens/main/Home/components/StoryViewerModal';
 import { PostCard } from '@/screens/main/Home/components/PostCard';
 import { FollowListModal } from '@/components/FollowListModal';
+import { ActiveTab } from '@/types';
 
-type ActiveTab = 'grid' | 'reels' | 'tagged';
 
 const Profile: React.FC = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
