@@ -23,8 +23,9 @@ import {
   unfollowUser,
 } from '@/services/followService';
 import Icon from '@/components/Icon';
-import { ICON_NAMES, LIGHT_COLORS } from '@/constants';
+import { FONT_SIZES, FONT_WEIGHTS, ICON_NAMES, LIGHT_COLORS } from '@/constants';
 import { showToast } from '@/components/toast';
+import { scale } from '@/lib/scale';
 
 const { width } = Dimensions.get('window');
 
@@ -455,21 +456,21 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 18,
     marginRight: 10,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: LIGHT_COLORS.avatar_bg,
   },
   placeholderAvatar: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: LIGHT_COLORS.avatar_placeholder,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 10,
   },
   placeholderAvatarText: {
-    fontWeight: 'bold',
+    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.textSecondary,
-    fontSize: 14,
+    fontSize: FONT_SIZES.sm,
   },
   userTextContainer: {
     justifyContent: 'center',
@@ -479,8 +480,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   usernameText: {
-    fontSize: 13.5,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
   },
   verifiedBadge: {
@@ -492,12 +493,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   followHeaderText: {
-    fontSize: 13,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.brandBlue,
   },
   audioText: {
-    fontSize: 11.5,
+    fontSize: FONT_SIZES.xs,
     color: LIGHT_COLORS.textSecondary,
     marginTop: 1,
     maxWidth: width * 0.6,
@@ -508,8 +509,8 @@ const styles = StyleSheet.create({
   mediaContainer: {
     position: 'relative',
     width: width,
-    height: width * 1.25, // 4:5 aspect ratio
-    backgroundColor: '#F3F4F6',
+    height: width * 1.25,
+    backgroundColor: LIGHT_COLORS.avatar_bg,
   },
   postImage: {
     width: '100%',
@@ -528,15 +529,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 9,
     borderRadius: 12,
-    shadowColor: '#000',
+    shadowColor: LIGHT_COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.18,
     shadowRadius: 4,
     elevation: 3,
   },
   floatingBannerText: {
-    fontSize: 15,
-    fontWeight: '800',
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.extraBold,
     color: LIGHT_COLORS.black,
   },
   muteButton: {
@@ -546,7 +547,7 @@ const styles = StyleSheet.create({
     width: 26,
     height: 26,
     borderRadius: 13,
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    backgroundColor: LIGHT_COLORS.black,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -571,8 +572,8 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   actionCountText: {
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: FONT_SIZES.xs,
+    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.black,
     marginLeft: 6,
   },
@@ -584,29 +585,29 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
   },
   captionText: {
-    fontSize: 13.5,
+    fontSize: FONT_SIZES.sm,
     color: LIGHT_COLORS.black,
     lineHeight: 18,
     marginTop: 2,
   },
   captionUsername: {
-    fontWeight: '700',
+    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
   },
   viewCommentsText: {
-    fontSize: 13,
+    fontSize: FONT_SIZES.xs,
     color: LIGHT_COLORS.textSecondary,
     marginTop: 5,
   },
   timeAgoText: {
-    fontSize: 11,
+    fontSize: scale.ms(11),
     color: LIGHT_COLORS.textSecondary,
     marginTop: 3,
     textTransform: 'uppercase',
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    backgroundColor: LIGHT_COLORS.overlay_bg,
     justifyContent: 'flex-end',
   },
   modalContent: {
@@ -621,7 +622,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#D1D5DB',
+    backgroundColor: LIGHT_COLORS.avatar_bg,
     alignSelf: 'center',
     marginBottom: 16,
   },
@@ -630,17 +631,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 14,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: LIGHT_COLORS.avatar_bg,
   },
   modalOptionText: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: scale.ms(15),
+    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.black,
     marginLeft: 14,
   },
   deleteOptionText: {
     color: LIGHT_COLORS.error,
-    fontWeight: '600',
+    fontWeight: FONT_WEIGHTS.semibold,
   },
   modalCancelOption: {
     paddingVertical: 14,
@@ -648,8 +649,8 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   modalCancelText: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: scale.ms(15),
+    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.textSecondary,
   },
 });

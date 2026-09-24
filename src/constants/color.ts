@@ -31,4 +31,7 @@ export const LIGHT_COLORS = {
   highlight_bg: '#C7C7C7',
   border_1: '#DBDBDB',
   bg_1: '#F0F0F0',
+  bg_2: '#F8F9FA',
+  bg_3: '#F9FAFB',
+  overlay_bg: 'rgba(0, 0, 0, 0.45)'
 } as const;

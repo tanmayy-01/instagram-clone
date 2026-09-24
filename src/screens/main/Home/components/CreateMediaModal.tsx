@@ -15,11 +15,18 @@ import {
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from '@/components/Icon';
-import { ICON_NAMES, LIGHT_COLORS } from '@/constants';
+import {
+  FONT_SIZES,
+  FONT_WEIGHTS,
+  ICON_NAMES,
+  LIGHT_COLORS,
+} from '@/constants';
 import { showToast } from '@/components/toast';
 import { createPost } from '@/services/postService';
 import { createStory } from '@/services/storyService';
 import { UserData } from '@/services/userService';
+import { isIOS } from '@/utils';
+import { scale } from '@/lib/scale';
 
 interface CreateMediaModalProps {
   visible: boolean;
@@ -39,14 +46,19 @@ export const CreateMediaModal: React.FC<CreateMediaModalProps> = ({
   onStoryCreated,
 }) => {
   // Modal step: 'choose_type' | 'caption_step'
-  const [step, setStep] = useState<'choose_type' | 'caption_step'>('choose_type');
+  const [step, setStep] = useState<'choose_type' | 'caption_step'>(
+    'choose_type',
+  );
   const [targetType, setTargetType] = useState<'post' | 'story'>('post');
   const [selectedImage, setSelectedImage] = useState<any>(null);
   const [caption, setCaption] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Pick/Capture image for Post (1:1 crop) or Story (9:16 crop)
-  const handleSelectMedia = async (type: 'post' | 'story', fromCamera: boolean) => {
+  const handleSelectMedia = async (
+    type: 'post' | 'story',
+    fromCamera: boolean,
+  ) => {
     try {
       const pickerMethod = fromCamera
         ? ImagePicker.openCamera
@@ -85,7 +97,9 @@ export const CreateMediaModal: React.FC<CreateMediaModalProps> = ({
     setLoading(true);
     try {
       const photoUri = selectedImage.data
-        ? `data:${selectedImage.mime || 'image/jpeg'};base64,${selectedImage.data}`
+        ? `data:${selectedImage.mime || 'image/jpeg'};base64,${
+            selectedImage.data
+          }`
         : selectedImage.path;
 
       if (targetType === 'post') {
@@ -242,7 +256,12 @@ export const CreateMediaModal: React.FC<CreateMediaModalProps> = ({
                           size={18}
                           color="#DD2A7B"
                         />
-                        <Text style={[styles.actionPillText, styles.storyActionPillText]}>
+                        <Text
+                          style={[
+                            styles.actionPillText,
+                            styles.storyActionPillText,
+                          ]}
+                        >
                           Camera
                         </Text>
                       </TouchableOpacity>
@@ -258,7 +277,12 @@ export const CreateMediaModal: React.FC<CreateMediaModalProps> = ({
                           size={18}
                           color="#DD2A7B"
                         />
-                        <Text style={[styles.actionPillText, styles.storyActionPillText]}>
+                        <Text
+                          style={[
+                            styles.actionPillText,
+                            styles.storyActionPillText,
+                          ]}
+                        >
                           Gallery
                         </Text>
                       </TouchableOpacity>
@@ -393,7 +417,7 @@ export const CreateMediaModal: React.FC<CreateMediaModalProps> = ({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    backgroundColor: LIGHT_COLORS.overlay_bg,
     justifyContent: 'flex-end',
   },
   modalOverlayCenter: {
@@ -407,7 +431,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 12,
-    paddingBottom: Platform.OS === 'ios' ? 34 : 20,
+    paddingBottom: isIOS ? 34 : 20,
     paddingHorizontal: 20,
   },
   captionCardCenter: {
@@ -419,7 +443,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 20,
     paddingHorizontal: 20,
-    shadowColor: '#000',
+    shadowColor: LIGHT_COLORS.black,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.3,
     shadowRadius: 20,
@@ -429,24 +453,24 @@ const styles = StyleSheet.create({
     width: 38,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#DBDBDB',
+    backgroundColor: LIGHT_COLORS.border_1,
     alignSelf: 'center',
     marginBottom: 14,
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.lg,
+    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
     marginBottom: 16,
     textAlign: 'center',
   },
   sectionCard: {
-    backgroundColor: '#F8F9FA',
+    backgroundColor: LIGHT_COLORS.bg_2,
     borderRadius: 14,
     padding: 14,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#EFEFEF',
+    borderColor: LIGHT_COLORS.action_btn,
   },
   sectionHeaderRow: {
     flexDirection: 'row',
@@ -458,12 +482,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sectionTitle: {
-    fontSize: 15,
-    fontWeight: '700',
+    fontSize: scale.ms(15),
+    fontWeight: FONT_WEIGHTS.medium,
     color: LIGHT_COLORS.black,
   },
   sectionSubtitle: {
-    fontSize: 12,
+    fontSize: FONT_SIZES.xs,
     color: LIGHT_COLORS.textSecondary,
     marginTop: 1,
   },
@@ -482,16 +506,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: LIGHT_COLORS.avatar_placeholder,
   },
   actionPillText: {
-    fontSize: 13.5,
-    fontWeight: '600',
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.brandBlue,
     marginLeft: 6,
   },
   storyActionPillText: {
-    color: '#DD2A7B',
+    color: LIGHT_COLORS.toastbg,
   },
   cancelButton: {
     paddingVertical: 12,
@@ -499,8 +523,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   cancelText: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: FONT_SIZES.md,
+    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.textSecondary,
   },
   captionHeader: {
@@ -509,7 +533,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingBottom: 14,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#F0F0F0',
+    borderBottomColor: LIGHT_COLORS.bg_1,
     marginBottom: 14,
   },
   headerBtn: {
@@ -520,30 +544,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   backBtnText: {
-    fontSize: 14.5,
-    fontWeight: '600',
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.textSecondary,
   },
   captionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.md,
+    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
   },
   captionSubtitle: {
-    fontSize: 11,
+    fontSize: scale.ms(11),
     color: LIGHT_COLORS.textSecondary,
     marginTop: 1,
   },
   shareText: {
-    fontSize: 15,
-    fontWeight: '700',
+    fontSize: scale.ms(15),
+    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.brandBlue,
   },
   imagePreviewContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 14,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: LIGHT_COLORS.bg_3,
     borderRadius: 14,
     overflow: 'hidden',
   },
@@ -558,16 +582,16 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   captionInputContainer: {
-    backgroundColor: '#F8F9FA',
+    backgroundColor: LIGHT_COLORS.bg_2,
     borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 10,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: LIGHT_COLORS.avatar_placeholder,
   },
   captionInput: {
-    fontSize: 14.5,
+    fontSize: FONT_SIZES.sm,
     color: LIGHT_COLORS.black,
     minHeight: 65,
     maxHeight: 110,
@@ -581,11 +605,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   storyShareButton: {
-    backgroundColor: '#DD2A7B',
+    backgroundColor: LIGHT_COLORS.toastbg,
   },
   mainShareButtonText: {
     color: LIGHT_COLORS.white,
-    fontSize: 14.5,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.bold,
   },
 });
