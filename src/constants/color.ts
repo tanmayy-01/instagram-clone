@@ -2,36 +2,35 @@ export const LIGHT_COLORS = {
   primary: '#0064E0',
   secondary: '#6366F1',
   brandBlue: '#0064E0',
-
   white: '#FFFFFF',
   black: '#000000',
-
   background: '#FFFFFF',
   surface: '#F8FAFC',
-
   textPrimary: '#111827',
   textSecondary: '#6B7280',
   textTertiary: '#9CA3AF',
-
   border: '#E5E7EB',
   inputBorder: '#DADDE1',
   inputBackground: '#FAFAFA',
   inputBorderFocused: '#1C274C',
   placeholder: '#898F9C',
-
   success: '#22C55E',
   warning: '#F59E0B',
   error: '#EF4444',
-
   transparent: 'transparent',
   toastbg: '#262626',
   avatar_bg: '#F3F4F6',
   avatar_placeholder: '#E5E7EB',
+  avatar_placeholder_2: '#374151',
   action_btn: '#EFEFEF',
   highlight_bg: '#C7C7C7',
   border_1: '#DBDBDB',
   bg_1: '#F0F0F0',
   bg_2: '#F8F9FA',
   bg_3: '#F9FAFB',
-  overlay_bg: 'rgba(0, 0, 0, 0.45)'
+  overlay_bg: 'rgba(0, 0, 0, 0.45)',
+  story_border: '#DD2A7B',
+  progress_bar:'rgba(255, 255, 255, 0.35)',
+  time_text: 'rgba(255, 255, 255, 0.7)',
+  add_story_btn: 'rgba(255, 255, 255, 0.25)'
 } as const;

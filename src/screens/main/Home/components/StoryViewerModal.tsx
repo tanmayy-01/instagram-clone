@@ -15,8 +15,9 @@ import {
 import { Story, deleteStory } from '@/services/storyService';
 import { unfollowUser } from '@/services/followService';
 import Icon from '@/components/Icon';
-import { ICON_NAMES, LIGHT_COLORS } from '@/constants';
+import { FONT_SIZES, FONT_WEIGHTS, ICON_NAMES, LIGHT_COLORS } from '@/constants';
 import { showToast } from '@/components/toast';
+import { scale } from '@/lib/scale';
 
 const { width, height } = Dimensions.get('window');
 const STORY_DURATION = 5000; // 5 seconds per story
@@ -446,7 +447,7 @@ export const StoryViewerModal: React.FC<StoryViewerModalProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: LIGHT_COLORS.black,
   },
   mediaImage: {
     width: width,
@@ -471,7 +472,7 @@ const styles = StyleSheet.create({
   progressBarBackground: {
     flex: 1,
     height: 2.5,
-    backgroundColor: 'rgba(255, 255, 255, 0.35)',
+    backgroundColor: LIGHT_COLORS.progress_bar,
     borderRadius: 1.5,
     marginHorizontal: 2,
     overflow: 'hidden',
@@ -502,25 +503,25 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#374151',
+    backgroundColor: LIGHT_COLORS.avatar_placeholder_2,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8,
   },
   avatarLetter: {
     color: LIGHT_COLORS.white,
-    fontWeight: 'bold',
-    fontSize: 14,
+    fontWeight: FONT_WEIGHTS.bold,
+    fontSize: FONT_SIZES.sm,
   },
   usernameText: {
     color: LIGHT_COLORS.white,
-    fontWeight: '600',
-    fontSize: 13.5,
+    fontWeight: FONT_WEIGHTS.semibold,
+    fontSize: FONT_SIZES.sm,
     marginRight: 8,
   },
   timeText: {
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 12,
+    color: LIGHT_COLORS.time_text,
+    fontSize: FONT_SIZES.xs,
   },
   closeButton: {
     padding: 4,
@@ -532,7 +533,7 @@ const styles = StyleSheet.create({
   addStoryHeaderBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: LIGHT_COLORS.add_story_btn,
     paddingHorizontal: 9,
     paddingVertical: 4,
     borderRadius: 14,
@@ -540,8 +541,8 @@ const styles = StyleSheet.create({
   },
   addStoryHeaderText: {
     color: LIGHT_COLORS.white,
-    fontSize: 12,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.xs,
+    fontWeight: FONT_WEIGHTS.bold,
     marginLeft: 3,
   },
   moreButton: {
@@ -566,7 +567,7 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    backgroundColor: LIGHT_COLORS.overlay_bg,
     justifyContent: 'flex-end',
   },
   modalContent: {
@@ -581,7 +582,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#D1D5DB',
+    backgroundColor: LIGHT_COLORS.bg_4,
     alignSelf: 'center',
     marginBottom: 16,
   },
@@ -590,11 +591,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 14,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: LIGHT_COLORS.avatar_bg,
   },
   modalOptionText: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: scale.ms(15),
+    fontWeight: FONT_WEIGHTS.semibold,
     marginLeft: 14,
   },
   modalCancelOption: {
@@ -603,8 +604,8 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   modalCancelText: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: scale.ms(15),
+    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.textSecondary,
   },
   storyCaptionContainer: {
@@ -612,7 +613,7 @@ const styles = StyleSheet.create({
     bottom: 40,
     left: 20,
     right: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    backgroundColor: LIGHT_COLORS.overlay_bg,
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 14,
@@ -621,8 +622,8 @@ const styles = StyleSheet.create({
   },
   storyCaptionText: {
     color: LIGHT_COLORS.white,
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.semibold,
     textAlign: 'center',
     lineHeight: 18,
   },

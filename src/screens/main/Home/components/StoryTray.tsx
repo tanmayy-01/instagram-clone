@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: LIGHT_COLORS.white,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#EFEFEF',
+    borderBottomColor: LIGHT_COLORS.action_btn,
     paddingVertical: 8,
   },
   scrollContent: {

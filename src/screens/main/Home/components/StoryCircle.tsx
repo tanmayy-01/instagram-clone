@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from '@/components/Icon';
-import { ICON_NAMES, LIGHT_COLORS } from '@/constants';
+import { FONT_SIZES, ICON_NAMES, LIGHT_COLORS } from '@/constants';
 import { Story } from '@/services/storyService';
 
 interface StoryCircleProps {
@@ -124,12 +124,12 @@ const styles = StyleSheet.create({
   },
   activeGradientRing: {
     borderWidth: 2.5,
-    borderColor: '#DD2A7B', // Instagram signature magenta/pink
+    borderColor: LIGHT_COLORS.story_border,
     borderRadius: 37,
   },
   viewedRing: {
     borderWidth: 1.5,
-    borderColor: '#C7C7C7',
+    borderColor: LIGHT_COLORS.highlight_bg,
     borderRadius: 37,
   },
   innerWhiteGap: {
@@ -147,13 +147,13 @@ const styles = StyleSheet.create({
     width: 61,
     height: 61,
     borderRadius: 30.5,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: LIGHT_COLORS.avatar_bg,
   },
   placeholderAvatar: {
     width: 61,
     height: 61,
     borderRadius: 30.5,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: LIGHT_COLORS.avatar_placeholder,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     backgroundColor: LIGHT_COLORS.brandBlue,
   },
   usernameText: {
-    fontSize: 11.5,
+    fontSize: FONT_SIZES.xs,
     color: LIGHT_COLORS.textPrimary,
     marginTop: 4,
     textAlign: 'center',
