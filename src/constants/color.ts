@@ -28,6 +28,7 @@ export const LIGHT_COLORS = {
   bg_1: '#F0F0F0',
   bg_2: '#F8F9FA',
   bg_3: '#F9FAFB',
+  bg_4: '#D1D5DB',
   overlay_bg: 'rgba(0, 0, 0, 0.45)',
   story_border: '#DD2A7B',
   progress_bar:'rgba(255, 255, 255, 0.35)',
