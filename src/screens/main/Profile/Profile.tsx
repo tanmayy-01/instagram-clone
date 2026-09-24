@@ -16,11 +16,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './Profile.styles';
 import Icon from '@/components/Icon';
-import {
-  ICON_NAMES,
-  LIGHT_COLORS,
-  SCREEN_NAMES,
-} from '@/constants';
+import { ICON_NAMES, LIGHT_COLORS, SCREEN_NAMES } from '@/constants';
 import * as Navigation from '@/utils';
 import { showToast } from '@/components/toast';
 import { auth, db } from '@/config/firebaseConfig';
@@ -251,7 +247,8 @@ const Profile: React.FC = () => {
   };
 
   const usernameDisplay = userData?.username || 'username';
-  const fullNameDisplay = userData?.fullName || userData?.username || 'Ethan Smith';
+  const fullNameDisplay =
+    userData?.fullName || userData?.username || 'Ethan Smith';
   const bioDisplay = userData?.bio || 'Web Designer';
   const postsCount = userData?.postsCount ?? 0;
   const followersCount = userData?.followersCount ?? 7;
@@ -286,30 +283,13 @@ const Profile: React.FC = () => {
             <Text style={styles.thereads}>@</Text>
           </TouchableOpacity>
 
-          {/* Create (+) Icon */}
-          <TouchableOpacity
-            style={styles.headerIconButton}
-            activeOpacity={0.7}
-            onPress={() => showToast('Create new post')}
-          >
-            <Icon
-              name={ICON_NAMES.ADD_BOX}
-              size={25}
-              color={LIGHT_COLORS.black}
-            />
-          </TouchableOpacity>
-
           {/* Menu (≡) Icon */}
           <TouchableOpacity
             style={styles.headerIconButton}
             activeOpacity={0.7}
             onPress={() => setIsMenuOpen(true)}
           >
-            <Icon
-              name={ICON_NAMES.MENU}
-              size={27}
-              color={LIGHT_COLORS.black}
-            />
+            <Icon name={ICON_NAMES.MENU} size={27} color={LIGHT_COLORS.black} />
           </TouchableOpacity>
         </View>
       </View>
@@ -365,39 +345,44 @@ const Profile: React.FC = () => {
           </TouchableOpacity>
 
           {/* Stats Row */}
-          <View style={styles.statsRow}>
-            <TouchableOpacity
-              style={styles.statColumn}
-              activeOpacity={0.7}
-              onPress={() => showToast(`${postsCount} posts`)}
-            >
-              <Text style={styles.statNumber}>{postsCount}</Text>
-              <Text style={styles.statLabel}>posts</Text>
-            </TouchableOpacity>
+          <View style={{ flex: 1 }}>
+            <View>
+              <Text style={styles.fullName}>{fullNameDisplay}</Text>
+            </View>
 
-            <TouchableOpacity
-              style={styles.statColumn}
-              activeOpacity={0.7}
-              onPress={() => showToast(`${followersCount} followers`)}
-            >
-              <Text style={styles.statNumber}>{followersCount}</Text>
-              <Text style={styles.statLabel}>followers</Text>
-            </TouchableOpacity>
+            <View style={styles.statsRow}>
+              <TouchableOpacity
+                style={styles.statColumn}
+                activeOpacity={0.7}
+                onPress={() => showToast(`${postsCount} posts`)}
+              >
+                <Text style={styles.statNumber}>{postsCount}</Text>
+                <Text style={styles.statLabel}>posts</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.statColumn}
-              activeOpacity={0.7}
-              onPress={() => showToast(`${followingCount} following`)}
-            >
-              <Text style={styles.statNumber}>{followingCount}</Text>
-              <Text style={styles.statLabel}>following</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.statColumn}
+                activeOpacity={0.7}
+                onPress={() => showToast(`${followersCount} followers`)}
+              >
+                <Text style={styles.statNumber}>{followersCount}</Text>
+                <Text style={styles.statLabel}>followers</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.statColumn}
+                activeOpacity={0.7}
+                onPress={() => showToast(`${followingCount} following`)}
+              >
+                <Text style={styles.statNumber}>{followingCount}</Text>
+                <Text style={styles.statLabel}>following</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
         {/* User Bio Section */}
         <View style={styles.bioSection}>
-          <Text style={styles.fullName}>{fullNameDisplay}</Text>
           <Text style={styles.bioCategory}>{bioDisplay}</Text>
           {userData?.email ? (
             <Text style={styles.bioText}>{userData.email}</Text>
@@ -470,9 +455,7 @@ const Profile: React.FC = () => {
                   : LIGHT_COLORS.textSecondary
               }
             />
-            {activeTab === 'grid' && (
-              <View style={styles.activeTabIndicator} />
-            )}
+            {activeTab === 'grid' && <View style={styles.activeTabIndicator} />}
           </TouchableOpacity>
 
           {/* Reels Tab */}
@@ -535,9 +518,7 @@ const Profile: React.FC = () => {
               activeOpacity={0.7}
               onPress={() => showToast('Create your first post')}
             >
-              <Text style={styles.emptyActionText}>
-                Share your first photo
-              </Text>
+              <Text style={styles.emptyActionText}>Share your first photo</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -605,7 +586,9 @@ const Profile: React.FC = () => {
                     size={22}
                     color={LIGHT_COLORS.black}
                   />
-                  <Text style={styles.modalOptionText}>Choose from library</Text>
+                  <Text style={styles.modalOptionText}>
+                    Choose from library
+                  </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity

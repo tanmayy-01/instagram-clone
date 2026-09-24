@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   FONT_SIZES,
   FONT_STYLES,
@@ -6,6 +6,7 @@ import {
   LIGHT_COLORS,
 } from '@/constants';
 import { scale } from '@/lib/scale';
+import { isIOS } from '@/utils';
 
 export const styles = StyleSheet.create({
   container: {
@@ -65,17 +66,17 @@ export const styles = StyleSheet.create({
     width: 84,
     height: 84,
     borderRadius: 42,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: LIGHT_COLORS.avatar_bg,
   },
   avatarPlaceholder: {
     width: 84,
     height: 84,
     borderRadius: 42,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: LIGHT_COLORS.avatar_placeholder,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: LIGHT_COLORS.avatar_placeholder,
   },
   avatarInitial: {
     fontSize: FONT_SIZES.huge,
@@ -102,11 +103,11 @@ export const styles = StyleSheet.create({
   statsRow: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    justifyContent: 'space-between',
+    width:'85%'
   },
   statColumn: {
-    alignItems: 'center',
+
     minWidth: 54,
   },
   statNumber: {
@@ -158,7 +159,7 @@ export const styles = StyleSheet.create({
   actionButton: {
     flex: 1,
     height: 34,
-    backgroundColor: '#EFEFEF',
+    backgroundColor: LIGHT_COLORS.action_btn,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
@@ -175,7 +176,7 @@ export const styles = StyleSheet.create({
   actionIconButton: {
     width: 34,
     height: 34,
-    backgroundColor: '#EFEFEF',
+    backgroundColor: LIGHT_COLORS.action_btn,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
@@ -195,7 +196,7 @@ export const styles = StyleSheet.create({
     height: 64,
     borderRadius: 32,
     borderWidth: 1,
-    borderColor: '#C7C7C7',
+    borderColor: LIGHT_COLORS.highlight_bg,
     borderStyle: 'dashed',
     justifyContent: 'center',
     alignItems: 'center',
@@ -212,7 +213,7 @@ export const styles = StyleSheet.create({
   tabsBar: {
     flexDirection: 'row',
     borderTopWidth: 0.5,
-    borderTopColor: '#DBDBDB',
+    borderTopColor: LIGHT_COLORS.border_1,
     backgroundColor: LIGHT_COLORS.white,
   },
   tabButton: {
@@ -282,14 +283,14 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
     paddingTop: 12,
-    paddingBottom: Platform.OS === 'ios' ? 34 : 20,
+    paddingBottom: isIOS ? 34 : 20,
     paddingHorizontal: 20,
   },
   modalHandle: {
     width: 36,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#DBDBDB',
+    backgroundColor: LIGHT_COLORS.border_1,
     alignSelf: 'center',
     marginBottom: 14,
   },
@@ -306,7 +307,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 14,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#F0F0F0',
+    borderBottomColor: LIGHT_COLORS.bg_1,
   },
   modalOptionText: {
     fontSize: FONT_SIZES.md,
@@ -337,7 +338,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#DBDBDB',
+    borderBottomColor: LIGHT_COLORS.border_1,
   },
   editModalCancelText: {
     fontSize: FONT_SIZES.md,
@@ -373,7 +374,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#EFEFEF',
+    borderBottomColor: LIGHT_COLORS.action_btn,
   },
   editFieldLabel: {
     fontSize: FONT_SIZES.xs,
@@ -410,7 +411,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 8,
     borderTopWidth: 0.5,
-    borderTopColor: '#F0F0F0',
+    borderTopColor: LIGHT_COLORS.bg_1,
   },
   modalCancelText: {
     fontSize: FONT_SIZES.md,
