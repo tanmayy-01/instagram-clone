@@ -35,6 +35,4 @@ export const ICON_NAMES = {
   BOOKMARK: 'bookmark',
   BOOKMARK_OUTLINE: 'bookmark-outline',
   ELLIPSIS_HORIZONTAL: 'ellipsis-horizontal',
-  VOLUME_MUTE_OUTLINE: 'volume-mute-outline',
-  VOLUME_HIGH_OUTLINE: 'volume-high-outline',
 } as const;

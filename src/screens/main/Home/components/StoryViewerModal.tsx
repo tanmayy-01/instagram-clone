@@ -10,6 +10,7 @@ import {
   Dimensions,
   Animated,
   StatusBar,
+  Alert,
 } from 'react-native';
 import { Story, deleteStory } from '@/services/storyService';
 import { unfollowUser } from '@/services/followService';
@@ -28,6 +29,7 @@ interface StoryViewerModalProps {
   onClose: () => void;
   onUnfollow?: () => void;
   onAddNewStory?: () => void;
+  onStoryDeleted?: (storyId: string) => void;
 }
 
 export const StoryViewerModal: React.FC<StoryViewerModalProps> = ({
@@ -38,11 +40,13 @@ export const StoryViewerModal: React.FC<StoryViewerModalProps> = ({
   onClose,
   onUnfollow,
   onAddNewStory,
+  onStoryDeleted,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [storyMenuVisible, setStoryMenuVisible] = useState(false);
   const progressAnim = useRef(new Animated.Value(0)).current;
   const isPaused = useRef(false);
+  const currentStory = stories[currentIndex];
 
   const handleNextStory = useCallback(() => {
     setCurrentIndex((prev) => {
@@ -126,23 +130,56 @@ export const StoryViewerModal: React.FC<StoryViewerModalProps> = ({
     }
   };
 
-  const handleDeleteStory = async () => {
+  const isMine =
+    Boolean(currentUserId) &&
+    Boolean(currentStory?.userId) &&
+    currentStory.userId === currentUserId;
+
+  const handleDeleteStory = () => {
+    isPaused.current = true;
+    progressAnim.stopAnimation();
     setStoryMenuVisible(false);
-    if (currentStory) {
-      await deleteStory(currentStory.id);
-      showToast('Story deleted');
-      onUnfollow?.();
-      onClose();
+
+    if (!isMine) {
+      showToast('You can only delete your own story');
+      handlePressOut();
+      return;
     }
+
+    Alert.alert(
+      'Delete Story?',
+      'Are you sure you want to delete this story? This cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => handlePressOut(),
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            if (currentStory && currentUserId) {
+              const success = await deleteStory(currentStory.id, currentUserId);
+              if (success) {
+                showToast('Story deleted');
+                onStoryDeleted?.(currentStory.id);
+                onUnfollow?.();
+                onClose();
+              } else {
+                showToast('Failed to delete story');
+                handlePressOut();
+              }
+            }
+          },
+        },
+      ],
+    );
   };
 
   if (!visible || stories.length === 0) return null;
 
-  const currentStory = stories[currentIndex];
   if (!currentStory) return null;
-
-  const isMine =
-    currentStory.userId === currentUserId || Boolean(currentStory.isUserStory);
 
   // Relative time computation
   const hoursAgo = Math.max(

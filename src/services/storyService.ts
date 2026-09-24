@@ -3,6 +3,7 @@ import {
   collection,
   doc,
   setDoc,
+  getDoc,
   getDocs,
   query,
   where,
@@ -59,7 +60,6 @@ export const createStory = async ({
       createdAt: now,
       expiresAt,
       viewers: [],
-      isUserStory: true,
     };
 
     // 1. Save to Cloud Firestore
@@ -232,17 +232,55 @@ export const getStoredStories = async (): Promise<Story[]> => {
 };
 
 /**
- * Removes an expired or deleted story
+ * Removes an expired or deleted story with strict ownership verification.
+ * Prevents users from deleting other users' stories.
  */
-export const deleteStory = async (storyId: string): Promise<void> => {
+export const deleteStory = async (
+  storyId: string,
+  currentUserId?: string,
+): Promise<boolean> => {
   try {
     const storyDocRef = doc(db, 'stories', storyId);
+
+    // Strict ownership verification: one user must not delete another user's story
+    if (currentUserId) {
+      const cached = await getStoredStories();
+      const targetStory = cached.find((s) => s.id === storyId);
+      if (
+        targetStory &&
+        targetStory.userId &&
+        targetStory.userId !== currentUserId
+      ) {
+        console.warn(
+          'Unauthorized deleteStory attempt: user does not own this story',
+        );
+        return false;
+      }
+
+      try {
+        const docSnap = await withTimeout(getDoc(storyDocRef), 2500);
+        if (docSnap && docSnap.exists()) {
+          const data = docSnap.data() as Story;
+          if (data.userId && data.userId !== currentUserId) {
+            console.warn(
+              'Unauthorized deleteStory Firestore check: user does not own this story',
+            );
+            return false;
+          }
+        }
+      } catch {
+        // offline or timeout, continue with cached validation
+      }
+    }
+
     await withTimeout(deleteDoc(storyDocRef), 3000);
 
     const cached = await getStoredStories();
     const updated = cached.filter((s) => s.id !== storyId);
     await AsyncStorage.setItem(STORIES_STORAGE_KEY, JSON.stringify(updated));
+    return true;
   } catch (err) {
     console.warn('deleteStory error:', err);
+    return false;
   }
 };

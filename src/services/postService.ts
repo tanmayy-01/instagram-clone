@@ -3,6 +3,7 @@ import {
   collection,
   doc,
   setDoc,
+  getDoc,
   getDocs,
   query,
   orderBy,
@@ -252,18 +253,56 @@ export const getUserPosts = async (userId: string): Promise<Post[]> => {
 };
 
 /**
- * Deletes a post from Firestore and local cache
+ * Deletes a post from Firestore and local cache with strict ownership verification.
+ * Prevents users from deleting other users' posts.
  */
-export const deletePost = async (postId: string): Promise<void> => {
+export const deletePost = async (
+  postId: string,
+  currentUserId?: string,
+): Promise<boolean> => {
   try {
     const postDocRef = doc(db, 'posts', postId);
+
+    // Strict ownership verification: one user must not delete another user's post
+    if (currentUserId) {
+      const cached = await getStoredPosts();
+      const targetPost = cached.find((p) => p.id === postId);
+      if (
+        targetPost &&
+        targetPost.userId &&
+        targetPost.userId !== currentUserId
+      ) {
+        console.warn(
+          'Unauthorized deletePost attempt: user does not own this post',
+        );
+        return false;
+      }
+
+      try {
+        const docSnap = await withTimeout(getDoc(postDocRef), 2500);
+        if (docSnap && docSnap.exists()) {
+          const data = docSnap.data() as Post;
+          if (data.userId && data.userId !== currentUserId) {
+            console.warn(
+              'Unauthorized deletePost Firestore check: user does not own this post',
+            );
+            return false;
+          }
+        }
+      } catch {
+        // offline or timeout, continue with cached validation
+      }
+    }
+
     await withTimeout(deleteDoc(postDocRef), 3000);
 
     const cached = await getStoredPosts();
     const updated = cached.filter((p) => p.id !== postId);
     await AsyncStorage.setItem(POSTS_STORAGE_KEY, JSON.stringify(updated));
+    return true;
   } catch (err) {
     console.warn('deletePost error:', err);
+    return false;
   }
 };
 

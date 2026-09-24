@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { FONT_SIZES, FONT_STYLES, LIGHT_COLORS } from '@/constants';
+import { FONT_SIZES, FONT_STYLES, FONT_WEIGHTS, LIGHT_COLORS } from '@/constants';
 
 export const styles = StyleSheet.create({
   safeArea: {
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: LIGHT_COLORS.white,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#F0F0F0',
+    borderBottomColor: LIGHT_COLORS.bg_1,
   },
   headerLeft: {
     padding: 2,
@@ -77,20 +77,20 @@ export const styles = StyleSheet.create({
     height: 72,
     borderRadius: 36,
     borderWidth: 1.5,
-    borderColor: '#DBDBDB',
+    borderColor: LIGHT_COLORS.border_1,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
   },
   emptyFeedTitle: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.lg,
+    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
     marginBottom: 6,
     textAlign: 'center',
   },
   emptyFeedSubtitle: {
-    fontSize: 13,
+    fontSize: FONT_SIZES.xs,
     color: LIGHT_COLORS.textSecondary,
     textAlign: 'center',
     lineHeight: 18,
@@ -104,7 +104,7 @@ export const styles = StyleSheet.create({
   },
   emptyFeedButtonText: {
     color: LIGHT_COLORS.white,
-    fontSize: 14,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.bold,
   },
 });

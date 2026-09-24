@@ -237,6 +237,9 @@ const Home: React.FC = () => {
             post={item}
             currentUserId={userData?.uid}
             onFollowChange={fetchStories}
+            onPostDeleted={(deletedId) => {
+              setPosts((prev) => prev.filter((p) => p.id !== deletedId));
+            }}
           />
         )}
         ListEmptyComponent={
@@ -279,6 +282,9 @@ const Home: React.FC = () => {
         onClose={() => setStoryViewerVisible(false)}
         onUnfollow={fetchStories}
         onAddNewStory={() => setCreateMediaVisible(true)}
+        onStoryDeleted={() => {
+          fetchStories();
+        }}
       />
 
       {/* Create Media (Post / 24h Story) Modal */}

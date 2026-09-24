@@ -473,4 +473,45 @@ export const styles = StyleSheet.create({
     fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.textSecondary,
   },
+  // Post Detail Viewer Modal
+  postDetailModalContainer: {
+    flex: 1,
+    backgroundColor: LIGHT_COLORS.white,
+  },
+  postDetailHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: LIGHT_COLORS.action_btn,
+    backgroundColor: LIGHT_COLORS.white,
+  },
+  postDetailHeaderBack: {
+    padding: 6,
+  },
+  postDetailHeaderCenter: {
+    alignItems: 'center',
+  },
+  postDetailHeaderSubtitle: {
+    fontSize: 11,
+    fontFamily: FONT_STYLES.medium,
+    color: LIGHT_COLORS.textSecondary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  postDetailHeaderTitle: {
+    fontSize: FONT_SIZES.md,
+    fontFamily: FONT_STYLES.bold,
+    fontWeight: FONT_WEIGHTS.bold,
+    color: LIGHT_COLORS.black,
+  },
+  postDetailScroll: {
+    flex: 1,
+    backgroundColor: LIGHT_COLORS.white,
+  },
+  postDetailHeaderSpacer: {
+    width: 32,
+  },
 });

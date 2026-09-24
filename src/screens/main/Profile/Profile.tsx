@@ -34,6 +34,7 @@ import { Post, getUserPosts } from '@/services/postService';
 import { Story, getActiveStories } from '@/services/storyService';
 import { CreateMediaModal } from '@/screens/main/Home/components/CreateMediaModal';
 import { StoryViewerModal } from '@/screens/main/Home/components/StoryViewerModal';
+import { PostCard } from '@/screens/main/Home/components/PostCard';
 import { FollowListModal } from '@/components/FollowListModal';
 
 type ActiveTab = 'grid' | 'reels' | 'tagged';
@@ -41,6 +42,7 @@ type ActiveTab = 'grid' | 'reels' | 'tagged';
 const Profile: React.FC = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [userPosts, setUserPosts] = useState<Post[]>([]);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [activeTab, setActiveTab] = useState<ActiveTab>('grid');
 
@@ -640,9 +642,7 @@ const Profile: React.FC = () => {
                   key={post.id}
                   style={styles.gridItem}
                   activeOpacity={0.8}
-                  onPress={() =>
-                    showToast(post.caption || `Post from @${usernameDisplay}`)
-                  }
+                  onPress={() => setSelectedPost(post)}
                 >
                   <Image
                     source={{ uri: post.mediaUri }}
@@ -1021,11 +1021,71 @@ const Profile: React.FC = () => {
         onUnfollow={() => {
           fetchUserStories();
         }}
+        onStoryDeleted={() => {
+          fetchUserStories();
+        }}
         onAddNewStory={() => {
           setStoryViewerVisible(false);
           setIsCreateMediaOpen(true);
         }}
       />
+
+      {/* Post Detail Modal */}
+      <Modal
+        visible={Boolean(selectedPost)}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setSelectedPost(null)}
+      >
+        <SafeAreaView
+          style={styles.postDetailModalContainer}
+          edges={['top', 'bottom']}
+        >
+          {/* Post Detail Header */}
+          <View style={styles.postDetailHeader}>
+            <TouchableOpacity
+              style={styles.postDetailHeaderBack}
+              onPress={() => setSelectedPost(null)}
+              activeOpacity={0.7}
+            >
+              <Icon
+                name={ICON_NAMES.BACK}
+                size={24}
+                color={LIGHT_COLORS.black}
+              />
+            </TouchableOpacity>
+
+            <View style={styles.postDetailHeaderCenter}>
+              <Text style={styles.postDetailHeaderSubtitle}>
+                {usernameDisplay}
+              </Text>
+              <Text style={styles.postDetailHeaderTitle}>Posts</Text>
+            </View>
+
+            <View style={styles.postDetailHeaderSpacer} />
+          </View>
+
+          {/* Post Content */}
+          <ScrollView
+            style={styles.postDetailScroll}
+            showsVerticalScrollIndicator={false}
+          >
+            {selectedPost && (
+              <PostCard
+                post={selectedPost}
+                currentUserId={userData?.uid || auth.currentUser?.uid}
+                onPostDeleted={(deletedId) => {
+                  setUserPosts((prev) =>
+                    prev.filter((p) => p.id !== deletedId),
+                  );
+                  setSelectedPost(null);
+                  fetchUserProfile();
+                }}
+              />
+            )}
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
 
       {/* Followers and Following List Modal */}
       <FollowListModal

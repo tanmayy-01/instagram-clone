@@ -9,8 +9,14 @@ import {
   Animated,
   Modal,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native';
-import { Post, toggleLikePost, toggleBookmarkPost } from '@/services/postService';
+import {
+  Post,
+  toggleLikePost,
+  toggleBookmarkPost,
+  deletePost,
+} from '@/services/postService';
 import {
   isFollowingUser,
   followUser,
@@ -26,12 +32,14 @@ interface PostCardProps {
   post: Post;
   currentUserId?: string;
   onFollowChange?: () => void;
+  onPostDeleted?: (postId: string) => void;
 }
 
 export const PostCard: React.FC<PostCardProps> = ({
   post,
   currentUserId = '',
   onFollowChange,
+  onPostDeleted,
 }) => {
   const [isLiked, setIsLiked] = useState(post.likedBy.includes(currentUserId));
   const [likesCount, setLikesCount] = useState(post.likesCount);
@@ -72,6 +80,40 @@ export const PostCard: React.FC<PostCardProps> = ({
     await unfollowUser(currentUserId, post.userId, post.username);
     showToast(`Unfollowed @${post.username}`);
     onFollowChange?.();
+  };
+
+  const isMine =
+    Boolean(currentUserId) &&
+    Boolean(post.userId) &&
+    post.userId === currentUserId;
+
+  const handleDeletePost = () => {
+    setOptionsVisible(false);
+    if (!isMine) {
+      showToast('You can only delete your own post');
+      return;
+    }
+
+    Alert.alert(
+      'Delete Post?',
+      'Are you sure you want to delete this post? This cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            const success = await deletePost(post.id, currentUserId);
+            if (success) {
+              showToast('Post deleted');
+              onPostDeleted?.(post.id);
+            } else {
+              showToast('Failed to delete post');
+            }
+          },
+        },
+      ],
+    );
   };
 
   // Heart pop animation
@@ -197,22 +239,7 @@ export const PostCard: React.FC<PostCardProps> = ({
           </View>
         )}
 
-        {/* Audio Mute/Unmute Indicator */}
-        <TouchableOpacity
-          style={styles.muteButton}
-          activeOpacity={0.8}
-          onPress={() => setIsMuted(!isMuted)}
-        >
-          <Icon
-            name={
-              isMuted
-                ? ICON_NAMES.VOLUME_MUTE_OUTLINE
-                : ICON_NAMES.VOLUME_HIGH_OUTLINE
-            }
-            size={15}
-            color={LIGHT_COLORS.white}
-          />
-        </TouchableOpacity>
+       
       </View>
 
       {/* 3. Action Buttons Row: Heart + Comment + Repost + Share ... Bookmark */}
@@ -326,7 +353,29 @@ export const PostCard: React.FC<PostCardProps> = ({
               <View style={styles.modalContent}>
                 <View style={styles.modalHandle} />
 
-                {Boolean(currentUserId) && post.userId !== currentUserId && (
+                {isMine && (
+                  <TouchableOpacity
+                    style={styles.modalOption}
+                    onPress={handleDeletePost}
+                    activeOpacity={0.7}
+                  >
+                    <Icon
+                      name={ICON_NAMES.TRASH}
+                      size={22}
+                      color={LIGHT_COLORS.error}
+                    />
+                    <Text
+                      style={[
+                        styles.modalOptionText,
+                        styles.deleteOptionText,
+                      ]}
+                    >
+                      Delete post
+                    </Text>
+                  </TouchableOpacity>
+                )}
+
+                {Boolean(currentUserId) && !isMine && (
                   <TouchableOpacity
                     style={styles.modalOption}
                     onPress={isFollowing ? handleUnfollow : handleFollow}
@@ -588,6 +637,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: LIGHT_COLORS.black,
     marginLeft: 14,
+  },
+  deleteOptionText: {
+    color: LIGHT_COLORS.error,
+    fontWeight: '600',
   },
   modalCancelOption: {
     paddingVertical: 14,
