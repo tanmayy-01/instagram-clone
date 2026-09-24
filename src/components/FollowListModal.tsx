@@ -23,15 +23,9 @@ import {
   removeFollower,
 } from '@/services/followService';
 import { showToast } from '@/components/toast';
+import { FollowListModalProps } from '@/types';
+import { scale } from '@/lib/scale';
 
-interface FollowListModalProps {
-  visible: boolean;
-  initialTab?: 'followers' | 'following';
-  currentUserId: string;
-  currentUsername: string;
-  onClose: () => void;
-  onCountsChanged?: (followersCount: number, followingCount: number) => void;
-}
 
 export const FollowListModal: React.FC<FollowListModalProps> = ({
   visible,
@@ -437,7 +431,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#EFEFEF',
+    borderBottomColor: LIGHT_COLORS.action_btn,
   },
   backButton: {
     padding: 4,
@@ -454,7 +448,7 @@ const styles = StyleSheet.create({
   tabsContainer: {
     flexDirection: 'row',
     borderBottomWidth: 0.5,
-    borderBottomColor: '#EFEFEF',
+    borderBottomColor: LIGHT_COLORS.action_btn,
   },
   tabButton: {
     flex: 1,
@@ -487,14 +481,14 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#EFEFEF',
+    backgroundColor: LIGHT_COLORS.action_btn,
     borderRadius: 10,
     paddingHorizontal: 10,
     height: 38,
   },
   searchInput: {
     flex: 1,
-    fontSize: 14,
+    fontSize: FONT_SIZES.sm,
     color: LIGHT_COLORS.black,
     marginLeft: 8,
     paddingVertical: 0,
@@ -527,18 +521,18 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: LIGHT_COLORS.avatar_bg,
   },
   placeholderAvatar: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: LIGHT_COLORS.avatar_placeholder,
     justifyContent: 'center',
     alignItems: 'center',
   },
   placeholderText: {
-    fontSize: 18,
+    fontSize: FONT_SIZES.lg,
     fontFamily: FONT_STYLES.bold,
     fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.textSecondary,
@@ -552,7 +546,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   usernameText: {
-    fontSize: 14,
+    fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.bold,
     fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
@@ -561,7 +555,7 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   fullNameText: {
-    fontSize: 13,
+    fontSize: scale.ms(13),
     color: LIGHT_COLORS.textSecondary,
     marginTop: 1,
   },
@@ -590,17 +584,17 @@ const styles = StyleSheet.create({
     backgroundColor: LIGHT_COLORS.brandBlue,
   },
   followingBtn: {
-    backgroundColor: '#EFEFEF',
+    backgroundColor: LIGHT_COLORS.action_btn,
     borderWidth: 0.5,
-    borderColor: '#DBDBDB',
+    borderColor: LIGHT_COLORS.border_1,
   },
   removeBtn: {
-    backgroundColor: '#EFEFEF',
+    backgroundColor: LIGHT_COLORS.action_btn,
     borderWidth: 0.5,
-    borderColor: '#DBDBDB',
+    borderColor: LIGHT_COLORS.border_1,
   },
   actionBtnText: {
-    fontSize: 13,
+    fontSize: scale.ms(13),
     fontFamily: FONT_STYLES.bold,
     fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.white,
@@ -612,7 +606,7 @@ const styles = StyleSheet.create({
     color: LIGHT_COLORS.black,
   },
   removeBtnText: {
-    fontSize: 13,
+    fontSize: scale.ms(13),
     fontFamily: FONT_STYLES.medium,
     fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.black,
@@ -626,15 +620,15 @@ const styles = StyleSheet.create({
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: '#F8F9FA',
+    backgroundColor: LIGHT_COLORS.bg_2,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#EFEFEF',
+    borderColor: LIGHT_COLORS.action_btn,
   },
   emptyTitle: {
-    fontSize: 16,
+    fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.bold,
     fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
@@ -642,7 +636,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   emptySubtitle: {
-    fontSize: 13,
+    fontSize: scale.ms(13),
     color: LIGHT_COLORS.textSecondary,
     textAlign: 'center',
     lineHeight: 18,
