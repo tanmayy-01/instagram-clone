@@ -36,4 +36,11 @@ export const ICON_NAMES = {
   BOOKMARK: 'bookmark',
   BOOKMARK_OUTLINE: 'bookmark-outline',
   ELLIPSIS_HORIZONTAL: 'ellipsis-horizontal',
+  CREATE_OUTLINE: 'create-outline',
+  CALL_OUTLINE: 'call-outline',
+  VIDEOCAM_OUTLINE: 'videocam-outline',
+  INFO_OUTLINE: 'information-circle-outline',
+  MIC_OUTLINE: 'mic-outline',
+  REPLY_OUTLINE: 'arrow-undo-outline',
+  COPY_OUTLINE: 'copy-outline',
 } as const;
