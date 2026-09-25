@@ -13,14 +13,8 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from '@/components/Icon';
 import { ICON_NAMES, LIGHT_COLORS } from '@/constants';
-import { FollowableUser } from '@/services/followService';
+import { FollowableUser, NewChatModalProps } from '@/types';
 
-interface NewChatModalProps {
-  visible: boolean;
-  users: FollowableUser[];
-  onClose: () => void;
-  onSelectUser: (user: FollowableUser) => void;
-}
 
 export const NewChatModal: React.FC<NewChatModalProps> = ({
   visible,

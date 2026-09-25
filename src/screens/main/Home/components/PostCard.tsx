@@ -12,7 +12,6 @@ import {
   Alert,
 } from 'react-native';
 import {
-  Post,
   toggleLikePost,
   toggleBookmarkPost,
   deletePost,
@@ -27,6 +26,7 @@ import { FONT_SIZES, FONT_WEIGHTS, ICON_NAMES, LIGHT_COLORS } from '@/constants'
 import { showToast } from '@/components/toast';
 import { scale } from '@/lib/scale';
 import { formatTimeAgo } from '@/utils';
+import { Post } from '@/types';
 
 const { width } = Dimensions.get('window');
 

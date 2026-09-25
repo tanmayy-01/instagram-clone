@@ -19,10 +19,9 @@ import {
   saveKnownUser,
   syncUserProfile,
   withTimeout,
-  UserData,
 } from '@/services/userService';
-import { Story, getActiveStories } from '@/services/storyService';
-import { Post, getFeedPosts } from '@/services/postService';
+import {  getActiveStories } from '@/services/storyService';
+import {  getFeedPosts } from '@/services/postService';
 import { StoryTray } from './components/StoryTray';
 import { PostCard } from './components/PostCard';
 import { StoryViewerModal } from './components/StoryViewerModal';
@@ -30,7 +29,8 @@ import { CreateMediaModal } from './components/CreateMediaModal';
 import { NotificationsModal } from './components/NotificationsModal';
 import { subscribeToUnreadNotificationCount } from '@/services/notificationService';
 import { ChatRoomModal } from '@/screens/main/Chat/components/ChatRoomModal';
-import { FollowableUser } from '@/services/followService';
+import { FollowableUser, Post, Story, UserData } from '@/types';
+
 
 const Home: React.FC = () => {
   const [userData, setUserData] = useState<UserData | null>(null);

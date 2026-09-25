@@ -12,15 +12,16 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import { Story, deleteStory } from '@/services/storyService';
+import { deleteStory } from '@/services/storyService';
 import { unfollowUser } from '@/services/followService';
 import Icon from '@/components/Icon';
 import { FONT_SIZES, FONT_WEIGHTS, ICON_NAMES, LIGHT_COLORS } from '@/constants';
 import { showToast } from '@/components/toast';
 import { scale } from '@/lib/scale';
+import { Story } from '@/types';
 
 const { width, height } = Dimensions.get('window');
-const STORY_DURATION = 5000; // 5 seconds per story
+const STORY_DURATION = 5000; 
 
 interface StoryViewerModalProps {
   visible: boolean;

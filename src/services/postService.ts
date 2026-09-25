@@ -13,24 +13,8 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { withTimeout, getStoredUser } from './userService';
 import { createNotification } from './notificationService';
+import { Post } from '@/types';
 
-export interface Post {
-  id: string;
-  userId: string;
-  username: string;
-  userAvatar?: string;
-  mediaUri: string;
-  caption?: string;
-  location?: string;
-  audioTrack?: string;
-  likesCount: number;
-  commentsCount: number;
-  sharesCount: number;
-  likedBy: string[];
-  bookmarkedBy: string[];
-  createdAt: number;
-  isVerified?: boolean;
-}
 
 const POSTS_STORAGE_KEY = 'cached_feed_posts';
 

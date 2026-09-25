@@ -25,6 +25,7 @@ import { withTimeout } from './userService';
 import { showToast } from '@/components/toast';
 import { navigationRef } from '@/utils';
 import { SCREEN_NAMES } from '@/constants';
+import { AppNotification } from '@/types';
 
 export const messaging = getMessaging();
 
@@ -271,21 +272,6 @@ export const subscribeToIncomingMessages = (
   }
 };
 
-export interface AppNotification {
-  id: string;
-  recipientId: string;
-  senderId: string;
-  senderName: string;
-  senderAvatar?: string;
-  title: string;
-  body: string;
-  type: 'chat_message' | 'follow' | 'like';
-  chatId?: string;
-  postId?: string;
-  postMedia?: string;
-  createdAt: number;
-  read: boolean;
-}
 
 const NOTIFICATIONS_STORAGE_PREFIX = 'cached_notifications_';
 

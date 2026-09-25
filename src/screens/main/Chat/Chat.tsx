@@ -16,11 +16,10 @@ import { ICON_NAMES, LIGHT_COLORS, SCREEN_NAMES } from '@/constants';
 import { showToast } from '@/components/toast';
 import { auth, db } from '@/config/firebaseConfig';
 import { doc, getDoc } from '@react-native-firebase/firestore';
-import { getStoredUser, withTimeout, UserData } from '@/services/userService';
-import { getFollowingUsers, FollowableUser } from '@/services/followService';
+import { getStoredUser, withTimeout } from '@/services/userService';
+import { getFollowingUsers } from '@/services/followService';
 import { getActiveStories } from '@/services/storyService';
 import {
-  ChatConversation,
   subscribeToUserChats,
   getStoredUserChats,
   getChatId,
@@ -29,12 +28,9 @@ import {
 import { formatTimeAgo } from '@/utils';
 import { ChatRoomModal } from './components/ChatRoomModal';
 import { NewChatModal } from './components/NewChatModal';
+import { ChatConversation, FollowableUser, UnifiedChatItem, UserData } from '@/types';
 
-interface UnifiedChatItem {
-  user: FollowableUser;
-  conversation?: ChatConversation;
-  hasActiveStory: boolean;
-}
+
 
 const Chat: React.FC = () => {
   const navigation = useNavigation<any>();

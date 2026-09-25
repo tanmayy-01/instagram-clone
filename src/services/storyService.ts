@@ -12,19 +12,9 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { withTimeout } from './userService';
 import { getFollowingList } from './followService';
+import { Story } from '@/types';
 
-export interface Story {
-  id: string;
-  userId: string;
-  username: string;
-  userAvatar?: string;
-  mediaUri: string;
-  caption?: string;
-  createdAt: number;
-  expiresAt: number;
-  viewers?: string[];
-  isUserStory?: boolean;
-}
+
 
 const STORIES_STORAGE_KEY = 'cached_stories_tray';
 export const STORY_LIFETIME_MS = 24 * 60 * 60 * 1000; // Exactly 24 Hours in milliseconds

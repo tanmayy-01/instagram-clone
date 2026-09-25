@@ -13,44 +13,8 @@ import {
 } from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { withTimeout } from './userService';
+import { ChatConversation, ChatMessage } from '@/types';
 
-export interface ChatMessage {
-  id: string;
-  chatId: string;
-  senderId: string;
-  senderName: string;
-  senderAvatar?: string;
-  receiverId: string;
-  text: string;
-  createdAt: number;
-  replyTo?: {
-    messageId: string;
-    text: string;
-    senderName: string;
-    senderId: string;
-  };
-  status?: 'sent' | 'delivered' | 'read';
-}
-
-export interface ChatConversation {
-  id: string;
-  participants: string[];
-  participantDetails: {
-    [uid: string]: {
-      username: string;
-      fullName: string;
-      avatar: string;
-    };
-  };
-  lastMessage: string;
-  lastMessageTime: number;
-  lastSenderId: string;
-  unreadCount?: {
-    [uid: string]: number;
-  };
-  createdAt: number;
-  updatedAt: number;
-}
 
 const CHATS_CACHE_KEY_PREFIX = 'cached_chats_for_user_';
 

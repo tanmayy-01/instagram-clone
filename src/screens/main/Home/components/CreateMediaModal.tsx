@@ -23,18 +23,11 @@ import {
 import { showToast } from '@/components/toast';
 import { createPost } from '@/services/postService';
 import { createStory } from '@/services/storyService';
-import { UserData } from '@/services/userService';
 import { isIOS } from '@/utils';
 import { scale } from '@/lib/scale';
+import { CreateMediaModalProps } from '@/types';
 
-interface CreateMediaModalProps {
-  visible: boolean;
-  user: UserData | null;
-  initialMode?: 'post' | 'story' | null;
-  onClose: () => void;
-  onPostCreated?: () => void;
-  onStoryCreated?: () => void;
-}
+
 
 export const CreateMediaModal: React.FC<CreateMediaModalProps> = ({
   visible,

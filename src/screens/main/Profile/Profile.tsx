@@ -27,16 +27,15 @@ import {
   logoutUser,
   updateUserProfile,
   withTimeout,
-  UserData,
 } from '@/services/userService';
 import { getFollowingList, getFollowersList } from '@/services/followService';
-import { Post, getUserPosts } from '@/services/postService';
-import { Story, getActiveStories } from '@/services/storyService';
+import { getUserPosts } from '@/services/postService';
+import { getActiveStories } from '@/services/storyService';
 import { CreateMediaModal } from '@/screens/main/Home/components/CreateMediaModal';
 import { StoryViewerModal } from '@/screens/main/Home/components/StoryViewerModal';
 import { PostCard } from '@/screens/main/Home/components/PostCard';
 import { FollowListModal } from '@/components/FollowListModal';
-import { ActiveTab } from '@/types';
+import { ActiveTab, Post, Story, UserData } from '@/types';
 
 
 const Profile: React.FC = () => {

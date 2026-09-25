@@ -22,7 +22,6 @@ import { ICON_NAMES, LIGHT_COLORS } from '@/constants';
 import { showToast } from '@/components/toast';
 import { isIOS, formatTimeAgo } from '@/utils';
 import {
-  ChatMessage,
   sendMessage,
   deleteMessage,
   subscribeToMessages,
@@ -30,22 +29,10 @@ import {
   getChatId,
 } from '@/services/chatService';
 import { setActiveChatId } from '@/services/notificationService';
+import { ChatMessage, ChatRoomModalProps } from '@/types';
 
 const { width } = Dimensions.get('window');
 
-interface ChatRoomModalProps {
-  visible: boolean;
-  currentUserId: string;
-  currentUserName: string;
-  currentUserAvatar?: string;
-  targetUser: {
-    uid: string;
-    username: string;
-    fullName?: string;
-    avatar?: string;
-  } | null;
-  onClose: () => void;
-}
 
 export const ChatRoomModal: React.FC<ChatRoomModalProps> = ({
   visible,
@@ -63,40 +50,15 @@ export const ChatRoomModal: React.FC<ChatRoomModalProps> = ({
   );
   const [optionsModalVisible, setOptionsModalVisible] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const flatListRef = useRef<FlatList>(null);
   const inputRef = useRef<any>(null);
 
-  // Track keyboard height so Bottom Input Bar lifts above keyboard on all devices
-  useEffect(() => {
-    const showEvent =
-      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
-    const hideEvent =
-      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
-
-    const showSub = Keyboard.addListener(showEvent, e => {
-      setKeyboardHeight(e.endCoordinates.height);
-      setTimeout(() => {
-        flatListRef.current?.scrollToEnd({ animated: true });
-      }, 50);
-    });
-
-    const hideSub = Keyboard.addListener(hideEvent, () => {
-      setKeyboardHeight(0);
-    });
-
-    return () => {
-      showSub.remove();
-      hideSub.remove();
-    };
-  }, []);
 
   useEffect(() => {
     if (!visible) {
       setInputText('');
       setReplyingTo(null);
-      setKeyboardHeight(0);
     }
   }, [visible]);
 
@@ -476,7 +438,6 @@ export const ChatRoomModal: React.FC<ChatRoomModalProps> = ({
     >
       <SafeAreaView
         style={styles.safeArea}
-        edges={keyboardHeight > 0 ? ['top'] : ['top', 'bottom']}
       >
         <StatusBar barStyle="dark-content" />
 

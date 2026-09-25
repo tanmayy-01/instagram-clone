@@ -15,7 +15,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from '@/components/Icon';
 import { ICON_NAMES, LIGHT_COLORS, FONT_SIZES, FONT_STYLES, FONT_WEIGHTS } from '@/constants';
 import {
-  FollowableUser,
   getFollowersUsers,
   getFollowingUsers,
   followUser,
@@ -23,7 +22,7 @@ import {
   removeFollower,
 } from '@/services/followService';
 import { showToast } from '@/components/toast';
-import { FollowListModalProps } from '@/types';
+import { FollowableUser, FollowListModalProps } from '@/types';
 import { scale } from '@/lib/scale';
 
 

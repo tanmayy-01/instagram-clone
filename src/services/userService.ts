@@ -17,32 +17,8 @@ import {
   serverTimestamp,
 } from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthResult, SignUpPayload, UserData } from '@/types';
 
-export interface UserData {
-  uid: string;
-  username: string;
-  email: string;
-  fullName?: string;
-  bio?: string;
-  profilePicUrl?: string;
-  postsCount?: number;
-  followersCount?: number;
-  followingCount?: number;
-  following?: string[];
-  createdAt?: any;
-}
-
-export interface SignUpPayload {
-  username: string;
-  email: string;
-  password: string;
-}
-
-export interface AuthResult {
-  success: boolean;
-  user?: UserData;
-  error?: string;
-}
 
 const USER_SESSION_KEY = 'user_session';
 const USERNAME_MAP_PREFIX = 'user_email_';
