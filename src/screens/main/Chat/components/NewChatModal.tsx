@@ -12,8 +12,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from '@/components/Icon';
-import { ICON_NAMES, LIGHT_COLORS } from '@/constants';
+import { FONT_SIZES, FONT_STYLES, ICON_NAMES, LIGHT_COLORS } from '@/constants';
 import { FollowableUser, NewChatModalProps } from '@/types';
+import { scale } from '@/lib/scale';
 
 
 export const NewChatModal: React.FC<NewChatModalProps> = ({
@@ -170,14 +171,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: LIGHT_COLORS.avatar_bg,
   },
   closeBtn: {
     padding: 4,
   },
   headerTitle: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.md,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
   },
   headerSpacer: {
@@ -189,19 +190,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: LIGHT_COLORS.avatar_bg,
   },
   toLabel: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: scale.ms(15),
+    fontFamily: FONT_STYLES.medium,
     color: LIGHT_COLORS.black,
     marginRight: 10,
   },
   searchInput: {
     flex: 1,
-    fontSize: 14.5,
+    fontSize: FONT_SIZES.sm,
     color: LIGHT_COLORS.black,
     paddingVertical: 4,
+    fontFamily: FONT_STYLES.regular
   },
   clearSearchBtn: {
     padding: 4,
@@ -222,19 +224,19 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: LIGHT_COLORS.avatar_bg,
   },
   avatarPlaceholder: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: LIGHT_COLORS.border,
     justifyContent: 'center',
     alignItems: 'center',
   },
   avatarLetter: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.lg,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.textSecondary,
   },
   userInfo: {
@@ -242,24 +244,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   fullName: {
-    fontSize: 14.5,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.sm,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
   },
   username: {
-    fontSize: 13,
+    fontSize: scale.ms(13),
     color: LIGHT_COLORS.textSecondary,
     marginTop: 2,
+    fontFamily: FONT_STYLES.regular
   },
   chatButton: {
     paddingHorizontal: 16,
     paddingVertical: 6,
-    backgroundColor: '#3797F0',
+    backgroundColor: LIGHT_COLORS.unread_dot,
     borderRadius: 8,
   },
   chatButtonText: {
-    fontSize: 13.5,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.sm,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.white,
   },
   emptyContainer: {
@@ -268,14 +271,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   emptyTitle: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.md,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
     marginBottom: 6,
   },
   emptySubtitle: {
-    fontSize: 13,
+    fontSize: scale.ms(13),
     color: LIGHT_COLORS.textSecondary,
     textAlign: 'center',
+    fontFamily: FONT_STYLES.regular
   },
 });
