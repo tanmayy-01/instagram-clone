@@ -27,6 +27,10 @@ import { StoryTray } from './components/StoryTray';
 import { PostCard } from './components/PostCard';
 import { StoryViewerModal } from './components/StoryViewerModal';
 import { CreateMediaModal } from './components/CreateMediaModal';
+import { NotificationsModal } from './components/NotificationsModal';
+import { subscribeToUnreadNotificationCount } from '@/services/notificationService';
+import { ChatRoomModal } from '@/screens/main/Chat/components/ChatRoomModal';
+import { FollowableUser } from '@/services/followService';
 
 const Home: React.FC = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -43,6 +47,14 @@ const Home: React.FC = () => {
 
   // Create Media (Post/Story) Modal State
   const [createMediaVisible, setCreateMediaVisible] = useState(false);
+
+  // Notifications Modal State & Unread Counter
+  const [notificationsVisible, setNotificationsVisible] = useState(false);
+  const [unreadNotifCount, setUnreadNotifCount] = useState(0);
+
+  // Chat Room Modal (from notification reply)
+  const [chatRoomVisible, setChatRoomVisible] = useState(false);
+  const [chatRoomUser, setChatRoomUser] = useState<FollowableUser | null>(null);
 
   // 1. Fetch User Data
   const fetchUserData = useCallback(async () => {
@@ -120,6 +132,20 @@ const Home: React.FC = () => {
     }, [fetchStories]),
   );
 
+  // Subscribe to unread notifications count for the heart icon badge
+  useEffect(() => {
+    const uid = auth.currentUser?.uid || userData?.uid;
+    if (!uid) return;
+
+    const unsubscribe = subscribeToUnreadNotificationCount(uid, (count) => {
+      setUnreadNotifCount(count);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [userData?.uid]);
+
   // Pull to refresh handler
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -193,13 +219,14 @@ const Home: React.FC = () => {
           <TouchableOpacity
             style={styles.headerIcon}
             activeOpacity={0.7}
-            onPress={() => showToast('Notifications')}
+            onPress={() => setNotificationsVisible(true)}
           >
             <Icon
               name={ICON_NAMES.HEART_OUTLINE}
               size={26}
               color={LIGHT_COLORS.black}
             />
+            {unreadNotifCount > 0 && <View style={styles.heartUnreadDot} />}
           </TouchableOpacity>
         </View>
       </View>
@@ -296,6 +323,31 @@ const Home: React.FC = () => {
         }}
         onStoryCreated={() => {
           fetchStories();
+        }}
+      />
+
+      {/* Notifications List Modal */}
+      <NotificationsModal
+        visible={notificationsVisible}
+        currentUserId={userData?.uid || auth.currentUser?.uid || ''}
+        onClose={() => setNotificationsVisible(false)}
+        onOpenChat={(user) => {
+          setNotificationsVisible(false);
+          setChatRoomUser(user);
+          setChatRoomVisible(true);
+        }}
+      />
+
+      {/* Real-time Full-Screen Chat Room Modal (from Notification Reply) */}
+      <ChatRoomModal
+        visible={chatRoomVisible}
+        currentUserId={userData?.uid || auth.currentUser?.uid || ''}
+        currentUserName={userData?.username || 'You'}
+        currentUserAvatar={userData?.profilePicUrl}
+        targetUser={chatRoomUser}
+        onClose={() => {
+          setChatRoomVisible(false);
+          setChatRoomUser(null);
         }}
       />
     </View>

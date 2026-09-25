@@ -29,6 +29,7 @@ export const ICON_NAMES = {
   CLOSE: 'close',
   HEART: 'heart',
   HEART_OUTLINE: 'heart-outline',
+  CHATBUBBLE: 'chatbubble',
   CHATBUBBLE_OUTLINE: 'chatbubble-outline',
   SEND_OUTLINE: 'paper-plane-outline',
   SEND: 'paper-plane',

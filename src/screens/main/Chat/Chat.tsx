@@ -8,10 +8,8 @@ import {
   FlatList,
   RefreshControl,
   ActivityIndicator,
-  StatusBar,
 } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from './Chat.styles';
 import Icon from '@/components/Icon';
 import { ICON_NAMES, LIGHT_COLORS, SCREEN_NAMES } from '@/constants';
@@ -25,6 +23,8 @@ import {
   ChatConversation,
   subscribeToUserChats,
   getStoredUserChats,
+  getChatId,
+  markChatAsRead,
 } from '@/services/chatService';
 import { formatTimeAgo } from '@/utils';
 import { ChatRoomModal } from './components/ChatRoomModal';
@@ -231,19 +231,47 @@ const Chat: React.FC = () => {
     });
   }, [unifiedChatList, searchQuery]);
 
-  const handleOpenChat = (user: FollowableUser) => {
-    setSelectedChatUser(user);
-    setChatRoomVisible(true);
-  };
-
   const usernameDisplay = userData?.username || 'messages';
   const currentUid = auth.currentUser?.uid || userData?.uid || '';
 
+  // Total unread count across all conversations
+  const totalUnreadCount = useMemo(() => {
+    if (!currentUid) return 0;
+    return conversations.reduce((sum, conv) => {
+      const count = conv.unreadCount?.[currentUid] || 0;
+      return sum + count;
+    }, 0);
+  }, [conversations, currentUid]);
+
+  const handleOpenChat = (user: FollowableUser) => {
+    setSelectedChatUser(user);
+    setChatRoomVisible(true);
+
+    // Immediately mark as read in local state and Firestore so unread count turns to 0 instantly
+    if (currentUid) {
+      const chatId = getChatId(currentUid, user.uid);
+      markChatAsRead(chatId, currentUid);
+
+      setConversations((prev) =>
+        prev.map((c) =>
+          c.id === chatId
+            ? {
+                ...c,
+                unreadCount: {
+                  ...(c.unreadCount || {}),
+                  [currentUid]: 0,
+                },
+              }
+            : c,
+        ),
+      );
+    }
+  };
+
   const renderChatItem = ({ item }: { item: UnifiedChatItem }) => {
     const { user, conversation, hasActiveStory } = item;
-    const isUnread =
-      Boolean(conversation?.unreadCount?.[currentUid]) &&
-      conversation!.unreadCount![currentUid] > 0;
+    const unreadCount = conversation?.unreadCount?.[currentUid] || 0;
+    const isUnread = unreadCount > 0;
 
     // Subtitle formatting
     let subtitle = 'Followed user · Tap to chat';
@@ -296,9 +324,13 @@ const Chat: React.FC = () => {
           </View>
         </View>
 
-        {/* Right: Unread Dot or Camera Icon */}
+        {/* Right: Unread Count Badge or Camera Icon */}
         {isUnread ? (
-          <View style={styles.unreadDot} />
+          <View style={styles.unreadBadge}>
+            <Text style={styles.unreadBadgeText}>
+              {unreadCount > 99 ? '99+' : unreadCount}
+            </Text>
+          </View>
         ) : (
           <TouchableOpacity
             style={styles.cameraBtn}
@@ -319,7 +351,6 @@ const Chat: React.FC = () => {
   return (
     <View style={styles.container} >
 
-      {/* 1. Header matching Instagram screenshot */}
       <View style={styles.header}>
         <View style={styles.headerSpacer} />
 
@@ -358,6 +389,7 @@ const Chat: React.FC = () => {
         <TouchableOpacity
           onPress={() => setActiveTab('messages')}
           activeOpacity={0.8}
+          style={styles.tabMessagesWrap}
         >
           <Text
             style={[
@@ -367,6 +399,13 @@ const Chat: React.FC = () => {
           >
             Messages
           </Text>
+          {totalUnreadCount > 0 && (
+            <View style={styles.tabBadge}>
+              <Text style={styles.tabBadgeText}>
+                {totalUnreadCount > 99 ? '99+' : totalUnreadCount}
+              </Text>
+            </View>
+          )}
         </TouchableOpacity>
 
         <TouchableOpacity

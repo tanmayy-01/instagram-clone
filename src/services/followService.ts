@@ -8,6 +8,7 @@ import {
 } from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { withTimeout, getStoredUser } from './userService';
+import { createNotification } from './notificationService';
 
 export interface FollowableUser {
   uid: string;
@@ -424,6 +425,24 @@ export const followUser = async (
     } catch (targetErr) {
       console.warn('followUser target followers update warning:', targetErr);
     }
+
+    // 3. Create follow notification for the target user
+    try {
+      const stored = await getStoredUser();
+      const myUsername = stored?.username || 'user';
+      const myAvatar = stored?.profilePicUrl || '';
+      createNotification({
+        recipientId: targetUserId,
+        senderId: currentUserId,
+        senderName: myUsername,
+        senderAvatar: myAvatar,
+        title: myUsername,
+        body: 'started following you.',
+        type: 'follow',
+        createdAt: Date.now(),
+        read: false,
+      }).catch(() => {});
+    } catch {}
 
     return updated;
   } catch (error) {

@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 import {
   FONT_SIZES,
   FONT_STYLES,
-  FONT_WEIGHTS,
   LIGHT_COLORS,
 } from '@/constants';
 import { scale } from '@/lib/scale';
@@ -48,9 +47,28 @@ export const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 4,
   },
+  tabMessagesWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   tabMessagesText: {
     fontSize: scale.ms(15.5),
     color: LIGHT_COLORS.black,
+    fontFamily: FONT_STYLES.bold,
+  },
+  tabBadge: {
+    backgroundColor: LIGHT_COLORS.unread_dot,
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    paddingHorizontal: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 6,
+  },
+  tabBadgeText: {
+    color: LIGHT_COLORS.white,
+    fontSize: scale.ms(10.5),
     fontFamily: FONT_STYLES.bold,
   },
   tabRequestsText: {
@@ -154,6 +172,21 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: LIGHT_COLORS.unread_dot,
     marginLeft: 10,
+  },
+  unreadBadge: {
+    minWidth: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: LIGHT_COLORS.unread_dot,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 6,
+    marginLeft: 10,
+  },
+  unreadBadgeText: {
+    color: LIGHT_COLORS.white,
+    fontSize: scale.ms(11),
+    fontFamily: FONT_STYLES.bold,
   },
   cameraBtn: {
     padding: 6,

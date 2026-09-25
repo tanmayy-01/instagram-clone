@@ -114,12 +114,14 @@ export const sendMessage = async ({
 
     // 2. Fetch existing conversation doc to preserve unreadCount
     let currentReceiverUnread = 1;
+    let existingUnreadCounts: { [uid: string]: number } = {};
     try {
       const chatDocRef = doc(db, 'chats', chatId);
       const chatSnap = await withTimeout(getDoc(chatDocRef), 2000);
       if (chatSnap && chatSnap.exists()) {
         const existingData = chatSnap.data() as ChatConversation;
-        const prevUnread = existingData?.unreadCount?.[receiverId] || 0;
+        existingUnreadCounts = existingData?.unreadCount || {};
+        const prevUnread = existingUnreadCounts[receiverId] || 0;
         currentReceiverUnread = prevUnread + 1;
       }
     } catch {
@@ -146,6 +148,7 @@ export const sendMessage = async ({
       lastMessageTime: now,
       lastSenderId: senderId,
       unreadCount: {
+        ...existingUnreadCounts,
         [senderId]: 0,
         [receiverId]: currentReceiverUnread,
       },
@@ -161,6 +164,25 @@ export const sendMessage = async ({
       );
     } catch (chatDocErr) {
       console.warn('Update conversation doc error:', chatDocErr);
+    }
+
+    // 4. Save notification document for receiver in notifications collection
+    try {
+      const notifDocRef = doc(collection(db, 'notifications'));
+      setDoc(notifDocRef, {
+        recipientId: receiverId,
+        senderId,
+        senderName,
+        senderAvatar: senderAvatar || '',
+        title: senderName,
+        body: trimmed,
+        chatId,
+        type: 'chat_message',
+        createdAt: now,
+        read: false,
+      }).catch(() => {});
+    } catch {
+      // ignore
     }
 
     return newMsg;
@@ -321,7 +343,7 @@ export const subscribeToUserChats = (
 };
 
 /**
- * Clears unread count for current user in a conversation
+ * Clears unread count for current user in a conversation and turns it to 0
  */
 export const markChatAsRead = async (
   chatId: string,
@@ -329,18 +351,43 @@ export const markChatAsRead = async (
 ): Promise<void> => {
   try {
     const chatDocRef = doc(db, 'chats', chatId);
-    await setDoc(
-      chatDocRef,
-      {
-        unreadCount: {
-          [currentUserId]: 0,
+    const snap = await getDoc(chatDocRef);
+    if (snap && snap.exists()) {
+      const data = snap.data() as ChatConversation;
+      const currentCounts = data.unreadCount || {};
+      if (currentCounts[currentUserId] === 0) return;
+
+      await setDoc(
+        chatDocRef,
+        {
+          unreadCount: {
+            ...currentCounts,
+            [currentUserId]: 0,
+          },
         },
-      },
-      { merge: true },
-    );
-  } catch {
-    // ignore
+        { merge: true },
+      );
+    }
+  } catch (err) {
+    console.warn('markChatAsRead error:', err);
   }
+};
+
+/**
+ * Subscribes to total unread messages count across all active conversations for current user
+ */
+export const subscribeToTotalUnreadCount = (
+  currentUserId: string,
+  onUpdate: (count: number) => void,
+): (() => void) => {
+  return subscribeToUserChats(currentUserId, (chats) => {
+    let total = 0;
+    chats.forEach((c) => {
+      const count = c.unreadCount?.[currentUserId] || 0;
+      total += count;
+    });
+    onUpdate(total);
+  });
 };
 
 /**

@@ -11,7 +11,8 @@ import {
   deleteDoc,
 } from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { withTimeout } from './userService';
+import { withTimeout, getStoredUser } from './userService';
+import { createNotification } from './notificationService';
 
 export interface Post {
   id: string;
@@ -181,6 +182,28 @@ export const toggleLikePost = async (
         : p,
     );
     await AsyncStorage.setItem(POSTS_STORAGE_KEY, JSON.stringify(updatedPosts));
+
+    // Create like notification for post author (if not self-like)
+    if (!alreadyLiked && post.userId && post.userId !== userId) {
+      try {
+        const stored = await getStoredUser();
+        const myUsername = stored?.username || 'user';
+        const myAvatar = stored?.profilePicUrl || '';
+        createNotification({
+          recipientId: post.userId,
+          senderId: userId,
+          senderName: myUsername,
+          senderAvatar: myAvatar,
+          title: myUsername,
+          body: 'liked your post.',
+          type: 'like',
+          postId: post.id,
+          postMedia: post.mediaUri,
+          createdAt: Date.now(),
+          read: false,
+        }).catch(() => {});
+      } catch {}
+    }
 
     return { isLiked: !alreadyLiked, newCount };
   } catch (error) {

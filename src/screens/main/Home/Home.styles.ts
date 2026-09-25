@@ -45,6 +45,18 @@ export const styles = StyleSheet.create({
   },
   headerIcon: {
     padding: 2,
+    position: 'relative',
+  },
+  heartUnreadDot: {
+    position: 'absolute',
+    top: 2,
+    right: 2,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#ED4956',
+    borderWidth: 1.5,
+    borderColor: LIGHT_COLORS.white,
   },
 
   // Feed list

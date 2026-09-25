@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -29,6 +29,7 @@ import {
   markChatAsRead,
   getChatId,
 } from '@/services/chatService';
+import { setActiveChatId } from '@/services/notificationService';
 
 const { width } = Dimensions.get('window');
 
@@ -62,28 +63,58 @@ export const ChatRoomModal: React.FC<ChatRoomModalProps> = ({
   );
   const [optionsModalVisible, setOptionsModalVisible] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const flatListRef = useRef<FlatList>(null);
   const inputRef = useRef<any>(null);
+
+  // Track keyboard height so Bottom Input Bar lifts above keyboard on all devices
+  useEffect(() => {
+    const showEvent =
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent =
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const showSub = Keyboard.addListener(showEvent, e => {
+      setKeyboardHeight(e.endCoordinates.height);
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 50);
+    });
+
+    const hideSub = Keyboard.addListener(hideEvent, () => {
+      setKeyboardHeight(0);
+    });
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
 
   useEffect(() => {
     if (!visible) {
       setInputText('');
       setReplyingTo(null);
+      setKeyboardHeight(0);
     }
   }, [visible]);
 
   const chatId =
     targetUser && currentUserId ? getChatId(currentUserId, targetUser.uid) : '';
 
-  // 1. Subscribe to real-time messages in this chat
+  // 1. Subscribe to real-time messages in this chat & mark as read
   useEffect(() => {
     if (!visible || !chatId || !currentUserId) {
       setMessages([]);
+      setActiveChatId(null);
       return;
     }
 
-    // Mark as read
+    // Mark as active so in-app notifications are muted for this specific chat
+    setActiveChatId(chatId);
+
+    // Mark as read immediately in Firestore
     markChatAsRead(chatId, currentUserId);
 
     // Subscribe to Firestore onSnapshot
@@ -92,6 +123,7 @@ export const ChatRoomModal: React.FC<ChatRoomModalProps> = ({
     });
 
     return () => {
+      setActiveChatId(null);
       unsubscribe();
     };
   }, [visible, chatId, currentUserId]);
@@ -274,6 +306,165 @@ export const ChatRoomModal: React.FC<ChatRoomModalProps> = ({
     );
   };
 
+  const renderChatBody = () => (
+    <>
+      <FlatList
+        ref={flatListRef}
+        data={messages}
+        keyExtractor={item => item.id}
+        renderItem={renderMessageItem}
+        contentContainerStyle={styles.messagesListContent}
+        showsVerticalScrollIndicator={false}
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        onContentSizeChange={() => {
+          if (messages.length > 0) {
+            flatListRef.current?.scrollToEnd({ animated: true });
+          }
+        }}
+        ListEmptyComponent={
+          <View style={styles.emptyMessagesContainer}>
+            <View style={styles.emptyAvatarWrap}>
+              {targetUser?.avatar ? (
+                <Image
+                  source={{ uri: targetUser.avatar }}
+                  style={styles.emptyAvatar}
+                />
+              ) : (
+                <View style={styles.emptyAvatarPlaceholder}>
+                  <Text style={styles.emptyAvatarLetter}>
+                    {targetUser?.username
+                      ? targetUser.username.charAt(0).toUpperCase()
+                      : 'U'}
+                  </Text>
+                </View>
+              )}
+            </View>
+            <Text style={styles.emptyName}>
+              {targetUser?.fullName || targetUser?.username}
+            </Text>
+            <Text style={styles.emptyHandle}>@{targetUser?.username}</Text>
+            <Text style={styles.emptyNotice}>
+              Instagram · You follow each other
+            </Text>
+            <Text style={styles.emptySubtitle}>
+              Say hi to start the conversation!
+            </Text>
+          </View>
+        }
+      />
+
+      {/* Replying Banner */}
+      {Boolean(replyingTo) && (
+        <View style={styles.replyBanner}>
+          <View style={styles.replyLeftBar} />
+          <View style={styles.replyTextContainer}>
+            <Text style={styles.replyingToHeader}>
+              Replying to{' '}
+              <Text style={styles.replyingToBold}>
+                {replyingTo?.senderId === currentUserId
+                  ? 'yourself'
+                  : replyingTo?.senderName}
+              </Text>
+            </Text>
+            <Text style={styles.replyingToSnippet} numberOfLines={1}>
+              {replyingTo?.text}
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => setReplyingTo(null)}
+            style={styles.replyCancelBtn}
+            activeOpacity={0.7}
+          >
+            <Icon
+              name={ICON_NAMES.CLOSE}
+              size={18}
+              color={LIGHT_COLORS.textSecondary}
+            />
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* 3. Bottom Input Bar */}
+      <View style={styles.inputContainer}>
+        <TouchableOpacity
+          style={styles.cameraIconBtn}
+          activeOpacity={0.7}
+          onPress={() => showToast('Camera')}
+        >
+          <View style={styles.cameraCircle}>
+            <Icon
+              name={ICON_NAMES.CAMERA_OUTLINE}
+              size={18}
+              color={LIGHT_COLORS.white}
+            />
+          </View>
+        </TouchableOpacity>
+
+        <View style={styles.inputPill}>
+          <TextInput
+            ref={inputRef}
+            style={styles.textInput}
+            placeholder="Message..."
+            placeholderTextColor={LIGHT_COLORS.textSecondary}
+            value={inputText}
+            onChangeText={setInputText}
+            multiline={true}
+            maxLength={1000}
+          />
+
+          {inputText.trim().length > 0 ? (
+            <TouchableOpacity
+              style={styles.sendButton}
+              activeOpacity={0.7}
+              onPress={() => handleSend()}
+            >
+              <Text style={styles.sendButtonText}>Send</Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.inputRightIcons}>
+              <TouchableOpacity
+                style={styles.inputIconBtn}
+                activeOpacity={0.7}
+                onPress={() => showToast('Voice note')}
+              >
+                <Icon
+                  name={ICON_NAMES.MIC_OUTLINE}
+                  size={20}
+                  color={LIGHT_COLORS.black}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.inputIconBtn}
+                activeOpacity={0.7}
+                onPress={() => showToast('Send photo')}
+              >
+                <Icon
+                  name={ICON_NAMES.IMAGE_OUTLINE}
+                  size={20}
+                  color={LIGHT_COLORS.black}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.inputIconBtn}
+                activeOpacity={0.7}
+                onPress={() => handleSend('❤️')}
+              >
+                <Icon
+                  name={ICON_NAMES.HEART}
+                  size={20}
+                  color={LIGHT_COLORS.error}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+      </View>
+    </>
+  );
+
   if (!visible || !targetUser) return null;
 
   return (
@@ -283,7 +474,10 @@ export const ChatRoomModal: React.FC<ChatRoomModalProps> = ({
       presentationStyle="fullScreen"
       onRequestClose={onClose}
     >
-      <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView
+        style={styles.safeArea}
+        edges={keyboardHeight > 0 ? ['top'] : ['top', 'bottom']}
+      >
         <StatusBar barStyle="dark-content" />
 
         {/* 1. Header */}
@@ -351,164 +545,14 @@ export const ChatRoomModal: React.FC<ChatRoomModalProps> = ({
           </View>
         </View>
 
-        {/* 2. Chat Messages Area */}
+        {/* 2. Chat Messages Area & Input Bar */}
+
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           behavior={isIOS ? 'padding' : 'height'}
           keyboardVerticalOffset={0}
         >
-          <FlatList
-            ref={flatListRef}
-            data={messages}
-            keyExtractor={item => item.id}
-            renderItem={renderMessageItem}
-            contentContainerStyle={styles.messagesListContent}
-            showsVerticalScrollIndicator={false}
-            keyboardDismissMode="on-drag"
-            keyboardShouldPersistTaps="handled"
-            onContentSizeChange={() => {
-              if (messages.length > 0) {
-                flatListRef.current?.scrollToEnd({ animated: true });
-              }
-            }}
-            ListEmptyComponent={
-              <View style={styles.emptyMessagesContainer}>
-                <View style={styles.emptyAvatarWrap}>
-                  {targetUser.avatar ? (
-                    <Image
-                      source={{ uri: targetUser.avatar }}
-                      style={styles.emptyAvatar}
-                    />
-                  ) : (
-                    <View style={styles.emptyAvatarPlaceholder}>
-                      <Text style={styles.emptyAvatarLetter}>
-                        {targetUser.username.charAt(0).toUpperCase()}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-                <Text style={styles.emptyName}>
-                  {targetUser.fullName || targetUser.username}
-                </Text>
-                <Text style={styles.emptyHandle}>@{targetUser.username}</Text>
-                <Text style={styles.emptyNotice}>
-                  Instagram · You follow each other
-                </Text>
-                <Text style={styles.emptySubtitle}>
-                  Say hi to start the conversation!
-                </Text>
-              </View>
-            }
-          />
-
-          {/* Replying Banner */}
-          {Boolean(replyingTo) && (
-            <View style={styles.replyBanner}>
-              <View style={styles.replyLeftBar} />
-              <View style={styles.replyTextContainer}>
-                <Text style={styles.replyingToHeader}>
-                  Replying to{' '}
-                  <Text style={styles.replyingToBold}>
-                    {replyingTo?.senderId === currentUserId
-                      ? 'yourself'
-                      : replyingTo?.senderName}
-                  </Text>
-                </Text>
-                <Text style={styles.replyingToSnippet} numberOfLines={1}>
-                  {replyingTo?.text}
-                </Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => setReplyingTo(null)}
-                style={styles.replyCancelBtn}
-                activeOpacity={0.7}
-              >
-                <Icon
-                  name={ICON_NAMES.CLOSE}
-                  size={18}
-                  color={LIGHT_COLORS.textSecondary}
-                />
-              </TouchableOpacity>
-            </View>
-          )}
-
-          {/* 3. Bottom Input Bar */}
-          <View style={styles.inputContainer}>
-            <TouchableOpacity
-              style={styles.cameraIconBtn}
-              activeOpacity={0.7}
-              onPress={() => showToast('Camera')}
-            >
-              <View style={styles.cameraCircle}>
-                <Icon
-                  name={ICON_NAMES.CAMERA_OUTLINE}
-                  size={18}
-                  color={LIGHT_COLORS.white}
-                />
-              </View>
-            </TouchableOpacity>
-
-            <View style={styles.inputPill}>
-              <TextInput
-                ref={inputRef}
-                style={styles.textInput}
-                placeholder="Message..."
-                placeholderTextColor={LIGHT_COLORS.textSecondary}
-                value={inputText}
-                onChangeText={setInputText}
-                multiline={true}
-                maxLength={1000}
-              />
-
-              {inputText.trim().length > 0 ? (
-                <TouchableOpacity
-                  style={styles.sendButton}
-                  activeOpacity={0.7}
-                  onPress={() => handleSend()}
-                >
-                  <Text style={styles.sendButtonText}>Send</Text>
-                </TouchableOpacity>
-              ) : (
-                <View style={styles.inputRightIcons}>
-                  <TouchableOpacity
-                    style={styles.inputIconBtn}
-                    activeOpacity={0.7}
-                    onPress={() => showToast('Voice note')}
-                  >
-                    <Icon
-                      name={ICON_NAMES.MIC_OUTLINE}
-                      size={20}
-                      color={LIGHT_COLORS.black}
-                    />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.inputIconBtn}
-                    activeOpacity={0.7}
-                    onPress={() => showToast('Send photo')}
-                  >
-                    <Icon
-                      name={ICON_NAMES.IMAGE_OUTLINE}
-                      size={20}
-                      color={LIGHT_COLORS.black}
-                    />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={styles.inputIconBtn}
-                    activeOpacity={0.7}
-                    onPress={() => handleSend('❤️')}
-                  >
-                    <Icon
-                      name={ICON_NAMES.HEART}
-                      size={20}
-                      color={LIGHT_COLORS.error}
-                    />
-                  </TouchableOpacity>
-                </View>
-              )}
-            </View>
-          </View>
+          {renderChatBody()}
         </KeyboardAvoidingView>
 
         {/* Message Options Action Sheet */}
@@ -610,6 +654,9 @@ export const ChatRoomModal: React.FC<ChatRoomModalProps> = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   safeArea: {
     flex: 1,
     backgroundColor: LIGHT_COLORS.white,
