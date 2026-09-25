@@ -447,6 +447,7 @@ export const styles = StyleSheet.create({
     fontFamily: FONT_STYLES.headline,
     fontSize: scale.ms(25),
     textAlign: 'center',
+    paddingBottom: '1%'
   },
   avatarLoadingOverlay: {
     position: 'absolute',

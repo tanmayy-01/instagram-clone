@@ -14,7 +14,7 @@ const App = () => {
           flex: 1,
         }}
       >
-        <StatusBar barStyle="auto" />
+        <StatusBar barStyle="light-content" />
         <NavigationContainer ref={navigationRef}>
           <AppNavigation />
         </NavigationContainer>

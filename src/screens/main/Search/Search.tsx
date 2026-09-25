@@ -6,8 +6,6 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
-  StyleSheet,
-  StatusBar,
   RefreshControl,
   ActivityIndicator,
 } from 'react-native';
@@ -119,7 +117,7 @@ const Search: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
+
 
       {/* Header Search Bar & Following/Follower List Shortcut */}
       <View style={styles.header}>
@@ -206,11 +204,6 @@ const Search: React.FC = () => {
                   <Text style={styles.viewFollowingLink}>My Following</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={styles.sectionSubtitle}>
-                {searchQuery.trim()
-                  ? 'Follow accounts to see their posts and 24h stories in your feed'
-                  : 'Users registered on Instagram. Follow them to see their posts & stories.'}
-              </Text>
             </View>
           }
           ListEmptyComponent={

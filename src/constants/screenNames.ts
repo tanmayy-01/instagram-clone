@@ -11,4 +11,5 @@ export const SCREEN_NAMES = {
   HOME: 'Home',
   PROFILE: 'Profile',
   SEARCH: 'Search',
+  CHAT: 'Chat'
 } as const;

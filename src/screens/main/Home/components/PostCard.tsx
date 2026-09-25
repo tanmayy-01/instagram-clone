@@ -26,6 +26,7 @@ import Icon from '@/components/Icon';
 import { FONT_SIZES, FONT_WEIGHTS, ICON_NAMES, LIGHT_COLORS } from '@/constants';
 import { showToast } from '@/components/toast';
 import { scale } from '@/lib/scale';
+import { formatTimeAgo } from '@/utils';
 
 const { width } = Dimensions.get('window');
 
@@ -47,7 +48,6 @@ export const PostCard: React.FC<PostCardProps> = ({
   const [isBookmarked, setIsBookmarked] = useState(
     post.bookmarkedBy.includes(currentUserId),
   );
-  const [isMuted, setIsMuted] = useState(true);
   const [isFollowing, setIsFollowing] = useState(true);
   const [optionsVisible, setOptionsVisible] = useState(false);
 
@@ -338,7 +338,9 @@ export const PostCard: React.FC<PostCardProps> = ({
           </TouchableOpacity>
         )}
 
-        <Text style={styles.timeAgoText}>2 hours ago</Text>
+        <Text style={styles.timeAgoText}>
+          {formatTimeAgo(post.createdAt)}
+        </Text>
       </View>
 
       {/* Post Options / Unfollow Modal */}

@@ -6,7 +6,6 @@ import {
   FlatList,
   RefreshControl,
   ActivityIndicator,
-  StatusBar,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { styles } from './Home.styles';
@@ -156,7 +155,7 @@ const Home: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
+    
 
       {/* Top Header matching Instagram */}
       <View style={styles.header}>

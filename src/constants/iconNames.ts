@@ -31,6 +31,7 @@ export const ICON_NAMES = {
   HEART_OUTLINE: 'heart-outline',
   CHATBUBBLE_OUTLINE: 'chatbubble-outline',
   SEND_OUTLINE: 'paper-plane-outline',
+  SEND: 'paper-plane',
   REPEAT_OUTLINE: 'repeat-outline',
   BOOKMARK: 'bookmark',
   BOOKMARK_OUTLINE: 'bookmark-outline',

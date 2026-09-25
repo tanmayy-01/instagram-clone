@@ -5,6 +5,7 @@ import { ICON_NAMES, LIGHT_COLORS, SCREEN_NAMES } from '../constants';
 import Icon from '@/components/Icon';
 import Profile from '@/screens/main/Profile';
 import Search from '@/screens/main/Search';
+import Chat from '@/screens/main/Chat';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,6 +29,19 @@ const TabStack = () => {
           tabBarIcon: ({ color, focused }) => (
             <Icon
               name={focused ? ICON_NAMES.HOME : ICON_NAMES.HOME_OUTLINE}
+              size={26}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={SCREEN_NAMES.CHAT}
+        component={Chat}
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <Icon
+              name={focused ? ICON_NAMES.SEND : ICON_NAMES.SEND_OUTLINE}
               size={26}
               color={color}
             />
