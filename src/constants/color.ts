@@ -33,5 +33,6 @@ export const LIGHT_COLORS = {
   story_border: '#DD2A7B',
   progress_bar:'rgba(255, 255, 255, 0.35)',
   time_text: 'rgba(255, 255, 255, 0.7)',
-  add_story_btn: 'rgba(255, 255, 255, 0.25)'
+  add_story_btn: 'rgba(255, 255, 255, 0.25)',
+  bio_text: '#8E8E8E'
 } as const;

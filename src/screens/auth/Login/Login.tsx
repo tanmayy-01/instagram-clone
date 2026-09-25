@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
-  Platform,
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
@@ -73,8 +72,8 @@ const Login: React.FC = () => {
       <View style={styles.safeArea}>
         <KeyboardAvoidingView
           style={styles.keyboardAvoid}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}
+          behavior={Navigation.isIOS ? 'padding' : undefined}
+          keyboardVerticalOffset={Navigation.isIOS ? 10 : 0}
         >
           <ScrollView
             contentContainerStyle={styles.scrollContent}

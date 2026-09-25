@@ -1,5 +1,6 @@
 import { FONT_SIZES, FONT_STYLES, FONT_WEIGHTS, LIGHT_COLORS } from '@/constants';
-import { StyleSheet, Platform } from 'react-native';
+import { isIOS } from '@/utils';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -74,7 +75,7 @@ export const styles = StyleSheet.create({
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.regular,
     color: LIGHT_COLORS.textPrimary,
-    paddingVertical: Platform.OS === 'ios' ? 2 : 0,
+    paddingVertical: isIOS ? 2 : 0,
     paddingHorizontal: 0,
   },
   rightIconContainer: {

@@ -1,4 +1,5 @@
-import { LIGHT_COLORS } from "@/constants";
+import { FONT_SIZES, FONT_WEIGHTS, LIGHT_COLORS } from "@/constants";
+import { scale } from "@/lib/scale";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -13,20 +14,20 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#EFEFEF',
+    borderBottomColor: LIGHT_COLORS.action_btn,
   },
   searchBar: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#EFEFEF',
+    backgroundColor: LIGHT_COLORS.action_btn,
     borderRadius: 10,
     paddingHorizontal: 10,
     height: 38,
   },
   searchInput: {
     flex: 1,
-    fontSize: 14,
+    fontSize: FONT_SIZES.sm,
     color: LIGHT_COLORS.black,
     marginLeft: 8,
     paddingVertical: 0,
@@ -57,17 +58,17 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   sectionTitle: {
-    fontSize: 15,
-    fontWeight: '700',
+    fontSize: scale.ms(15),
+    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
   },
   viewFollowingLink: {
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: scale.ms(13),
+    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.brandBlue,
   },
   sectionSubtitle: {
-    fontSize: 12,
+    fontSize: FONT_SIZES.xs,
     color: LIGHT_COLORS.textSecondary,
     marginTop: 3,
     lineHeight: 16,
@@ -78,7 +79,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 10,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#F8F9FA',
+    borderBottomColor: LIGHT_COLORS.bg_2,
   },
   userLeft: {
     flexDirection: 'row',
@@ -90,19 +91,19 @@ export const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: 23,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: LIGHT_COLORS.avatar_bg,
   },
   placeholderAvatar: {
     width: 46,
     height: 46,
     borderRadius: 23,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: LIGHT_COLORS.border,
     justifyContent: 'center',
     alignItems: 'center',
   },
   placeholderText: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.lg,
+    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.textSecondary,
   },
   userInfo: {
@@ -114,21 +115,21 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   usernameText: {
-    fontSize: 14,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
   },
   verifiedBadge: {
     marginLeft: 4,
   },
   fullNameText: {
-    fontSize: 13,
+    fontSize: scale.ms(13),
     color: LIGHT_COLORS.textSecondary,
     marginTop: 1,
   },
   bioText: {
-    fontSize: 12,
-    color: '#8E8E8E',
+    fontSize: FONT_SIZES.xs,
+    color: LIGHT_COLORS.bio_text,
     marginTop: 2,
   },
   followButton: {
@@ -141,13 +142,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   followingButton: {
-    backgroundColor: '#EFEFEF',
+    backgroundColor: LIGHT_COLORS.action_btn,
     borderWidth: 0.5,
-    borderColor: '#DBDBDB',
+    borderColor: LIGHT_COLORS.border_1,
   },
   followButtonText: {
-    fontSize: 13,
-    fontWeight: '700',
+    fontSize: scale.ms(13),
+    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.white,
   },
   followingButtonText: {
@@ -159,13 +160,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   emptyTitle: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.md,
+    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
     marginTop: 12,
   },
   emptySubtitle: {
-    fontSize: 13,
+    fontSize: scale.ms(13),
     color: LIGHT_COLORS.textSecondary,
     marginTop: 4,
     textAlign: 'center',

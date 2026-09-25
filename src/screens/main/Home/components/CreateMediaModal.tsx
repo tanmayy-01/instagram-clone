@@ -9,7 +9,6 @@ import {
   TextInput,
   Image,
   ActivityIndicator,
-  Platform,
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
@@ -303,7 +302,7 @@ export const CreateMediaModal: React.FC<CreateMediaModalProps> = ({
               {/* Step 2: Caption Modal In The Middle */}
               {step === 'caption_step' && (
                 <KeyboardAvoidingView
-                  behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                  behavior={isIOS ? 'padding' : undefined}
                 >
                   <ScrollView
                     bounces={false}
