@@ -12,13 +12,10 @@ import {
   StatusBar,
   Alert,
   TouchableWithoutFeedback,
-  Dimensions,
-  Keyboard,
-  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from '@/components/Icon';
-import { ICON_NAMES, LIGHT_COLORS } from '@/constants';
+import { FONT_SIZES, FONT_STYLES, ICON_NAMES, LIGHT_COLORS, METRICS } from '@/constants';
 import { showToast } from '@/components/toast';
 import { isIOS, formatTimeAgo } from '@/utils';
 import {
@@ -30,8 +27,8 @@ import {
 } from '@/services/chatService';
 import { setActiveChatId } from '@/services/notificationService';
 import { ChatMessage, ChatRoomModalProps } from '@/types';
+import { scale } from '@/lib/scale';
 
-const { width } = Dimensions.get('window');
 
 
 export const ChatRoomModal: React.FC<ChatRoomModalProps> = ({
@@ -628,7 +625,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: LIGHT_COLORS.avatar_bg,
     backgroundColor: LIGHT_COLORS.white,
   },
   backButton: {
@@ -648,33 +645,34 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: LIGHT_COLORS.avatar_bg,
   },
   headerAvatarPlaceholder: {
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: LIGHT_COLORS.border,
     justifyContent: 'center',
     alignItems: 'center',
   },
   headerAvatarLetter: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.md,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.textSecondary,
   },
   headerTextWrap: {
     justifyContent: 'center',
   },
   headerTitle: {
-    fontSize: 14.5,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.sm,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
   },
   headerSubtitle: {
-    fontSize: 11.5,
+    fontSize: scale.ms(11.5),
     color: LIGHT_COLORS.textSecondary,
     marginTop: 1,
+    fontFamily: FONT_STYLES.regular
   },
   headerActions: {
     flexDirection: 'row',
@@ -712,34 +710,36 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: LIGHT_COLORS.border,
     justifyContent: 'center',
     alignItems: 'center',
   },
   emptyAvatarLetter: {
-    fontSize: 32,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.huge,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.textSecondary,
   },
   emptyName: {
-    fontSize: 17,
-    fontWeight: '700',
+    fontSize: scale.ms(17),
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
   },
   emptyHandle: {
-    fontSize: 13,
+    fontSize: scale.ms(13),
     color: LIGHT_COLORS.textSecondary,
     marginTop: 2,
+    fontFamily: FONT_STYLES.regular
   },
   emptyNotice: {
-    fontSize: 12,
+    fontSize: FONT_SIZES.xs,
     color: LIGHT_COLORS.textSecondary,
     marginTop: 8,
+    fontFamily: FONT_STYLES.regular
   },
   emptySubtitle: {
-    fontSize: 13.5,
+    fontSize: scale.ms(13.5),
     color: LIGHT_COLORS.brandBlue,
-    fontWeight: '600',
+    fontFamily: FONT_STYLES.medium,
     marginTop: 16,
   },
   messageRow: {
@@ -766,50 +766,55 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: LIGHT_COLORS.border,
     justifyContent: 'center',
     alignItems: 'center',
   },
   senderAvatarLetter: {
-    fontSize: 12,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.xs,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.textSecondary,
   },
   messageBubble: {
-    maxWidth: width * 0.72,
+    maxWidth: METRICS.WIDTH * 0.72,
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderRadius: 18,
   },
   bubbleMine: {
-    backgroundColor: '#3797F0',
+    backgroundColor: LIGHT_COLORS.unread_dot,
     borderBottomRightRadius: 4,
   },
   bubbleOther: {
-    backgroundColor: '#EFEFEF',
+    backgroundColor: LIGHT_COLORS.action_btn,
     borderBottomLeftRadius: 4,
   },
   messageText: {
-    fontSize: 14.5,
+    fontSize: FONT_SIZES.sm,
     lineHeight: 20,
+    fontFamily: FONT_STYLES.regular
   },
   messageTextMine: {
     color: LIGHT_COLORS.white,
+    fontFamily: FONT_STYLES.regular
   },
   messageTextOther: {
     color: LIGHT_COLORS.black,
+    fontFamily: FONT_STYLES.regular
   },
   messageTimeText: {
-    fontSize: 9.5,
+    fontSize: scale.ms(9.5),
     marginTop: 4,
     alignSelf: 'flex-end',
     textTransform: 'uppercase',
   },
   messageTimeMine: {
-    color: 'rgba(255, 255, 255, 0.75)',
+    color: LIGHT_COLORS.msg_text,
+    fontFamily: FONT_STYLES.regular
   },
   messageTimeOther: {
     color: LIGHT_COLORS.textSecondary,
+    fontFamily: FONT_STYLES.regular
   },
   quotedReplyContainer: {
     paddingHorizontal: 8,
@@ -819,40 +824,43 @@ const styles = StyleSheet.create({
     borderLeftWidth: 3,
   },
   quotedReplyMine: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: LIGHT_COLORS.reply_1,
     borderLeftColor: LIGHT_COLORS.white,
   },
   quotedReplyOther: {
-    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    borderLeftColor: '#3797F0',
+    backgroundColor: LIGHT_COLORS.reply_2,
+    borderLeftColor: LIGHT_COLORS.unread_dot,
   },
   quotedSenderText: {
-    fontSize: 11,
-    fontWeight: '700',
+    fontSize: scale.ms(11),
+    fontFamily: FONT_STYLES.bold,
     marginBottom: 1,
   },
   quotedMessageText: {
-    fontSize: 11.5,
+    fontSize: scale.ms(11.5),
+    fontFamily: FONT_STYLES.regular
   },
   quotedTextMine: {
     color: LIGHT_COLORS.white,
+    fontFamily: FONT_STYLES.regular
   },
   quotedTextOther: {
     color: LIGHT_COLORS.black,
+    fontFamily: FONT_STYLES.regular
   },
   replyBanner: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F9FAFB',
+    backgroundColor: LIGHT_COLORS.bg_3,
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderTopWidth: 0.5,
-    borderTopColor: '#E5E7EB',
+    borderTopColor: LIGHT_COLORS.border,
   },
   replyLeftBar: {
     width: 3,
     height: '100%',
-    backgroundColor: '#3797F0',
+    backgroundColor: LIGHT_COLORS.unread_dot,
     borderRadius: 2,
     marginRight: 10,
   },
@@ -860,17 +868,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   replyingToHeader: {
-    fontSize: 11.5,
+    fontSize: scale.ms(11.5),
     color: LIGHT_COLORS.textSecondary,
+    fontFamily: FONT_STYLES.regular
   },
   replyingToBold: {
-    fontWeight: '700',
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
   },
   replyingToSnippet: {
-    fontSize: 12.5,
+    fontSize: FONT_SIZES.xs,
     color: LIGHT_COLORS.black,
     marginTop: 1,
+    fontFamily: FONT_STYLES.regular
   },
   replyCancelBtn: {
     padding: 6,
@@ -881,7 +891,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderTopWidth: 0.5,
-    borderTopColor: '#F3F4F6',
+    borderTopColor: LIGHT_COLORS.avatar_bg,
     backgroundColor: LIGHT_COLORS.white,
   },
   cameraIconBtn: {
@@ -891,7 +901,7 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 17,
-    backgroundColor: '#3797F0',
+    backgroundColor: LIGHT_COLORS.unread_dot,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -899,7 +909,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#EFEFEF',
+    backgroundColor: LIGHT_COLORS.action_btn,
     borderRadius: 22,
     paddingHorizontal: 12,
     paddingVertical: isIOS ? 6 : 2,
@@ -907,20 +917,21 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    fontSize: 14.5,
+    fontSize: FONT_SIZES.sm,
     color: LIGHT_COLORS.black,
     maxHeight: 90,
     paddingTop: 6,
     paddingBottom: 6,
+    fontFamily: FONT_STYLES.regular
   },
   sendButton: {
     paddingHorizontal: 10,
     paddingVertical: 4,
   },
   sendButtonText: {
-    fontSize: 14.5,
-    fontWeight: '700',
-    color: '#0095F6',
+    fontSize: FONT_SIZES.sm,
+    fontFamily: FONT_STYLES.bold,
+    color: LIGHT_COLORS.brandBlue,
   },
   inputRightIcons: {
     flexDirection: 'row',
@@ -932,7 +943,7 @@ const styles = StyleSheet.create({
   },
   optionsOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: LIGHT_COLORS.overlay_2,
     justifyContent: 'flex-end',
   },
   optionsSheet: {
@@ -947,31 +958,32 @@ const styles = StyleSheet.create({
     width: 40,
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#D1D5DB',
+    backgroundColor: LIGHT_COLORS.bg_4,
     alignSelf: 'center',
     marginBottom: 16,
   },
   sheetPreviewWrap: {
-    backgroundColor: '#F3F4F6',
+    backgroundColor: LIGHT_COLORS.avatar_bg,
     borderRadius: 10,
     padding: 10,
     marginBottom: 14,
   },
   sheetPreviewText: {
-    fontSize: 13,
+    fontSize: scale.ms(13),
     color: LIGHT_COLORS.textSecondary,
     fontStyle: 'italic',
+    fontFamily: FONT_STYLES.light
   },
   sheetOption: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 14,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: LIGHT_COLORS.avatar_bg,
   },
   sheetOptionText: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: scale.ms(15),
+    fontFamily: FONT_STYLES.medium,
     color: LIGHT_COLORS.black,
     marginLeft: 14,
   },
@@ -981,8 +993,8 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   sheetCancelText: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: scale.ms(15),
+    fontFamily: FONT_STYLES.medium,
     color: LIGHT_COLORS.textSecondary,
   },
 });

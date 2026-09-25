@@ -2,19 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from '@/components/Icon';
 import { FONT_SIZES, ICON_NAMES, LIGHT_COLORS } from '@/constants';
-import { Story } from '@/services/storyService';
-
-interface StoryCircleProps {
-  story?: Story;
-  isUserStory?: boolean;
-  hasActiveStory?: boolean;
-  userAvatar?: string;
-  username?: string;
-  isViewed?: boolean;
-  onPress: () => void;
-  onAddPress?: () => void;
-  onLongPress?: () => void;
-}
+import { StoryCircleProps } from '@/types';
 
 export const StoryCircle: React.FC<StoryCircleProps> = ({
   story,
@@ -77,10 +65,7 @@ export const StoryCircle: React.FC<StoryCircleProps> = ({
         {/* Blue '+' Badge for User Story: allows adding multiple stories anytime */}
         {isUserStory && (
           <TouchableOpacity
-            style={[
-              styles.addBadge,
-              hasActiveStory && styles.activeAddBadge,
-            ]}
+            style={[styles.addBadge, hasActiveStory && styles.activeAddBadge]}
             activeOpacity={0.8}
             onPress={onAddPress || onPress}
           >

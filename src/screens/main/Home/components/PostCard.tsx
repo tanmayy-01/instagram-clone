@@ -5,7 +5,6 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  Dimensions,
   Animated,
   Modal,
   TouchableWithoutFeedback,
@@ -22,20 +21,17 @@ import {
   unfollowUser,
 } from '@/services/followService';
 import Icon from '@/components/Icon';
-import { FONT_SIZES, FONT_WEIGHTS, ICON_NAMES, LIGHT_COLORS } from '@/constants';
+import {
+  FONT_SIZES,
+  FONT_WEIGHTS,
+  ICON_NAMES,
+  LIGHT_COLORS,
+  METRICS,
+} from '@/constants';
 import { showToast } from '@/components/toast';
 import { scale } from '@/lib/scale';
 import { formatTimeAgo } from '@/utils';
-import { Post } from '@/types';
-
-const { width } = Dimensions.get('window');
-
-interface PostCardProps {
-  post: Post;
-  currentUserId?: string;
-  onFollowChange?: () => void;
-  onPostDeleted?: (postId: string) => void;
-}
+import { PostCardProps } from '@/types';
 
 export const PostCard: React.FC<PostCardProps> = ({
   post,
@@ -56,7 +52,7 @@ export const PostCard: React.FC<PostCardProps> = ({
     let active = true;
     if (currentUserId && post.userId !== currentUserId) {
       isFollowingUser(currentUserId, post.userId || post.username).then(
-        (following) => {
+        following => {
           if (active) setIsFollowing(following);
         },
       );
@@ -124,7 +120,7 @@ export const PostCard: React.FC<PostCardProps> = ({
     // Optimistic UI update
     const nextLiked = !isLiked;
     setIsLiked(nextLiked);
-    setLikesCount((prev) => (nextLiked ? prev + 1 : Math.max(0, prev - 1)));
+    setLikesCount(prev => (nextLiked ? prev + 1 : Math.max(0, prev - 1)));
 
     // Pop animation
     Animated.sequence([
@@ -239,8 +235,6 @@ export const PostCard: React.FC<PostCardProps> = ({
             </View>
           </View>
         )}
-
-       
       </View>
 
       {/* 3. Action Buttons Row: Heart + Comment + Repost + Share ... Bookmark */}
@@ -311,7 +305,9 @@ export const PostCard: React.FC<PostCardProps> = ({
           activeOpacity={0.7}
         >
           <Icon
-            name={isBookmarked ? ICON_NAMES.BOOKMARK : ICON_NAMES.BOOKMARK_OUTLINE}
+            name={
+              isBookmarked ? ICON_NAMES.BOOKMARK : ICON_NAMES.BOOKMARK_OUTLINE
+            }
             size={23}
             color={LIGHT_COLORS.black}
           />
@@ -338,9 +334,7 @@ export const PostCard: React.FC<PostCardProps> = ({
           </TouchableOpacity>
         )}
 
-        <Text style={styles.timeAgoText}>
-          {formatTimeAgo(post.createdAt)}
-        </Text>
+        <Text style={styles.timeAgoText}>{formatTimeAgo(post.createdAt)}</Text>
       </View>
 
       {/* Post Options / Unfollow Modal */}
@@ -368,10 +362,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                       color={LIGHT_COLORS.error}
                     />
                     <Text
-                      style={[
-                        styles.modalOptionText,
-                        styles.deleteOptionText,
-                      ]}
+                      style={[styles.modalOptionText, styles.deleteOptionText]}
                     >
                       Delete post
                     </Text>
@@ -385,10 +376,14 @@ export const PostCard: React.FC<PostCardProps> = ({
                     activeOpacity={0.7}
                   >
                     <Icon
-                      name={isFollowing ? ICON_NAMES.CLOSE : ICON_NAMES.PERSON_ADD}
+                      name={
+                        isFollowing ? ICON_NAMES.CLOSE : ICON_NAMES.PERSON_ADD
+                      }
                       size={22}
                       color={
-                        isFollowing ? LIGHT_COLORS.error : LIGHT_COLORS.brandBlue
+                        isFollowing
+                          ? LIGHT_COLORS.error
+                          : LIGHT_COLORS.brandBlue
                       }
                     />
                     <Text
@@ -503,15 +498,15 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.xs,
     color: LIGHT_COLORS.textSecondary,
     marginTop: 1,
-    maxWidth: width * 0.6,
+    maxWidth: METRICS.WIDTH * 0.6,
   },
   moreButton: {
     padding: 6,
   },
   mediaContainer: {
     position: 'relative',
-    width: width,
-    height: width * 1.25,
+    width: METRICS.WIDTH,
+    height: METRICS.WIDTH * 1.25,
     backgroundColor: LIGHT_COLORS.avatar_bg,
   },
   postImage: {

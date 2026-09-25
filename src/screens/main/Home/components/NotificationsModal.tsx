@@ -17,7 +17,6 @@ import { ICON_NAMES, LIGHT_COLORS, FONT_SIZES, FONT_STYLES } from '@/constants';
 import { formatTimeAgo } from '@/utils';
 import { showToast } from '@/components/toast';
 import {
-  AppNotification,
   subscribeToUserNotifications,
   getStoredNotifications,
   markNotificationsAsRead,
@@ -28,7 +27,7 @@ import {
   unfollowUser,
   getFollowingList,
 } from '@/services/followService';
-import { NotificationsModalProps } from '@/types';
+import { AppNotification, NotificationsModalProps } from '@/types';
 import { scale } from '@/lib/scale';
 
 

@@ -7,7 +7,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Dimensions,
   Animated,
   StatusBar,
   Alert,
@@ -15,24 +14,11 @@ import {
 import { deleteStory } from '@/services/storyService';
 import { unfollowUser } from '@/services/followService';
 import Icon from '@/components/Icon';
-import { FONT_SIZES, FONT_WEIGHTS, ICON_NAMES, LIGHT_COLORS } from '@/constants';
+import { FONT_SIZES, FONT_WEIGHTS, ICON_NAMES, LIGHT_COLORS, METRICS, STORY_DURATION } from '@/constants';
 import { showToast } from '@/components/toast';
 import { scale } from '@/lib/scale';
-import { Story } from '@/types';
+import { StoryViewerModalProps } from '@/types';
 
-const { width, height } = Dimensions.get('window');
-const STORY_DURATION = 5000; 
-
-interface StoryViewerModalProps {
-  visible: boolean;
-  stories: Story[];
-  initialIndex?: number;
-  currentUserId?: string;
-  onClose: () => void;
-  onUnfollow?: () => void;
-  onAddNewStory?: () => void;
-  onStoryDeleted?: (storyId: string) => void;
-}
 
 export const StoryViewerModal: React.FC<StoryViewerModalProps> = ({
   visible,
@@ -451,8 +437,8 @@ const styles = StyleSheet.create({
     backgroundColor: LIGHT_COLORS.black,
   },
   mediaImage: {
-    width: width,
-    height: height,
+    width: METRICS.WIDTH,
+    height: METRICS.HEIGHT,
     position: 'absolute',
     top: 0,
     left: 0,

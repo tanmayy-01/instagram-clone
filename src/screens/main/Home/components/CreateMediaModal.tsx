@@ -16,6 +16,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Icon from '@/components/Icon';
 import {
   FONT_SIZES,
+  FONT_STYLES,
   FONT_WEIGHTS,
   ICON_NAMES,
   LIGHT_COLORS,
@@ -26,8 +27,6 @@ import { createStory } from '@/services/storyService';
 import { isIOS } from '@/utils';
 import { scale } from '@/lib/scale';
 import { CreateMediaModalProps } from '@/types';
-
-
 
 export const CreateMediaModal: React.FC<CreateMediaModalProps> = ({
   visible,
@@ -451,7 +450,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: FONT_SIZES.lg,
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
     marginBottom: 16,
     textAlign: 'center',

@@ -1,30 +1,28 @@
-import { FONT_SIZES, FONT_WEIGHTS, LIGHT_COLORS } from '@/constants';
+import { FONT_SIZES, FONT_STYLES, LIGHT_COLORS } from '@/constants';
 import React from 'react';
-import { View, Text, StyleSheet, } from 'react-native';
-import ToastMessage, { ToastConfig, ToastConfigParams } from 'react-native-toast-message';
-
+import { View, Text, StyleSheet } from 'react-native';
+import ToastMessage, {
+  ToastConfig,
+  ToastConfigParams,
+} from 'react-native-toast-message';
 
 interface CustomToastProps {
   text1?: string;
 }
 
-
 const toastConfig: ToastConfig = {
   instagram: ({ text1 }: ToastConfigParams<CustomToastProps>) => (
-  <View style={styles.instagramToast}>
-
-    <Text style={styles.instagramToastText} numberOfLines={2}>
-      {text1}
-    </Text>
-  </View>
-),
-
+    <View style={styles.instagramToast}>
+      <Text style={styles.instagramToastText} numberOfLines={2}>
+        {text1}
+      </Text>
+    </View>
+  ),
 };
 
 export const GlobalToastContainer: React.FC = () => (
   <ToastMessage config={toastConfig} position="bottom" bottomOffset={70} />
 );
-
 
 export const showToast = (message: string, duration: number = 2500): void => {
   ToastMessage.show({
@@ -33,7 +31,6 @@ export const showToast = (message: string, duration: number = 2500): void => {
     visibilityTime: duration,
   });
 };
-
 
 const styles = StyleSheet.create({
   instagramToast: {
@@ -59,7 +56,6 @@ const styles = StyleSheet.create({
     flex: 1,
     color: LIGHT_COLORS.white,
     fontSize: FONT_SIZES.sm,
-    fontWeight: FONT_WEIGHTS.medium,
+    fontFamily: FONT_STYLES.medium,
   },
 });
-

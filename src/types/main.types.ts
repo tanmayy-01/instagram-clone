@@ -13,7 +13,6 @@ export interface FollowableUser {
   followingCount?: number;
 }
 
-
 export interface NotificationsModalProps {
   visible: boolean;
   currentUserId: string;
@@ -121,7 +120,7 @@ export interface AuthResult {
   error?: string;
 }
 
- export interface AppNotification {
+export interface AppNotification {
   id: string;
   recipientId: string;
   senderId: string;
@@ -166,4 +165,52 @@ export interface Story {
   expiresAt: number;
   viewers?: string[];
   isUserStory?: boolean;
+}
+
+export interface StoryViewerModalProps {
+  visible: boolean;
+  stories: Story[];
+  initialIndex?: number;
+  currentUserId?: string;
+  onClose: () => void;
+  onUnfollow?: () => void;
+  onAddNewStory?: () => void;
+  onStoryDeleted?: (storyId: string) => void;
+}
+
+export interface PostCardProps {
+  post: Post;
+  currentUserId?: string;
+  onFollowChange?: () => void;
+  onPostDeleted?: (postId: string) => void;
+}
+
+export interface StoryTrayProps {
+  userStories: Story[];
+  otherStories: Story[];
+  userAvatar?: string;
+  username?: string;
+  onOpenStory: (story: Story) => void;
+  onAddStory: () => void;
+}
+
+export interface StoryCircleProps {
+  story?: Story;
+  isUserStory?: boolean;
+  hasActiveStory?: boolean;
+  userAvatar?: string;
+  username?: string;
+  isViewed?: boolean;
+  onPress: () => void;
+  onAddPress?: () => void;
+  onLongPress?: () => void;
+}
+
+export interface FollowListModalProps {
+  visible: boolean;
+  initialTab?: 'followers' | 'following';
+  currentUserId: string;
+  currentUsername: string;
+  onClose: () => void;
+  onCountsChanged?: (followersCount: number, followingCount: number) => void;
 }

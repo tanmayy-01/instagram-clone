@@ -1,17 +1,9 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { StoryCircle } from './StoryCircle';
-import { Story } from '@/services/storyService';
 import { LIGHT_COLORS } from '@/constants';
+import { Story, StoryTrayProps } from '@/types';
 
-interface StoryTrayProps {
-  userStories: Story[];
-  otherStories: Story[];
-  userAvatar?: string;
-  username?: string;
-  onOpenStory: (story: Story) => void;
-  onAddStory: () => void;
-}
 
 export const StoryTray: React.FC<StoryTrayProps> = ({
   userStories,

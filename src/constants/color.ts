@@ -39,5 +39,9 @@ export const LIGHT_COLORS = {
   bio_text: '#8E8E8E',
   unread_dot: '#3797F0',
   badge: '#10B981',
-  badge_like: '#ED4956'
+  badge_like: '#ED4956',
+  msg_text: 'rgba(255, 255, 255, 0.75)',
+  reply_1: 'rgba(255, 255, 255, 0.2)',
+  reply_2: 'rgba(0, 0, 0, 0.05)',
+  overlay_2: 'rgba(0, 0, 0, 0.4)'
 } as const;
