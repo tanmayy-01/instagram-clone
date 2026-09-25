@@ -29,11 +29,15 @@ export const LIGHT_COLORS = {
   bg_2: '#F8F9FA',
   bg_3: '#F9FAFB',
   bg_4: '#D1D5DB',
+  bg_5: '#F7FAFC',
+  bg_6: '#FEE2E2',
   overlay_bg: 'rgba(0, 0, 0, 0.45)',
   story_border: '#DD2A7B',
   progress_bar:'rgba(255, 255, 255, 0.35)',
   time_text: 'rgba(255, 255, 255, 0.7)',
   add_story_btn: 'rgba(255, 255, 255, 0.25)',
   bio_text: '#8E8E8E',
-  unread_dot: '#3797F0'
+  unread_dot: '#3797F0',
+  badge: '#10B981',
+  badge_like: '#ED4956'
 } as const;

@@ -1,4 +1,4 @@
-import { FONT_SIZES, FONT_WEIGHTS, LIGHT_COLORS } from "@/constants";
+import { FONT_SIZES, FONT_STYLES, FONT_WEIGHTS, LIGHT_COLORS } from "@/constants";
 import { scale } from "@/lib/scale";
 import { StyleSheet } from "react-native";
 
@@ -31,6 +31,7 @@ export const styles = StyleSheet.create({
     color: LIGHT_COLORS.black,
     marginLeft: 8,
     paddingVertical: 0,
+    fontFamily: FONT_STYLES.regular
   },
   clearButton: {
     padding: 4,
@@ -59,19 +60,20 @@ export const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: scale.ms(15),
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
+    fontFamily: FONT_STYLES.bold
   },
   viewFollowingLink: {
     fontSize: scale.ms(13),
-    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.brandBlue,
+    fontFamily:FONT_STYLES.bold
   },
   sectionSubtitle: {
     fontSize: FONT_SIZES.xs,
     color: LIGHT_COLORS.textSecondary,
     marginTop: 3,
     lineHeight: 16,
+    fontFamily: FONT_STYLES.regular
   },
   userCard: {
     flexDirection: 'row',
@@ -103,8 +105,8 @@ export const styles = StyleSheet.create({
   },
   placeholderText: {
     fontSize: FONT_SIZES.lg,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.textSecondary,
+    fontFamily: FONT_STYLES.bold
   },
   userInfo: {
     marginLeft: 12,
@@ -116,7 +118,7 @@ export const styles = StyleSheet.create({
   },
   usernameText: {
     fontSize: FONT_SIZES.sm,
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
   },
   verifiedBadge: {
@@ -126,11 +128,13 @@ export const styles = StyleSheet.create({
     fontSize: scale.ms(13),
     color: LIGHT_COLORS.textSecondary,
     marginTop: 1,
+    fontFamily: FONT_STYLES.regular
   },
   bioText: {
     fontSize: FONT_SIZES.xs,
     color: LIGHT_COLORS.bio_text,
     marginTop: 2,
+    fontFamily: FONT_STYLES.regular
   },
   followButton: {
     backgroundColor: LIGHT_COLORS.brandBlue,
@@ -148,11 +152,12 @@ export const styles = StyleSheet.create({
   },
   followButtonText: {
     fontSize: scale.ms(13),
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.white,
   },
   followingButtonText: {
     color: LIGHT_COLORS.black,
+    fontFamily: FONT_STYLES.bold
   },
   emptyContainer: {
     alignItems: 'center',
@@ -161,7 +166,7 @@ export const styles = StyleSheet.create({
   },
   emptyTitle: {
     fontSize: FONT_SIZES.md,
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
     marginTop: 12,
   },
@@ -170,5 +175,6 @@ export const styles = StyleSheet.create({
     color: LIGHT_COLORS.textSecondary,
     marginTop: 4,
     textAlign: 'center',
+    fontFamily: FONT_STYLES.regular
   },
 });

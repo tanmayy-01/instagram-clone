@@ -13,7 +13,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import Icon from '@/components/Icon';
 import { ICON_NAMES, LIGHT_COLORS } from '@/constants';
 import {
-  FollowableUser,
   getUsersFromCollection,
   getFollowingList,
   followUser,
@@ -24,6 +23,7 @@ import { auth } from '@/config/firebaseConfig';
 import { showToast } from '@/components/toast';
 import { FollowListModal } from '@/components/FollowListModal';
 import { styles } from './Search.styles';
+import { FollowableUser } from '@/types';
 
 const Search: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -150,22 +150,6 @@ const Search: React.FC = () => {
             </TouchableOpacity>
           )}
         </View>
-
-        {/* View Followers / Following quick button */}
-        <TouchableOpacity
-          style={styles.headerFollowListBtn}
-          activeOpacity={0.7}
-          onPress={() => {
-            setFollowModalTab('following');
-            setIsFollowModalOpen(true);
-          }}
-        >
-          <Icon
-            name={ICON_NAMES.PERSON_OUTLINE}
-            size={22}
-            color={LIGHT_COLORS.black}
-          />
-        </TouchableOpacity>
       </View>
 
       {/* Users List from Firestore */}
@@ -194,15 +178,6 @@ const Search: React.FC = () => {
                     ? `Results (${filteredUsers.length})`
                     : 'Discover People'}
                 </Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setFollowModalTab('following');
-                    setIsFollowModalOpen(true);
-                  }}
-                  activeOpacity={0.7}
-                >
-                  <Text style={styles.viewFollowingLink}>My Following</Text>
-                </TouchableOpacity>
               </View>
             </View>
           }

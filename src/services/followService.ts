@@ -9,19 +9,8 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { withTimeout, getStoredUser } from './userService';
 import { createNotification } from './notificationService';
+import { FollowableUser } from '@/types';
 
-export interface FollowableUser {
-  uid: string;
-  username: string;
-  fullName: string;
-  avatar: string;
-  bio?: string;
-  isVerified?: boolean;
-  followers?: string[];
-  following?: string[];
-  followersCount?: number;
-  followingCount?: number;
-}
 
 // Set of legacy demo mock accounts to remove completely
 export const MOCK_USER_IDENTIFIERS = new Set([

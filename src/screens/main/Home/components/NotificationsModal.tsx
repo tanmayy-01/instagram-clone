@@ -27,15 +27,10 @@ import {
   followUser,
   unfollowUser,
   getFollowingList,
-  FollowableUser,
 } from '@/services/followService';
+import { NotificationsModalProps } from '@/types';
+import { scale } from '@/lib/scale';
 
-interface NotificationsModalProps {
-  visible: boolean;
-  currentUserId: string;
-  onClose: () => void;
-  onOpenChat?: (user: FollowableUser) => void;
-}
 
 export const NotificationsModal: React.FC<NotificationsModalProps> = ({
   visible,
@@ -370,7 +365,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: LIGHT_COLORS.avatar_bg,
     backgroundColor: LIGHT_COLORS.white,
   },
   backBtn: {
@@ -386,7 +381,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   markReadBtnText: {
-    fontSize: 13,
+    fontSize: scale.ms(13),
     color: LIGHT_COLORS.brandBlue,
     fontFamily: FONT_STYLES.bold,
   },
@@ -409,7 +404,7 @@ const styles = StyleSheet.create({
     backgroundColor: LIGHT_COLORS.white,
   },
   itemRowUnread: {
-    backgroundColor: '#F7FAFC',
+    backgroundColor: LIGHT_COLORS.bg_5,
   },
   avatarWrap: {
     position: 'relative',
@@ -441,7 +436,7 @@ const styles = StyleSheet.create({
     backgroundColor: LIGHT_COLORS.white,
   },
   sectionHeaderText: {
-    fontSize: 15,
+    fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
   },
@@ -458,20 +453,20 @@ const styles = StyleSheet.create({
     borderColor: LIGHT_COLORS.white,
   },
   typeBadgeLike: {
-    backgroundColor: '#ED4956',
+    backgroundColor: LIGHT_COLORS.badge_like,
   },
   typeBadgeFollow: {
-    backgroundColor: '#3797F0',
+    backgroundColor: LIGHT_COLORS.unread_dot,
   },
   typeBadgeMessage: {
-    backgroundColor: '#10B981',
+    backgroundColor: LIGHT_COLORS.badge,
   },
   itemContent: {
     flex: 1,
     marginRight: 10,
   },
   itemText: {
-    fontSize: 13.5,
+    fontSize: FONT_SIZES.sm,
     color: LIGHT_COLORS.black,
     lineHeight: 18,
     fontFamily: FONT_STYLES.regular,
@@ -482,56 +477,56 @@ const styles = StyleSheet.create({
   },
   itemTime: {
     color: LIGHT_COLORS.textSecondary,
-    fontSize: 12,
+    fontSize: FONT_SIZES.xs,
   },
   itemAction: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   followBtn: {
-    backgroundColor: '#0095F6',
+    backgroundColor: LIGHT_COLORS.unread_dot,
     paddingHorizontal: 16,
     paddingVertical: 7,
     borderRadius: 8,
   },
   followBtnText: {
     color: LIGHT_COLORS.white,
-    fontSize: 13,
+    fontSize: scale.ms(13),
     fontFamily: FONT_STYLES.bold,
   },
   followingBtn: {
-    backgroundColor: '#EFEFEF',
+    backgroundColor: LIGHT_COLORS.action_btn,
     paddingHorizontal: 12,
     paddingVertical: 7,
     borderRadius: 8,
   },
   followingBtnText: {
     color: LIGHT_COLORS.black,
-    fontSize: 13,
+    fontSize: scale.ms(13),
     fontFamily: FONT_STYLES.bold,
   },
   replyBtn: {
-    backgroundColor: '#EFEFEF',
+    backgroundColor: LIGHT_COLORS.action_btn,
     paddingHorizontal: 14,
     paddingVertical: 7,
     borderRadius: 8,
   },
   replyBtnText: {
     color: LIGHT_COLORS.black,
-    fontSize: 13,
+    fontSize: scale.ms(13),
     fontFamily: FONT_STYLES.bold,
   },
   postThumbnail: {
     width: 44,
     height: 44,
     borderRadius: 6,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: LIGHT_COLORS.avatar_bg,
   },
   likeIconBox: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#FEE2E2',
+    backgroundColor: LIGHT_COLORS.bg_6,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -564,7 +559,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   emptySubtitle: {
-    fontSize: 13.5,
+    fontSize: scale.ms(13.5),
     fontFamily: FONT_STYLES.regular,
     color: LIGHT_COLORS.textSecondary,
     textAlign: 'center',
