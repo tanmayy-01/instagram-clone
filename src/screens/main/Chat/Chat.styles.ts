@@ -1,12 +1,17 @@
 import { StyleSheet } from 'react-native';
-import { LIGHT_COLORS } from '@/constants';
+import {
+  FONT_SIZES,
+  FONT_STYLES,
+  FONT_WEIGHTS,
+  LIGHT_COLORS,
+} from '@/constants';
+import { scale } from '@/lib/scale';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: LIGHT_COLORS.white,
   },
-  // Top Header: [Spacer]  [username ⌵]  [Compose]
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -23,10 +28,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerUsername: {
-    fontSize: 17,
-    fontWeight: '700',
+    fontSize: scale.ms(17),
     color: LIGHT_COLORS.black,
     letterSpacing: -0.3,
+    fontFamily: FONT_STYLES.bold,
   },
   headerChevron: {
     marginLeft: 5,
@@ -35,8 +40,6 @@ export const styles = StyleSheet.create({
   composeBtn: {
     padding: 2,
   },
-
-  // Segmented Tabs: "Messages" (left) | "Requests" (right)
   tabsRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -46,21 +49,19 @@ export const styles = StyleSheet.create({
     paddingBottom: 4,
   },
   tabMessagesText: {
-    fontSize: 15.5,
-    fontWeight: '700',
+    fontSize: scale.ms(15.5),
     color: LIGHT_COLORS.black,
+    fontFamily: FONT_STYLES.bold,
   },
   tabRequestsText: {
-    fontSize: 14.5,
-    fontWeight: '600',
-    color: '#4A55A2',
+    fontSize: FONT_SIZES.sm,
+    color: LIGHT_COLORS.brandBlue,
+    fontFamily: FONT_STYLES.bold,
   },
-
-  // Search Bar
   searchBarContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#EFEFEF',
+    backgroundColor: LIGHT_COLORS.action_btn,
     marginHorizontal: 16,
     marginVertical: 10,
     paddingHorizontal: 12,
@@ -72,15 +73,14 @@ export const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    fontSize: 14,
+    fontSize: FONT_SIZES.sm,
     color: LIGHT_COLORS.black,
     paddingVertical: 0,
+    fontFamily: FONT_STYLES.regular
   },
   clearSearchBtn: {
     padding: 4,
   },
-
-  // Chat Item Row
   listContent: {
     paddingBottom: 20,
   },
@@ -101,7 +101,7 @@ export const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: '#DD2A7B',
+    borderColor: LIGHT_COLORS.story_border,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -109,29 +109,29 @@ export const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: LIGHT_COLORS.avatar_bg,
   },
   avatarPlaceholder: {
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: LIGHT_COLORS.avatar_placeholder,
     justifyContent: 'center',
     alignItems: 'center',
   },
   avatarLetter: {
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.xl,
     color: LIGHT_COLORS.textSecondary,
+    fontFamily: FONT_STYLES.bold,
   },
   chatItemContent: {
     flex: 1,
     justifyContent: 'center',
   },
   chatItemName: {
-    fontSize: 14.5,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.sm,
     color: LIGHT_COLORS.black,
+    fontFamily: FONT_STYLES.bold,
   },
   chatItemSubtitleRow: {
     flexDirection: 'row',
@@ -139,27 +139,26 @@ export const styles = StyleSheet.create({
     marginTop: 2.5,
   },
   chatItemSubtitle: {
-    fontSize: 13,
+    fontSize: scale.ms(13),
     color: LIGHT_COLORS.textSecondary,
     flexShrink: 1,
+    fontFamily: FONT_STYLES.regular,
   },
   chatItemSubtitleUnread: {
-    fontWeight: '700',
     color: LIGHT_COLORS.black,
+    fontFamily: FONT_STYLES.bold,
   },
   unreadDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#3797F0',
+    backgroundColor: LIGHT_COLORS.unread_dot,
     marginLeft: 10,
   },
   cameraBtn: {
     padding: 6,
     marginLeft: 6,
   },
-
-  // Empty State
   emptyContainer: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -177,32 +176,31 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
   },
   emptyTitle: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.lg,
     color: LIGHT_COLORS.black,
     marginBottom: 8,
     textAlign: 'center',
+    fontFamily: FONT_STYLES.bold,
   },
   emptySubtitle: {
-    fontSize: 13.5,
+    fontSize: scale.ms(13),
     color: LIGHT_COLORS.textSecondary,
     textAlign: 'center',
     lineHeight: 19,
     marginBottom: 20,
+    fontFamily: FONT_STYLES.regular,
   },
   emptyActionBtn: {
-    backgroundColor: '#3797F0',
+    backgroundColor: LIGHT_COLORS.unread_dot,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 8,
   },
   emptyActionBtnText: {
     color: LIGHT_COLORS.white,
-    fontSize: 14,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.sm,
+    fontFamily: FONT_STYLES.bold,
   },
-
-  // Loading indicator
   loadingContainer: {
     paddingVertical: 40,
     alignItems: 'center',
