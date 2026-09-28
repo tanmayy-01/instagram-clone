@@ -14,7 +14,7 @@ import {
 import { deleteStory } from '@/services/storyService';
 import { unfollowUser } from '@/services/followService';
 import Icon from '@/components/Icon';
-import { FONT_SIZES, FONT_WEIGHTS, ICON_NAMES, LIGHT_COLORS, METRICS, STORY_DURATION } from '@/constants';
+import { FONT_SIZES, FONT_STYLES, FONT_WEIGHTS, ICON_NAMES, LIGHT_COLORS, METRICS, STORY_DURATION } from '@/constants';
 import { showToast } from '@/components/toast';
 import { scale } from '@/lib/scale';
 import { StoryViewerModalProps } from '@/types';
@@ -497,18 +497,19 @@ const styles = StyleSheet.create({
   },
   avatarLetter: {
     color: LIGHT_COLORS.white,
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
     fontSize: FONT_SIZES.sm,
   },
   usernameText: {
     color: LIGHT_COLORS.white,
-    fontWeight: FONT_WEIGHTS.semibold,
+    fontFamily: FONT_STYLES.medium,
     fontSize: FONT_SIZES.sm,
     marginRight: 8,
   },
   timeText: {
     color: LIGHT_COLORS.time_text,
     fontSize: FONT_SIZES.xs,
+    fontFamily: FONT_STYLES.regular
   },
   closeButton: {
     padding: 4,
@@ -529,7 +530,7 @@ const styles = StyleSheet.create({
   addStoryHeaderText: {
     color: LIGHT_COLORS.white,
     fontSize: FONT_SIZES.xs,
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
     marginLeft: 3,
   },
   moreButton: {
@@ -582,7 +583,7 @@ const styles = StyleSheet.create({
   },
   modalOptionText: {
     fontSize: scale.ms(15),
-    fontWeight: FONT_WEIGHTS.semibold,
+    fontFamily: FONT_STYLES.medium,
     marginLeft: 14,
   },
   modalCancelOption: {
@@ -592,7 +593,7 @@ const styles = StyleSheet.create({
   },
   modalCancelText: {
     fontSize: scale.ms(15),
-    fontWeight: FONT_WEIGHTS.semibold,
+    fontFamily: FONT_STYLES.medium,
     color: LIGHT_COLORS.textSecondary,
   },
   storyCaptionContainer: {
@@ -610,7 +611,7 @@ const styles = StyleSheet.create({
   storyCaptionText: {
     color: LIGHT_COLORS.white,
     fontSize: FONT_SIZES.sm,
-    fontWeight: FONT_WEIGHTS.semibold,
+    fontFamily: FONT_STYLES.medium,
     textAlign: 'center',
     lineHeight: 18,
   },

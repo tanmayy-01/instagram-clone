@@ -245,7 +245,7 @@ export const CreateMediaModal: React.FC<CreateMediaModalProps> = ({
                         <Icon
                           name={ICON_NAMES.CAMERA_OUTLINE}
                           size={18}
-                          color="#DD2A7B"
+                          color={LIGHT_COLORS.black}
                         />
                         <Text
                           style={[
@@ -266,7 +266,7 @@ export const CreateMediaModal: React.FC<CreateMediaModalProps> = ({
                         <Icon
                           name={ICON_NAMES.IMAGE_OUTLINE}
                           size={18}
-                          color="#DD2A7B"
+                          color={LIGHT_COLORS.black}
                         />
                         <Text
                           style={[
@@ -474,13 +474,14 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: scale.ms(15),
-    fontWeight: FONT_WEIGHTS.medium,
+    fontFamily: FONT_STYLES.medium,
     color: LIGHT_COLORS.black,
   },
   sectionSubtitle: {
     fontSize: FONT_SIZES.xs,
     color: LIGHT_COLORS.textSecondary,
     marginTop: 1,
+    fontFamily: FONT_STYLES.regular
   },
   buttonActionRow: {
     flexDirection: 'row',
@@ -501,12 +502,13 @@ const styles = StyleSheet.create({
   },
   actionPillText: {
     fontSize: FONT_SIZES.sm,
-    fontWeight: FONT_WEIGHTS.semibold,
+    fontFamily: FONT_STYLES.medium,
     color: LIGHT_COLORS.brandBlue,
     marginLeft: 6,
   },
   storyActionPillText: {
     color: LIGHT_COLORS.toastbg,
+
   },
   cancelButton: {
     paddingVertical: 12,
@@ -515,7 +517,7 @@ const styles = StyleSheet.create({
   },
   cancelText: {
     fontSize: FONT_SIZES.md,
-    fontWeight: FONT_WEIGHTS.semibold,
+    fontFamily: FONT_STYLES.medium,
     color: LIGHT_COLORS.textSecondary,
   },
   captionHeader: {
@@ -536,22 +538,23 @@ const styles = StyleSheet.create({
   },
   backBtnText: {
     fontSize: FONT_SIZES.sm,
-    fontWeight: FONT_WEIGHTS.semibold,
+    fontFamily: FONT_STYLES.medium,
     color: LIGHT_COLORS.textSecondary,
   },
   captionTitle: {
     fontSize: FONT_SIZES.md,
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
   },
   captionSubtitle: {
     fontSize: scale.ms(11),
     color: LIGHT_COLORS.textSecondary,
     marginTop: 1,
+    fontFamily: FONT_STYLES.regular
   },
   shareText: {
     fontSize: scale.ms(15),
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.brandBlue,
   },
   imagePreviewContainer: {
@@ -587,6 +590,7 @@ const styles = StyleSheet.create({
     minHeight: 65,
     maxHeight: 110,
     textAlignVertical: 'top',
+    fontFamily: FONT_STYLES.regular
   },
   mainShareButton: {
     backgroundColor: LIGHT_COLORS.brandBlue,
@@ -601,6 +605,6 @@ const styles = StyleSheet.create({
   mainShareButtonText: {
     color: LIGHT_COLORS.white,
     fontSize: FONT_SIZES.sm,
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
   },
 });

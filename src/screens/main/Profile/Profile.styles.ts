@@ -33,7 +33,6 @@ export const styles = StyleSheet.create({
   headerUsername: {
     fontSize: FONT_SIZES.xl,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
     letterSpacing: -0.3,
   },
@@ -81,7 +80,6 @@ export const styles = StyleSheet.create({
   avatarInitial: {
     fontSize: FONT_SIZES.huge,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.textSecondary,
     textTransform: 'uppercase',
   },
@@ -117,7 +115,7 @@ export const styles = StyleSheet.create({
     borderStyle: 'solid',
   },
   profileStoryRingActive: {
-    borderColor: '#DD2A7B',
+    borderColor: LIGHT_COLORS.story_border,
   },
   profileAvatarInnerGap: {
     width: 84,
@@ -151,7 +149,6 @@ export const styles = StyleSheet.create({
   statNumber: {
     fontSize: FONT_SIZES.lg,
     fontFamily: FONT_STYLES.bold,
-    // fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
   },
   statLabel: {
@@ -170,7 +167,6 @@ export const styles = StyleSheet.create({
   fullName: {
     fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.bold,
-    // fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
     marginBottom: 2,
   },
@@ -208,7 +204,6 @@ export const styles = StyleSheet.create({
   actionButtonText: {
     fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.black,
   },
   actionIconButton: {
@@ -306,7 +301,6 @@ export const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: FONT_SIZES.xl,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
     marginBottom: 8,
     textAlign: 'center',
@@ -322,7 +316,6 @@ export const styles = StyleSheet.create({
   emptyActionText: {
     fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.brandBlue,
   },
 
@@ -351,7 +344,6 @@ export const styles = StyleSheet.create({
   modalTitle: {
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
     marginBottom: 12,
     paddingHorizontal: 4,
@@ -372,7 +364,6 @@ export const styles = StyleSheet.create({
   modalLogoutText: {
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.error,
     marginLeft: 14,
   },
@@ -402,13 +393,11 @@ export const styles = StyleSheet.create({
   editModalTitle: {
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
   },
   editModalDoneText: {
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.brandBlue,
   },
   editAvatarSection: {
@@ -421,7 +410,6 @@ export const styles = StyleSheet.create({
   editAvatarButtonText: {
     fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.brandBlue,
   },
   editFieldContainer: {
@@ -471,7 +459,6 @@ export const styles = StyleSheet.create({
   modalCancelText: {
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.textSecondary,
   },
   // Post Detail Viewer Modal
@@ -505,7 +492,6 @@ export const styles = StyleSheet.create({
   postDetailHeaderTitle: {
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
   },
   postDetailScroll: {

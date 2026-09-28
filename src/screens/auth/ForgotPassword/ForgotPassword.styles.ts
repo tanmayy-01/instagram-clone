@@ -23,7 +23,6 @@ export const styles = StyleSheet.create({
   heading_text: {
     fontSize: FONT_SIZES.xxl,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.textPrimary,
     letterSpacing: -0.3,
   },
@@ -100,6 +99,5 @@ export const styles = StyleSheet.create({
     color: LIGHT_COLORS.white,
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: FONT_WEIGHTS.semibold,
   },
 });

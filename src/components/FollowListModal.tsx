@@ -438,7 +438,6 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: FONT_SIZES.lg,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
   },
   headerRightPlaceholder: {
@@ -459,7 +458,6 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.textSecondary,
   },
   activeTabText: {
@@ -533,7 +531,6 @@ const styles = StyleSheet.create({
   placeholderText: {
     fontSize: FONT_SIZES.lg,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.textSecondary,
   },
   userInfo: {
@@ -547,7 +544,6 @@ const styles = StyleSheet.create({
   usernameText: {
     fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
   },
   verifiedBadge: {
@@ -595,7 +591,6 @@ const styles = StyleSheet.create({
   actionBtnText: {
     fontSize: scale.ms(13),
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.white,
   },
   followBtnText: {
@@ -607,7 +602,6 @@ const styles = StyleSheet.create({
   removeBtnText: {
     fontSize: scale.ms(13),
     fontFamily: FONT_STYLES.medium,
-    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.black,
   },
   emptyContainer: {
@@ -629,7 +623,6 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.black,
     marginBottom: 6,
     textAlign: 'center',

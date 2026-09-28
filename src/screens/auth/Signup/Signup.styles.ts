@@ -37,7 +37,6 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: FONT_SIZES.xxl,
     fontFamily: FONT_STYLES.bold,
-    fontWeight: FONT_WEIGHTS.bold,
     color: LIGHT_COLORS.textPrimary,
     marginBottom: 10,
     letterSpacing: -0.3,
@@ -108,7 +107,6 @@ export const styles = StyleSheet.create({
   learnMoreText: {
     fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.brandBlue,
   },
   nextButton: {
@@ -127,7 +125,6 @@ export const styles = StyleSheet.create({
     color: LIGHT_COLORS.white,
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: FONT_WEIGHTS.semibold,
   },
   bottomSection: {
     alignItems: 'center',
@@ -146,7 +143,6 @@ export const styles = StyleSheet.create({
   loginLinkText: {
     fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: FONT_WEIGHTS.semibold,
     color: LIGHT_COLORS.brandBlue,
   },
 });

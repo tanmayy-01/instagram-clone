@@ -23,6 +23,7 @@ import {
 import Icon from '@/components/Icon';
 import {
   FONT_SIZES,
+  FONT_STYLES,
   FONT_WEIGHTS,
   ICON_NAMES,
   LIGHT_COLORS,
@@ -465,7 +466,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   placeholderAvatarText: {
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.textSecondary,
     fontSize: FONT_SIZES.sm,
   },
@@ -478,7 +479,7 @@ const styles = StyleSheet.create({
   },
   usernameText: {
     fontSize: FONT_SIZES.sm,
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
   },
   verifiedBadge: {
@@ -491,7 +492,7 @@ const styles = StyleSheet.create({
   },
   followHeaderText: {
     fontSize: FONT_SIZES.sm,
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.brandBlue,
   },
   audioText: {
@@ -570,7 +571,7 @@ const styles = StyleSheet.create({
   },
   actionCountText: {
     fontSize: FONT_SIZES.xs,
-    fontWeight: FONT_WEIGHTS.semibold,
+    fontFamily: FONT_STYLES.medium,
     color: LIGHT_COLORS.black,
     marginLeft: 6,
   },
@@ -586,21 +587,23 @@ const styles = StyleSheet.create({
     color: LIGHT_COLORS.black,
     lineHeight: 18,
     marginTop: 2,
+    fontFamily: FONT_STYLES.regular
   },
   captionUsername: {
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
   },
   viewCommentsText: {
     fontSize: FONT_SIZES.xs,
     color: LIGHT_COLORS.textSecondary,
     marginTop: 5,
+    fontFamily: FONT_STYLES.regular
   },
   timeAgoText: {
     fontSize: scale.ms(11),
     color: LIGHT_COLORS.textSecondary,
     marginTop: 3,
-    textTransform: 'uppercase',
+    fontFamily: FONT_STYLES.regular
   },
   modalOverlay: {
     flex: 1,
@@ -632,13 +635,13 @@ const styles = StyleSheet.create({
   },
   modalOptionText: {
     fontSize: scale.ms(15),
-    fontWeight: FONT_WEIGHTS.semibold,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
     marginLeft: 14,
   },
   deleteOptionText: {
     color: LIGHT_COLORS.error,
-    fontWeight: FONT_WEIGHTS.semibold,
+    fontFamily: FONT_STYLES.bold,
   },
   modalCancelOption: {
     paddingVertical: 14,
@@ -647,7 +650,7 @@ const styles = StyleSheet.create({
   },
   modalCancelText: {
     fontSize: scale.ms(15),
-    fontWeight: FONT_WEIGHTS.semibold,
+    fontFamily: FONT_STYLES.medium,
     color: LIGHT_COLORS.textSecondary,
   },
 });

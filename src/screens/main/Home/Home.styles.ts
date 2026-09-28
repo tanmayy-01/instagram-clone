@@ -96,7 +96,7 @@ export const styles = StyleSheet.create({
   },
   emptyFeedTitle: {
     fontSize: FONT_SIZES.lg,
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
     color: LIGHT_COLORS.black,
     marginBottom: 6,
     textAlign: 'center',
@@ -117,6 +117,6 @@ export const styles = StyleSheet.create({
   emptyFeedButtonText: {
     color: LIGHT_COLORS.white,
     fontSize: FONT_SIZES.sm,
-    fontWeight: FONT_WEIGHTS.bold,
+    fontFamily: FONT_STYLES.bold,
   },
 });
