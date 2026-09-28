@@ -50,10 +50,8 @@ export const saveKnownUser = async (user: {
     const cleanEmail = user.email.trim().toLowerCase();
     if (!cleanUsername || !cleanEmail) return;
 
-    // 1. Direct key for fast O(1) lookup
     await AsyncStorage.setItem(USERNAME_MAP_PREFIX + cleanUsername, cleanEmail);
 
-    // 2. Persistent registry list
     const raw = await AsyncStorage.getItem(KNOWN_USERS_REGISTRY_KEY);
     let list: Array<{ username: string; email: string; uid?: string }> = raw
       ? JSON.parse(raw)
@@ -116,7 +114,7 @@ export const resolveEmailFromLocalStorage = async (
         return matched.email.trim().toLowerCase();
       }
 
-      // Check if username matches email prefix (e.g. tanmayshende264 in tanmayshende264@gmail.com)
+      // Check if username matches email prefix
       const prefixMatch = list.find(item => {
         const emailPrefix = item.email.toLowerCase().split('@')[0];
         return emailPrefix === cleanUsername;
@@ -444,19 +442,19 @@ export const loginUser = async (
     let targetEmail = cleanIdentifier.toLowerCase();
     let resolvedUsername = '';
 
-    // If identifier is not an email (does not contain @), look up email by username
+    // If identifier is not an email, look up email by username
     if (!cleanIdentifier.includes('@')) {
       const lowerUsername = cleanIdentifier.toLowerCase();
       resolvedUsername = cleanIdentifier;
 
-      // Step 1: Check local cache for mapped email
+      // Check local cache for mapped email
       const localEmail = await resolveEmailFromLocalStorage(lowerUsername);
       if (localEmail) {
         targetEmail = localEmail;
         console.log('Username resolved via local storage:', targetEmail);
       }
 
-      // Step 2: If still not resolved, query Cloud Firestore
+      // If still not resolved, query Cloud Firestore
       if (!targetEmail.includes('@')) {
         const firestoreEmail = await resolveEmailFromFirestore(lowerUsername);
         if (firestoreEmail) {
@@ -469,7 +467,7 @@ export const loginUser = async (
         }
       }
 
-      // Step 3: Smart fallback - if username couldn't be resolved via local or Firestore
+      // if username couldn't be resolved via local or Firestore
       // (e.g. Firestore rules are locked or collection is empty), try email prefix match with @gmail.com
       if (!targetEmail.includes('@')) {
         const candidateEmail = `${cleanIdentifier}@gmail.com`.toLowerCase();
@@ -594,7 +592,6 @@ export const loginUser = async (
 
 /**
  * Sends a password reset link to the user's email.
- * If user enters a username instead of email, it resolves it to their email first.
  */
 export const sendPasswordReset = async (
   emailOrUsername: string,
@@ -622,7 +619,6 @@ export const sendPasswordReset = async (
         if (firestoreEmail) {
           targetEmail = firestoreEmail;
         } else {
-          // Smart fallback: try common domain
           targetEmail = `${cleanInput}@gmail.com`.toLowerCase();
         }
       }
