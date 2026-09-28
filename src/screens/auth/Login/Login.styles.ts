@@ -108,7 +108,6 @@ export const styles = StyleSheet.create({
     color: LIGHT_COLORS.white,
     fontSize: FONT_SIZES.md,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: '600',
   },
   forgotPasswordButton: {
     paddingVertical: 6,
@@ -118,7 +117,6 @@ export const styles = StyleSheet.create({
     color: LIGHT_COLORS.textPrimary,
     fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: '600',
   },
   bottomSection: {
     width: '100%',
@@ -141,7 +139,6 @@ export const styles = StyleSheet.create({
     color: LIGHT_COLORS.brandBlue,
     fontSize: FONT_SIZES.sm,
     fontFamily: FONT_STYLES.medium,
-    fontWeight: FONT_WEIGHTS.semibold,
   },
   metaLogo: {
     width: 82,
