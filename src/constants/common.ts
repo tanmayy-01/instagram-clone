@@ -40,3 +40,7 @@ export const MOCK_USER_IDENTIFIERS = new Set([
   'user_foodie',
   'delhi_streetfood',
 ]);
+
+export const USER_SESSION_KEY = 'user_session';
+export const USERNAME_MAP_PREFIX = 'user_email_';
+export const KNOWN_USERS_REGISTRY_KEY = 'known_users_registry';

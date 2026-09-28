@@ -18,19 +18,22 @@ import {
 } from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthResult, SignUpPayload, UserData } from '@/types';
-
-
-const USER_SESSION_KEY = 'user_session';
-const USERNAME_MAP_PREFIX = 'user_email_';
-const KNOWN_USERS_REGISTRY_KEY = 'known_users_registry';
+import {
+  KNOWN_USERS_REGISTRY_KEY,
+  USER_SESSION_KEY,
+  USERNAME_MAP_PREFIX,
+} from '@/constants';
 
 /**
  * Helper to prevent async Firestore promises from hanging the UI thread indefinitely
  */
-export const withTimeout = <T>(promise: Promise<T>, timeoutMs = 3500): Promise<T | null> => {
+export const withTimeout = <T>(
+  promise: Promise<T>,
+  timeoutMs = 3500,
+): Promise<T | null> => {
   return Promise.race([
     promise,
-    new Promise<null>((resolve) => setTimeout(() => resolve(null), timeoutMs)),
+    new Promise<null>(resolve => setTimeout(() => resolve(null), timeoutMs)),
   ]);
 };
 
@@ -57,7 +60,7 @@ export const saveKnownUser = async (user: {
       : [];
 
     const existingIndex = list.findIndex(
-      (item) => item.username.toLowerCase() === cleanUsername,
+      item => item.username.toLowerCase() === cleanUsername,
     );
 
     if (existingIndex >= 0) {
@@ -94,7 +97,10 @@ export const resolveEmailFromLocalStorage = async (
       USERNAME_MAP_PREFIX + cleanUsername,
     );
     if (directEmail && directEmail.includes('@')) {
-      console.log('Username resolved via direct AsyncStorage key:', directEmail);
+      console.log(
+        'Username resolved via direct AsyncStorage key:',
+        directEmail,
+      );
       return directEmail.trim().toLowerCase();
     }
 
@@ -103,7 +109,7 @@ export const resolveEmailFromLocalStorage = async (
     if (raw) {
       const list: Array<{ username: string; email: string }> = JSON.parse(raw);
       const matched = list.find(
-        (item) => item.username.toLowerCase() === cleanUsername,
+        item => item.username.toLowerCase() === cleanUsername,
       );
       if (matched && matched.email?.includes('@')) {
         console.log('Username resolved via registry match:', matched.email);
@@ -111,12 +117,15 @@ export const resolveEmailFromLocalStorage = async (
       }
 
       // Check if username matches email prefix (e.g. tanmayshende264 in tanmayshende264@gmail.com)
-      const prefixMatch = list.find((item) => {
+      const prefixMatch = list.find(item => {
         const emailPrefix = item.email.toLowerCase().split('@')[0];
         return emailPrefix === cleanUsername;
       });
       if (prefixMatch && prefixMatch.email?.includes('@')) {
-        console.log('Username resolved via email prefix match in registry:', prefixMatch.email);
+        console.log(
+          'Username resolved via email prefix match in registry:',
+          prefixMatch.email,
+        );
         return prefixMatch.email.trim().toLowerCase();
       }
     }
@@ -126,7 +135,10 @@ export const resolveEmailFromLocalStorage = async (
     if (session) {
       const sessionUser = session.username?.toLowerCase();
       const sessionEmailPrefix = session.email?.toLowerCase().split('@')[0];
-      if (sessionUser === cleanUsername || sessionEmailPrefix === cleanUsername) {
+      if (
+        sessionUser === cleanUsername ||
+        sessionEmailPrefix === cleanUsername
+      ) {
         if (session.email?.includes('@')) {
           console.log('Username resolved via stored session:', session.email);
           return session.email.trim().toLowerCase();
@@ -136,7 +148,7 @@ export const resolveEmailFromLocalStorage = async (
 
     // Scan all keys in AsyncStorage starting with prefix
     const allKeys = await AsyncStorage.getAllKeys();
-    const mapKeys = allKeys.filter((k) => k.startsWith(USERNAME_MAP_PREFIX));
+    const mapKeys = allKeys.filter(k => k.startsWith(USERNAME_MAP_PREFIX));
     for (const key of mapKeys) {
       const storedName = key.replace(USERNAME_MAP_PREFIX, '').toLowerCase();
       if (storedName === cleanUsername) {
@@ -169,7 +181,10 @@ export const resolveEmailFromFirestore = async (
     if (unameSnap && unameSnap.exists()) {
       const data = unameSnap.data() as { email?: string };
       if (data?.email && data.email.includes('@')) {
-        console.log('Username resolved via usernames collection doc:', data.email);
+        console.log(
+          'Username resolved via usernames collection doc:',
+          data.email,
+        );
         return data.email.trim().toLowerCase();
       }
     }
@@ -187,7 +202,10 @@ export const resolveEmailFromFirestore = async (
       const firstDoc = querySnapshot.docs[0];
       const data = firstDoc.data() as UserData;
       if (data?.email && data.email.includes('@')) {
-        console.log('Username resolved via users collection query:', data.email);
+        console.log(
+          'Username resolved via users collection query:',
+          data.email,
+        );
         return data.email.trim().toLowerCase();
       }
     }
@@ -363,10 +381,7 @@ export const registerNewUser = async ({
 
     // 5. Save local session and update known registry in AsyncStorage
     try {
-      await AsyncStorage.setItem(
-        USER_SESSION_KEY,
-        JSON.stringify(userPayload),
-      );
+      await AsyncStorage.setItem(USER_SESSION_KEY, JSON.stringify(userPayload));
       await saveKnownUser({
         username: cleanUsername,
         email: cleanEmail,
