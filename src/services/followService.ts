@@ -10,44 +10,27 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { withTimeout, getStoredUser } from './userService';
 import { createNotification } from './notificationService';
 import { FollowableUser } from '@/types';
-
-
-// Set of legacy demo mock accounts to remove completely
-export const MOCK_USER_IDENTIFIERS = new Set([
-  'user_chaitali',
-  'chaitali._.9',
-  'user_reshu',
-  '_r_e_s_h_u__09',
-  'user_shrav',
-  'hey_shrav_',
-  'instant_bollywood_official',
-  'instantbollywood',
-  'user_rohit',
-  'rohit_sharma45',
-  'user_anushka',
-  'anushkasharma',
-  'user_traveler',
-  'japan_explorer',
-  'user_foodie',
-  'delhi_streetfood',
-]);
-
-const FOLLOWING_STORAGE_KEY_PREFIX = 'user_following_list_';
-const FOLLOWERS_STORAGE_KEY_PREFIX = 'user_followers_list_';
-const ALL_USERS_STORAGE_KEY = 'cached_all_search_users';
+import {
+  ALL_USERS_STORAGE_KEY,
+  FOLLOWERS_STORAGE_KEY_PREFIX,
+  FOLLOWING_STORAGE_KEY_PREFIX,
+  MOCK_USER_IDENTIFIERS,
+} from '@/constants';
 
 /**
  * Normalizes an array of identifiers to unique UIDs only.
- * If legacy records stored both a UID and a username for the same user,
+ * If old/mock records stored both a UID and a username for the same user,
  * this maps the username to the matching UID and deduplicates,
  * ensuring each followed user counts exactly ONCE.
  */
-export const normalizeToUids = async (identifiers: string[]): Promise<string[]> => {
+export const normalizeToUids = async (
+  identifiers: string[],
+): Promise<string[]> => {
   if (!identifiers || identifiers.length === 0) return [];
 
   // Filter out any mock users
   const rawList = identifiers.filter(
-    (id) => Boolean(id) && !MOCK_USER_IDENTIFIERS.has(id.toLowerCase()),
+    id => Boolean(id) && !MOCK_USER_IDENTIFIERS.has(id.toLowerCase()),
   );
 
   if (rawList.length === 0) return [];
@@ -60,7 +43,7 @@ export const normalizeToUids = async (identifiers: string[]): Promise<string[]> 
     const knownUids = new Set<string>();
 
     if (snap && !snap.empty) {
-      snap.forEach((docSnap) => {
+      snap.forEach(docSnap => {
         const uData = docSnap.data();
         const uid = docSnap.id || uData.uid;
         if (uid) {
@@ -94,7 +77,9 @@ export const normalizeToUids = async (identifiers: string[]): Promise<string[]> 
  * Returns the array of user UIDs followed by the user.
  * Strictly returns 1 entry per followed person (UID only, no duplicate usernames).
  */
-export const getFollowingList = async (currentUserId?: string): Promise<string[]> => {
+export const getFollowingList = async (
+  currentUserId?: string,
+): Promise<string[]> => {
   try {
     let targetUid = currentUserId;
     if (!targetUid) {
@@ -131,13 +116,13 @@ export const getFollowingList = async (currentUserId?: string): Promise<string[]
       }
     }
 
-    // Normalize to unique UIDs only (resolves legacy username + uid duplicates)
+    // Normalize to unique UIDs only (resolves old/mock username + uid duplicates)
     const normalizedUids = await normalizeToUids(list);
 
     // If normalized list differs from raw list, persist the fix to Firestore & local storage
     if (
       normalizedUids.length !== list.length ||
-      list.some((item) => !normalizedUids.includes(item))
+      list.some(item => !normalizedUids.includes(item))
     ) {
       await AsyncStorage.setItem(key, JSON.stringify(normalizedUids));
       try {
@@ -171,7 +156,9 @@ export const getFollowingList = async (currentUserId?: string): Promise<string[]
  * Returns the array of follower user UIDs for the user.
  * Strictly returns 1 entry per follower (UID only).
  */
-export const getFollowersList = async (currentUserId?: string): Promise<string[]> => {
+export const getFollowersList = async (
+  currentUserId?: string,
+): Promise<string[]> => {
   try {
     let targetUid = currentUserId;
     if (!targetUid) {
@@ -210,7 +197,7 @@ export const getFollowersList = async (currentUserId?: string): Promise<string[]
 
     if (
       normalizedUids.length !== list.length ||
-      list.some((item) => !normalizedUids.includes(item))
+      list.some(item => !normalizedUids.includes(item))
     ) {
       await AsyncStorage.setItem(key, JSON.stringify(normalizedUids));
       try {
@@ -242,7 +229,7 @@ export const getFollowersList = async (currentUserId?: string): Promise<string[]
 
 /**
  * Fetches all registered users from the Firestore 'users' collection,
- * excluding the currently logged-in user and any legacy demo accounts.
+ * excluding the currently logged-in user and any demo accounts.
  */
 export const getUsersFromCollection = async (
   currentUserId?: string,
@@ -262,16 +249,17 @@ export const getUsersFromCollection = async (
       const snap = await withTimeout(getDocs(usersRef), 4000);
 
       if (snap && !snap.empty) {
-        snap.forEach((docItem) => {
+        snap.forEach(docItem => {
           const data = docItem.data();
           const uid = docItem.id || data.uid;
 
           // Exclude currently logged-in user
-          if (targetUid && (uid === targetUid || data.email === targetUid)) return;
+          if (targetUid && (uid === targetUid || data.email === targetUid))
+            return;
 
           const username = data.username || docItem.id;
 
-          // Exclude any legacy mock user accounts
+          // Exclude any mock user accounts
           if (
             MOCK_USER_IDENTIFIERS.has(uid.toLowerCase()) ||
             MOCK_USER_IDENTIFIERS.has(username.toLowerCase())
@@ -298,7 +286,10 @@ export const getUsersFromCollection = async (
         });
       }
     } catch (firestoreErr) {
-      console.warn('getUsersFromCollection Firestore query warning:', firestoreErr);
+      console.warn(
+        'getUsersFromCollection Firestore query warning:',
+        firestoreErr,
+      );
     }
 
     // Update local cache
@@ -329,15 +320,17 @@ export const isFollowingUser = async (
   const cleanId = (targetIdentifier || '').trim().toLowerCase();
   const cleanUsername = (targetUsername || '').trim().toLowerCase();
 
-  return list.some((item) => {
+  return list.some(item => {
     const lower = item.toLowerCase();
-    return (cleanId && lower === cleanId) || (cleanUsername && lower === cleanUsername);
+    return (
+      (cleanId && lower === cleanId) ||
+      (cleanUsername && lower === cleanUsername)
+    );
   });
 };
 
 /**
  * Follows an actual user.
- * IMPORTANT: Stores ONLY the target user's UID in the following array (never both UID and username).
  */
 export const followUser = async (
   currentUserId: string,
@@ -353,7 +346,7 @@ export const followUser = async (
     const toAdd = [targetUserId];
 
     const updated = Array.from(new Set([...list, ...toAdd])).filter(
-      (id) => !MOCK_USER_IDENTIFIERS.has(id.toLowerCase()),
+      id => !MOCK_USER_IDENTIFIERS.has(id.toLowerCase()),
     );
     const key = FOLLOWING_STORAGE_KEY_PREFIX + currentUserId;
     await AsyncStorage.setItem(key, JSON.stringify(updated));
@@ -373,14 +366,19 @@ export const followUser = async (
         3000,
       );
     } catch (firestoreErr) {
-      console.warn('followUser current user firestore update warning:', firestoreErr);
+      console.warn(
+        'followUser current user firestore update warning:',
+        firestoreErr,
+      );
     }
 
     // 2. Sync to target user's followers list (ONLY store current user UID)
     try {
       const targetFollowersKey = FOLLOWERS_STORAGE_KEY_PREFIX + targetUserId;
       const targetLocal = await AsyncStorage.getItem(targetFollowersKey);
-      let targetFollowers: string[] = targetLocal ? JSON.parse(targetLocal) : [];
+      let targetFollowers: string[] = targetLocal
+        ? JSON.parse(targetLocal)
+        : [];
       if (!targetFollowers.includes(currentUserId)) {
         targetFollowers.push(currentUserId);
         await AsyncStorage.setItem(
@@ -442,7 +440,7 @@ export const followUser = async (
 
 /**
  * Unfollows a user.
- * Removes both the UID and any legacy username from following array.
+ * Removes both the UID and any old/mock username from following array.
  */
 export const unfollowUser = async (
   currentUserId: string,
@@ -452,9 +450,11 @@ export const unfollowUser = async (
   try {
     const list = await getFollowingList(currentUserId);
     const cleanId = targetUserId.trim().toLowerCase();
-    const cleanUsername = targetUsername ? targetUsername.trim().toLowerCase() : '';
+    const cleanUsername = targetUsername
+      ? targetUsername.trim().toLowerCase()
+      : '';
 
-    const updated = list.filter((item) => {
+    const updated = list.filter(item => {
       const lower = item.toLowerCase();
       if (lower === cleanId) return false;
       if (cleanUsername && lower === cleanUsername) return false;
@@ -479,7 +479,10 @@ export const unfollowUser = async (
         3000,
       );
     } catch (firestoreErr) {
-      console.warn('unfollowUser current user firestore update warning:', firestoreErr);
+      console.warn(
+        'unfollowUser current user firestore update warning:',
+        firestoreErr,
+      );
     }
 
     // 2. Remove current user UID from target user's followers
@@ -488,8 +491,11 @@ export const unfollowUser = async (
       const targetLocal = await AsyncStorage.getItem(targetFollowersKey);
       if (targetLocal) {
         const targetFollowers: string[] = JSON.parse(targetLocal);
-        const filtered = targetFollowers.filter((id) => id !== currentUserId);
-        await AsyncStorage.setItem(targetFollowersKey, JSON.stringify(filtered));
+        const filtered = targetFollowers.filter(id => id !== currentUserId);
+        await AsyncStorage.setItem(
+          targetFollowersKey,
+          JSON.stringify(filtered),
+        );
       }
 
       const targetDocRef = doc(db, 'users', targetUserId);
@@ -535,7 +541,7 @@ export const removeFollower = async (
     const list = await getFollowersList(currentUserId);
     const cleanId = followerIdentifier.trim().toLowerCase();
 
-    const updated = list.filter((item) => item.toLowerCase() !== cleanId);
+    const updated = list.filter(item => item.toLowerCase() !== cleanId);
     const key = FOLLOWERS_STORAGE_KEY_PREFIX + currentUserId;
     await AsyncStorage.setItem(key, JSON.stringify(updated));
 
@@ -585,7 +591,7 @@ export const getFollowingUsers = async (
       if (seen.has(clean) || MOCK_USER_IDENTIFIERS.has(clean)) continue;
 
       const found = allUsers.find(
-        (u) =>
+        u =>
           u.uid.toLowerCase() === clean || u.username.toLowerCase() === clean,
       );
 
@@ -643,7 +649,7 @@ export const getFollowersUsers = async (
       if (seen.has(clean) || MOCK_USER_IDENTIFIERS.has(clean)) continue;
 
       const found = allUsers.find(
-        (u) =>
+        u =>
           u.uid.toLowerCase() === clean || u.username.toLowerCase() === clean,
       );
 
@@ -681,7 +687,7 @@ export const getFollowersUsers = async (
       if (MOCK_USER_IDENTIFIERS.has(user.username.toLowerCase())) continue;
       if (Array.isArray(user.following)) {
         const followsMe = user.following.some(
-          (fId) => fId.toLowerCase() === currentUserId.toLowerCase(),
+          fId => fId.toLowerCase() === currentUserId.toLowerCase(),
         );
         if (followsMe && !seen.has(user.uid.toLowerCase())) {
           seen.add(user.uid.toLowerCase());

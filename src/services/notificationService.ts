@@ -24,7 +24,7 @@ import { auth, db } from '@/config/firebaseConfig';
 import { withTimeout } from './userService';
 import { showToast } from '@/components/toast';
 import { navigationRef } from '@/utils';
-import { FCM_TOKEN_STORAGE_KEY, SCREEN_NAMES } from '@/constants';
+import { FCM_TOKEN_STORAGE_KEY, NOTIFICATIONS_STORAGE_PREFIX, SCREEN_NAMES } from '@/constants';
 import { AppNotification } from '@/types';
 
 export const messaging = getMessaging();
@@ -201,7 +201,7 @@ export const initForegroundNotificationService = (
 /**
  * 3. Real-Time Firestore Incoming Message Listener
  * Listens to active chats for the current user and triggers an in-app alert when a message is received
- * while the app is in the foreground (even if FCM push notification is delayed or on device emulator).
+ * while the app is in the foreground
  */
 export const subscribeToIncomingMessages = (
   currentUserId: string,
@@ -270,7 +270,6 @@ export const subscribeToIncomingMessages = (
 };
 
 
-const NOTIFICATIONS_STORAGE_PREFIX = 'cached_notifications_';
 
 /**
  * Creates a notification document in Firestore for a user
