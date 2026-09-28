@@ -24,14 +24,12 @@ import { auth, db } from '@/config/firebaseConfig';
 import { withTimeout } from './userService';
 import { showToast } from '@/components/toast';
 import { navigationRef } from '@/utils';
-import { SCREEN_NAMES } from '@/constants';
+import { FCM_TOKEN_STORAGE_KEY, SCREEN_NAMES } from '@/constants';
 import { AppNotification } from '@/types';
 
 export const messaging = getMessaging();
 
-const FCM_TOKEN_STORAGE_KEY = 'user_fcm_token';
-
-// Active chat ID that the user is currently viewing (to suppress notifications inside the active room)
+// Active chat ID that the user is currently viewing
 let activeChatId: string | null = null;
 
 export const setActiveChatId = (chatId: string | null) => {
@@ -41,8 +39,7 @@ export const setActiveChatId = (chatId: string | null) => {
 export const getActiveChatId = () => activeChatId;
 
 /**
- * 1. Background Message Handler
- * MUST be registered early in index.js outside React lifecycle.
+ * 1. Background Message Handler ( registered early in index.js )
  */
 export const registerBackgroundMessageHandler = () => {
   try {
@@ -57,7 +54,7 @@ export const registerBackgroundMessageHandler = () => {
 };
 
 /**
- * Request notification permissions (Android 13+ POST_NOTIFICATIONS & iOS)
+ * Request notification permissions
  */
 export const requestNotificationPermission = async (): Promise<boolean> => {
   try {
