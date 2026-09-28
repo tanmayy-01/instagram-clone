@@ -14,9 +14,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { withTimeout } from './userService';
 import { ChatConversation, ChatMessage } from '@/types';
-
-
-const CHATS_CACHE_KEY_PREFIX = 'cached_chats_for_user_';
+import { CHATS_CACHE_KEY_PREFIX } from '@/constants';
 
 /**
  * Returns deterministic chat ID for two users so both users point to the identical conversation document
@@ -158,7 +156,6 @@ export const sendMessage = async ({
 
 /**
  * Deletes a message from Firestore subcollection.
- * Strict ownership check: One user cannot delete another person's message!
  */
 export const deleteMessage = async ({
   chatId,
@@ -262,7 +259,6 @@ export const subscribeToMessages = (
 
 /**
  * Real-time listener for user's active conversations.
- * Does not combine array-contains with orderBy to avoid any composite index requirements in Firestore.
  */
 export const subscribeToUserChats = (
   currentUserId: string,

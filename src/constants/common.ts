@@ -14,3 +14,4 @@ export const METRICS = {
 export const STORY_LIFETIME_MS = 24 * 60 * 60 * 1000; // Exactly 24 Hours in milliseconds
 export const STORIES_STORAGE_KEY = 'cached_stories_tray';
 export const POSTS_STORAGE_KEY = 'cached_feed_posts';
+export const CHATS_CACHE_KEY_PREFIX = 'cached_chats_for_user_';

@@ -258,7 +258,7 @@ export const getUserPosts = async (userId: string): Promise<Post[]> => {
 };
 
 /**
- * Deletes a post from Firestore and local cache with strict ownership verification.
+ * Deletes a post from Firestore and local cache
  */
 export const deletePost = async (
   postId: string,
@@ -266,7 +266,7 @@ export const deletePost = async (
 ): Promise<boolean> => {
   try {
     const postDocRef = doc(db, 'posts', postId);
-    
+
     if (currentUserId) {
       const cached = await getStoredPosts();
       const targetPost = cached.find((p) => p.id === postId);
