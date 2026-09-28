@@ -14,9 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { withTimeout, getStoredUser } from './userService';
 import { createNotification } from './notificationService';
 import { Post } from '@/types';
-
-
-const POSTS_STORAGE_KEY = 'cached_feed_posts';
+import { POSTS_STORAGE_KEY } from '@/constants';
 
 /**
  * Creates and publishes a new Post to Cloud Firestore and local cache
@@ -117,7 +115,7 @@ export const getFeedPosts = async (): Promise<Post[]> => {
     console.warn('getFeedPosts cache warning:', cacheErr);
   }
 
-  // Filter out any legacy demo posts
+  // Filter out any demo posts
   allPosts = allPosts.filter((p) => !p.id.startsWith('demo_post_'));
 
   // Sort by newest first
@@ -167,7 +165,7 @@ export const toggleLikePost = async (
     );
     await AsyncStorage.setItem(POSTS_STORAGE_KEY, JSON.stringify(updatedPosts));
 
-    // Create like notification for post author (if not self-like)
+    // Create like notification for post author
     if (!alreadyLiked && post.userId && post.userId !== userId) {
       try {
         const stored = await getStoredUser();
@@ -261,7 +259,6 @@ export const getUserPosts = async (userId: string): Promise<Post[]> => {
 
 /**
  * Deletes a post from Firestore and local cache with strict ownership verification.
- * Prevents users from deleting other users' posts.
  */
 export const deletePost = async (
   postId: string,
@@ -269,8 +266,7 @@ export const deletePost = async (
 ): Promise<boolean> => {
   try {
     const postDocRef = doc(db, 'posts', postId);
-
-    // Strict ownership verification: one user must not delete another user's post
+    
     if (currentUserId) {
       const cached = await getStoredPosts();
       const targetPost = cached.find((p) => p.id === postId);
