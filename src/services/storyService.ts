@@ -13,11 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { withTimeout } from './userService';
 import { getFollowingList } from './followService';
 import { Story } from '@/types';
-
-
-
-const STORIES_STORAGE_KEY = 'cached_stories_tray';
-export const STORY_LIFETIME_MS = 24 * 60 * 60 * 1000; // Exactly 24 Hours in milliseconds
+import { STORIES_STORAGE_KEY, STORY_LIFETIME_MS } from '@/constants';
 
 /**
  * Creates a new 24-hour expiring Story document in Cloud Firestore & local cache
@@ -77,7 +73,7 @@ export const createStory = async ({
 };
 
 /**
- * Retrieves all active stories that have NOT expired (expiresAt > Date.now())
+ * Retrieves all active stories that have NOT expired.
  */
 export const getActiveStories = async (
   currentUserId?: string,
@@ -94,7 +90,6 @@ export const getActiveStories = async (
     if (snapshot && !snapshot.empty) {
       snapshot.forEach((docSnap) => {
         const item = docSnap.data() as Story;
-        // Strict client-side check: must not exceed 24 hours
         if (item.expiresAt > now) {
           allStories.push(item);
         }
@@ -123,12 +118,10 @@ export const getActiveStories = async (
   // Filter out any legacy demo stories
   allStories = allStories.filter((s) => !s.id.startsWith('demo_story_'));
 
-  // Separate user's own stories from other users' stories
   const userStories = allStories.filter(
     (s) => s.userId === currentUserId && s.expiresAt > now,
   );
 
-  // Stories Tray Rule: ONLY show stories of the users we follow!
   const followedList = await getFollowingList(currentUserId);
   const followedSet = new Set(followedList.map((x) => x.toLowerCase()));
 
@@ -139,7 +132,6 @@ export const getActiveStories = async (
     // Check 24-hour validity
     if (s.expiresAt <= now) return false;
 
-    // Strict follow check: Must match followed UID or username
     const isFollowed =
       followedSet.has(s.userId.toLowerCase()) ||
       followedSet.has(s.username.toLowerCase());
@@ -223,7 +215,6 @@ export const getStoredStories = async (): Promise<Story[]> => {
 
 /**
  * Removes an expired or deleted story with strict ownership verification.
- * Prevents users from deleting other users' stories.
  */
 export const deleteStory = async (
   storyId: string,
@@ -232,7 +223,6 @@ export const deleteStory = async (
   try {
     const storyDocRef = doc(db, 'stories', storyId);
 
-    // Strict ownership verification: one user must not delete another user's story
     if (currentUserId) {
       const cached = await getStoredStories();
       const targetStory = cached.find((s) => s.id === storyId);
